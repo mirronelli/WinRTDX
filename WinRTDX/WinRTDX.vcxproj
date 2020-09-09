@@ -108,6 +108,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="DxTools.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

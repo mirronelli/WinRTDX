@@ -15,43 +15,42 @@ using namespace Windows::UI::Composition;
 
 struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 {
-    IFrameworkView CreateView()
-    {
-        return *this;
-    }
+	IFrameworkView CreateView()
+	{
+		return *this;
+	}
 
-    void Initialize(CoreApplicationView const & applicationView)
-    {
-      m_deviceResources = std::make_shared<DX::DeviceResources>();
+	void Initialize(CoreApplicationView const& /*applicationView*/)
+	{
+		m_deviceResources = std::make_shared<Dx::DeviceResources>();
+	}
 
-    }
+	void Load(hstring const&)
+	{
+	}
 
-    void Load(hstring const&)
-    {
-    }
+	void Uninitialize()
+	{
+	}
 
-    void Uninitialize()
-    {
-    }
+	void Run()
+	{
+		CoreWindow window = CoreWindow::GetForCurrentThread();
+		window.Activate();
 
-    void Run()
-    {
-        CoreWindow window = CoreWindow::GetForCurrentThread();
-        window.Activate();
+		CoreDispatcher dispatcher = window.Dispatcher();
+		dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+	}
 
-        CoreDispatcher dispatcher = window.Dispatcher();
-        dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
-    }
-
-    void SetWindow(CoreWindow const & window)
-    {
-    }
+	void SetWindow(CoreWindow const& /*window*/)
+	{
+	}
 
 private:
-   std::shared_ptr<DeviceResources> m_deviceResources;
+	std::shared_ptr<Dx::DeviceResources> m_deviceResources;
 };
 
 int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
 {
-    CoreApplication::Run(make<App>());
+	CoreApplication::Run(make<App>());
 }
