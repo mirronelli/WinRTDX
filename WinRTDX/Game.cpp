@@ -4,9 +4,13 @@
 using namespace winrt::Windows::UI::Core;
 
 Game::Game(std::shared_ptr<Dx::DeviceResources> const& deviceResources, CoreWindow const& window) :
-	m_deviceResources(deviceResources),
 	m_parentWindow(window)
 {
+}
+
+void Game::Init()
+{
+	m_deviceResources = make
 }
 
 void Game::Run()
@@ -32,4 +36,9 @@ void Game::Present()
 void Game::Close()
 {
 	m_isClosing = true;
+}
+
+void Game::Resize()
+{
+
 }

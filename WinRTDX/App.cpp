@@ -8,7 +8,9 @@ using namespace Windows;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Core;
 using namespace Windows::ApplicationModel::Activation;
+using namespace Windows::Foundation; 
 using namespace Windows::Foundation::Numerics;
+using namespace Windows::Graphics::Display;
 using namespace Windows::UI;
 using namespace Windows::UI::Core;
 using namespace Windows::UI::Composition;
@@ -23,7 +25,6 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 	void Initialize(CoreApplicationView const& applicationView)
 	{
 		applicationView.Activated({ this, &App::OnActivated });
-		m_deviceResources = std::make_shared<Dx::DeviceResources>();
 	}
 
 	void SetWindow(CoreWindow const& window)
@@ -31,15 +32,14 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 		m_window = window;
 		m_window.Closed({ this, &App::OnWindowClosed });
 		m_window.SizeChanged({ this, &App::OnWindowSizeChanged });
-
-		m_deviceResources->SetWindow(window);
 	}
 
 	void Load(hstring const&)
 	{
 		if (!m_game)
 		{
-			m_game = std::make_unique<Game>(m_deviceResources, m_window);
+			m_game = std::make_unique<Game>(m_window);
+			m_game->Init();
 		}
 	}
 
@@ -68,21 +68,17 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 	
 	void OnWindowSizeChanged(CoreWindow const& /* window */, WindowSizeChangedEventArgs const& args)
 	{
-		//m_deviceResources->SetLogicalSize(args.Size());
-		//m_game->Resize();
-		OutputDebugStringA((std::to_string(args.Size().Width) + "\n").c_str());
+		m_game->Resize();
 	}
 
 	void OnDpiChanged(DisplayInformation const& sender, IInspectable const& /* args */)
 	{
-		m_deviceResources->SetDpi(sender.LogicalDpi());
-		m_main->CreateWindowSizeDependentResources();
+		m_game->Resize();
 	}
 
 #pragma endregion
 
 private:
-	std::shared_ptr<Dx::DeviceResources> m_deviceResources;
 	std::unique_ptr<Game> m_game;
 	CoreWindow m_window{ nullptr };
 };

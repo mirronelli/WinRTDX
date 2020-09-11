@@ -5,9 +5,11 @@
 class Game
 {
 public:
-	Game(std::shared_ptr<Dx::DeviceResources> const& deviceResources, winrt::Windows::UI::Core::CoreWindow const & window);
+	Game(winrt::Windows::UI::Core::CoreWindow const & window);
+	void Init();
 	void Run();
 	void Close();
+	void Resize();
 
 private:
 	void Update();
