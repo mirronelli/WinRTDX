@@ -6,6 +6,9 @@
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Dx</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -14,6 +17,9 @@
     </ClInclude>
     <ClInclude Include="DeviceResources.h">
       <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +54,9 @@
     </Filter>
     <Filter Include="Dx">
       <UniqueIdentifier>{5bfb178c-49f4-4511-b340-4235e9351304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{83a338da-8688-4b40-978c-fabec5eefa68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

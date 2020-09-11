@@ -23,15 +23,14 @@ namespace Dx::Tools
 		return SUCCEEDED(hr);
 	}
 
-	winrt::com_ptr<IDXGIAdapter> GetPreferredAdapter()
+	winrt::com_ptr<IDXGIAdapter4> GetPreferredAdapter()
 	{
 		winrt::com_ptr<IDXGIFactory7> dxgiFactory;
 		if (FAILED(CreateDXGIFactory1(__uuidof(IDXGIFactory7), dxgiFactory.put_void())))
 			return nullptr;
 
-		winrt::com_ptr<IDXGIAdapter> adapter;
-		dxgiFactory->EnumAdapterByGpuPreference(0, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, __uuidof(IDXGIAdapter), adapter.put_void());
-		//dxgiFactory->EnumAdapters(0, adapter.put());
+		winrt::com_ptr<IDXGIAdapter4> adapter;
+		dxgiFactory->EnumAdapterByGpuPreference(0, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, __uuidof(IDXGIAdapter4), adapter.put_void());
 
 		return adapter;
 	}

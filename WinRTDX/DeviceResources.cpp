@@ -13,6 +13,16 @@ void Dx::DeviceResources::CreateDeviceIndependentResources()
 
 }
 
+void Dx::DeviceResources::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
+{
+	m_parentWindow = window;
+}
+
+void Dx::DeviceResources::SetDpi(float dpi)
+{
+	m_dpi = dpi;
+}
+
 void Dx::DeviceResources::CreateDeviceResources()
 {
 	// This flag adds support for surfaces with a different color channel ordering
@@ -40,13 +50,13 @@ void Dx::DeviceResources::CreateDeviceResources()
 	// Create the Direct3D 11 API device object and a corresponding context.
 	winrt::com_ptr<ID3D11Device> device;
 	winrt::com_ptr<ID3D11DeviceContext> context;
-	winrt::com_ptr<IDXGIAdapter> adapter;
+	winrt::com_ptr<IDXGIAdapter4> adapter;
 	D3D_FEATURE_LEVEL featureLevel;
 
-	//adapter = Dx::Tools::GetPreferredAdapter();
+	adapter = Dx::Tools::GetPreferredAdapter();
 	D3D11CreateDevice(
 	   adapter.get(),									// Specify nullptr to use the default adapter.
-	   D3D_DRIVER_TYPE_HARDWARE,					// Create a device using the hardware graphics driver.
+	   D3D_DRIVER_TYPE_UNKNOWN,					// Create a device using the hardware graphics driver.
 	   0,													// Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
 	   creationFlags,									// Set debug and Direct2D compatibility flags.
 		requestedFeatureLevels,						// List of feature levels this app can support.
@@ -59,18 +69,22 @@ void Dx::DeviceResources::CreateDeviceResources()
 
 	m_d3dDevice = device.as<ID3D11Device3>();
 	m_d3dContext = context.as<ID3D11DeviceContext4>();
-	//// Create the Direct2D device object and a corresponding context.
-	//winrt::com_ptr<IDXGIDevice3> dxgiDevice;
-	//dxgiDevice = m_d3dDevice.as<IDXGIDevice3>();
 
-	//winrt::check_hresult(
-	//   m_d2dFactory->CreateDevice(dxgiDevice.get(), m_d2dDevice.put())
-	//);
+	DXGI_ADAPTER_DESC adapterDesc;
+	adapter->GetDesc(&adapterDesc);
 
-	//winrt::check_hresult(
-	//   m_d2dDevice->CreateDeviceContext(
-	//      D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
-	//      m_d2dContext.put()
-	//   )
-	//);
+	std::wostringstream debug;
+	debug << "Found adapter:\t" << adapterDesc.Description << "\n";
+	OutputDebugStringW(debug.str().c_str());
+
+	debug.clear();
+	debug << "\t with feature level:" << featureLevel << "\n";
+	OutputDebugStringW(debug.str().c_str());
+}
+
+void Dx::DeviceResources::CreateWindowSizeDependentResources()
+{
+	m_size = size;
+	DXGI_SWAP_CHAIN_DESC1 sd;
+	sd
 }
