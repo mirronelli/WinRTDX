@@ -5,11 +5,11 @@ using namespace winrt::Windows::UI::Core;
 
 namespace Dx
 {
-	class DeviceResources
+	class Graphics
 	{
 
 	public:
-		DeviceResources();
+		Graphics();
 		void SetWindow(winrt::Windows::UI::Core::CoreWindow const& window);
 		void Resize();
 

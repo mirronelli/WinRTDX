@@ -3,11 +3,11 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="DeviceResources.cpp">
-      <Filter>Dx</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Dx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -15,11 +15,11 @@
     <ClInclude Include="DxTools.h">
       <Filter>Dx</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceResources.h">
-      <Filter>Dx</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Dx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

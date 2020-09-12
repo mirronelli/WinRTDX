@@ -1,5 +1,5 @@
 #pragma once
-#include <DeviceResources.h>
+#include "Graphics.h"
 #include "winrt/Windows.UI.Core.h"
 
 class Game
@@ -17,7 +17,7 @@ private:
 	void Render();
 	void Present();
 
-	std::shared_ptr<Dx::DeviceResources> m_deviceResources;
+	std::shared_ptr<Dx::Graphics> m_deviceResources;
 	winrt::Windows::UI::Core::CoreWindow m_parentWindow{ nullptr };
 	bool m_isClosing = false;
 };

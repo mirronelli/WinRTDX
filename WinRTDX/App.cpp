@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <DeviceResources.h>
 #include <Game.h>
 
 using namespace winrt;

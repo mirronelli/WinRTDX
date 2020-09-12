@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "DeviceResources.h"
-#include <DxTools.h>
+#include "Graphics.h"
+#include "DxTools.h"
 
 
-Dx::DeviceResources::DeviceResources()
+Dx::Graphics::Graphics()
 {
 	CreateDeviceResources();
 };
 
-void Dx::DeviceResources::CreateDeviceResources()
+void Dx::Graphics::CreateDeviceResources()
 {
 	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -55,7 +55,7 @@ void Dx::DeviceResources::CreateDeviceResources()
 	m_factory = dxgiFactory.as<IDXGIFactory7>();
 }
 
-void Dx::DeviceResources::CreateWindowSizeDependentResources()
+void Dx::Graphics::CreateWindowSizeDependentResources()
 {
 	if (m_swapChain != nullptr)
 	{
@@ -127,20 +127,20 @@ void Dx::DeviceResources::CreateWindowSizeDependentResources()
 	m_context->RSSetViewports(1, &viewport);
 }
 
-void Dx::DeviceResources::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
+void Dx::Graphics::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
 {
 	m_parentWindow = window;
 	Resize();
 }
 
-void Dx::DeviceResources::Resize()
+void Dx::Graphics::Resize()
 {
 	m_width = (UINT)m_parentWindow.get().Bounds().Width;
 	m_height = (UINT)m_parentWindow.get().Bounds().Height;
 	this->CreateWindowSizeDependentResources();
 }
 
-void Dx::DeviceResources::StartFrame()
+void Dx::Graphics::StartFrame()
 {
 	ID3D11RenderTargetView* views[] = { m_renderTargetView.get() };
 	m_context->OMSetRenderTargets(
@@ -150,7 +150,7 @@ void Dx::DeviceResources::StartFrame()
 	);
 }
 
-void Dx::DeviceResources::SetColor(DXGI_RGBA& color)
+void Dx::Graphics::SetColor(DXGI_RGBA& color)
 {
 	const float clearColor[4] = { color.r, color.g, color.b, color.a };
 	m_context->ClearRenderTargetView(
@@ -159,7 +159,7 @@ void Dx::DeviceResources::SetColor(DXGI_RGBA& color)
 	);
 }
 
-void Dx::DeviceResources::Present()
+void Dx::Graphics::Present()
 {
 	m_swapChain->Present(1, 0);
 }

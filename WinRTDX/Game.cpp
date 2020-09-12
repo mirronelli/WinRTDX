@@ -10,7 +10,7 @@ Game::Game(CoreWindow const& window) :
 
 void Game::Init()
 {
-	m_deviceResources = std::make_shared<Dx::DeviceResources>();
+	m_deviceResources = std::make_shared<Dx::Graphics>();
 	m_deviceResources->SetWindow(m_parentWindow);
 }
 
