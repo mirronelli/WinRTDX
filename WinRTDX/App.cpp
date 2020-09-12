@@ -66,12 +66,12 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 		m_game->Close();
 	}
 	
-	void OnWindowSizeChanged(CoreWindow const& /* window */, WindowSizeChangedEventArgs const& args)
+	void OnWindowSizeChanged(CoreWindow const& /* window */, WindowSizeChangedEventArgs const& /* args */)
 	{
 		m_game->Resize();
 	}
 
-	void OnDpiChanged(DisplayInformation const& sender, IInspectable const& /* args */)
+	void OnDpiChanged(DisplayInformation const& /* sender */, IInspectable const& /* args */)
 	{
 		m_game->Resize();
 	}

@@ -1,6 +1,6 @@
 #pragma once
 #include <DeviceResources.h>
-#include "winrt/Windows.UI.Core.h";
+#include "winrt/Windows.UI.Core.h"
 
 class Game
 {
@@ -12,6 +12,7 @@ public:
 	void Resize();
 
 private:
+	void ProcessEvents();
 	void Update();
 	void Render();
 	void Present();
