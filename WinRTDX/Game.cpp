@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "Game.h"
 #include "Loader.h"
-#include <ppltasks.h>
+#include "ILevel.h"
+#include "Level1.h"
+
+
 
 using namespace winrt::Windows::UI::Core;
 
@@ -16,30 +19,24 @@ void Game::Init()
 	m_graphics->SetWindow(m_parentWindow);
 }
 
-concurrency::task<void> Game::SetupPipelineAsync()
+void Game::LoadLevel(std::wstring name)
 {
-	return concurrency::create_task([this]
-		{
-			m_graphics->SetVertexShader( m_graphics->LoadVertexShader(L"VertexShader.cso"));
-			m_graphics->SetPixelShader(m_graphics->LoadPixelShader(L"PixelShader.cso"));
-		}
-	);
+	m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+	concurrency::task<void> loading = m_level->Load();
+	while (!loading.is_done())
+		ProcessEvents();
 }
 
 void Game::Run()
 {
-	concurrency::task setup = SetupPipelineAsync();
+	LoadLevel(L"1");
 
 	while (!m_isClosing)
 	{
 		ProcessEvents();
-
-		if (setup.is_done())
-		{
-			Update();
-			Render();
-			Present();
-		}
+		Update();
+		Render();
+		Present();
 	}
 }
 
@@ -55,7 +52,7 @@ void Game::Update()
 void Game::Render()
 {
 	m_graphics->StartFrame();
-	DXGI_RGBA color{ 1,1,0.5,0.5 };
+	DXGI_RGBA color{ 1, .5, .5, 0 };
 	m_graphics->SetColor(color);
 }
 

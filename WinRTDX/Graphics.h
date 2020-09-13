@@ -39,7 +39,7 @@ namespace Dx
 		winrt::com_ptr<ID3D11RenderTargetView>	m_renderTargetView;
 
 		// Windows objects
-		winrt::agile_ref<CoreWindow>				m_parentWindow{ nullptr };
+		CoreWindow										m_parentWindow{ nullptr };
 		UINT												m_width;
 		UINT												m_height;
 		float												m_dpi = 1;

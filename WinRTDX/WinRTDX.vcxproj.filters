@@ -15,6 +15,9 @@
     <ClCompile Include="IO.cpp">
       <Filter>Dx</Filter>
     </ClCompile>
+    <ClCompile Include="Level1.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -33,6 +36,12 @@
     </ClInclude>
     <ClInclude Include="IO.h">
       <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="Level1.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="ILevel.h">
+      <Filter>Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +82,9 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{9ad4c64f-d2e2-402c-92b9-1186889c9ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels">
+      <UniqueIdentifier>{4fa04f32-faae-4c44-bb29-99f2f0c58d94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

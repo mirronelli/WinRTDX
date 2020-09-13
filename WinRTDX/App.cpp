@@ -2,7 +2,6 @@
 #include <Game.h>
 
 using namespace winrt;
-
 using namespace Windows;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Core;
@@ -75,11 +74,12 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 		m_game->Resize();
 	}
 
+	
 #pragma endregion
 
 private:
-	std::unique_ptr<Game> m_game;
-	CoreWindow m_window{ nullptr };
+	std::unique_ptr<Game>	m_game;
+	CoreWindow					m_window{ nullptr };
 };
 
 int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)

@@ -11,8 +11,8 @@
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Storage.Streams.h>
 
-
-
 #include <dxgi1_6.h>
 #include <d3d11_3.h>
 #include <sstream>
+#include <ppltasks.h>
+#include <pplawait.h>

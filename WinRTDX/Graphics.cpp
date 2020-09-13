@@ -89,7 +89,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 			FAILED(
 				m_factory->CreateSwapChainForCoreWindow(
 					m_device.get(),
-					winrt::get_unknown(m_parentWindow.get()),
+					winrt::get_unknown(m_parentWindow),
 					&swapChainDescriptor,
 					nullptr,
 					swapChain.put()
@@ -135,8 +135,8 @@ void Dx::Graphics::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
 
 void Dx::Graphics::Resize()
 {
-	m_width = (UINT)m_parentWindow.get().Bounds().Width;
-	m_height = (UINT)m_parentWindow.get().Bounds().Height;
+	m_width = (UINT)m_parentWindow.Bounds().Width;
+	m_height = (UINT)m_parentWindow.Bounds().Height;
 	this->CreateWindowSizeDependentResources();
 }
 
