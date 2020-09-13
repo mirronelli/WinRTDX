@@ -8,6 +8,9 @@
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.UI.Composition.h>
 #include <winrt/Windows.UI.Input.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Storage.Streams.h>
+
 
 
 #include <dxgi1_6.h>

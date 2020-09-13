@@ -2,7 +2,6 @@
 #include "Graphics.h"
 #include "DxTools.h"
 
-
 Dx::Graphics::Graphics()
 {
 	CreateDeviceResources();
@@ -36,16 +35,16 @@ void Dx::Graphics::CreateDeviceResources()
 	adapter = Dx::Tools::GetPreferredAdapter(dxgiFactory);
 
 	D3D11CreateDevice(
-	   adapter.get(),									// Specify nullptr to use the default adapter.
-	   D3D_DRIVER_TYPE_UNKNOWN,					// Create a device using the hardware graphics driver.
-	   0,													// Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
-	   creationFlags,									// Set debug and Direct2D compatibility flags.
+		adapter.get(),									// Specify nullptr to use the default adapter.
+		D3D_DRIVER_TYPE_UNKNOWN,					// Create a device using the hardware graphics driver.
+		0,													// Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
+		creationFlags,									// Set debug and Direct2D compatibility flags.
 		requestedFeatureLevels,						// List of feature levels this app can support.
-	   ARRAYSIZE(requestedFeatureLevels),		// Size of the list above.
-	   D3D11_SDK_VERSION,							// Always set this to D3D11_SDK_VERSION for Windows Runtime apps.
-	   device.put(),									// Returns the Direct3D device created.
-	   &detectedFeatureLevel,						// Returns feature level of device created.
-	   context.put()									// Returns the device immediate context.
+		ARRAYSIZE(requestedFeatureLevels),		// Size of the list above.
+		D3D11_SDK_VERSION,							// Always set this to D3D11_SDK_VERSION for Windows Runtime apps.
+		device.put(),									// Returns the Direct3D device created.
+		&detectedFeatureLevel,						// Returns feature level of device created.
+		context.put()									// Returns the device immediate context.
 	);
 
 	Dx::Tools::DisplayAdapterDetails(adapter);
@@ -53,6 +52,7 @@ void Dx::Graphics::CreateDeviceResources()
 	m_device = device.as<ID3D11Device3>();
 	m_context = context.as<ID3D11DeviceContext4>();
 	m_factory = dxgiFactory.as<IDXGIFactory7>();
+	m_loader = Loader{ m_device };
 }
 
 void Dx::Graphics::CreateWindowSizeDependentResources()
@@ -70,7 +70,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	}
 	else {
 		winrt::com_ptr<IDXGISwapChain1> swapChain;
-	
+
 		DXGI_SWAP_CHAIN_DESC1 swapChainDescriptor;
 		swapChainDescriptor.Height = 0;
 		swapChainDescriptor.Width = 0;
@@ -86,15 +86,15 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 		swapChainDescriptor.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
 		if (
-				FAILED(
-					m_factory->CreateSwapChainForCoreWindow(
-						m_device.get(),
-						winrt::get_unknown(m_parentWindow.get()),
-						&swapChainDescriptor,
-						nullptr,
-						swapChain.put()
-					)
+			FAILED(
+				m_factory->CreateSwapChainForCoreWindow(
+					m_device.get(),
+					winrt::get_unknown(m_parentWindow.get()),
+					&swapChainDescriptor,
+					nullptr,
+					swapChain.put()
 				)
+			)
 			)
 		{
 			std::wostringstream debug;
@@ -157,6 +157,26 @@ void Dx::Graphics::SetColor(DXGI_RGBA& color)
 		m_renderTargetView.get(),
 		clearColor
 	);
+}
+
+com_ptr<ID3D11VertexShader> Dx::Graphics::LoadVertexShader(std::wstring const& filename)
+{
+	return m_loader.LoadVertexShader(filename);
+}
+
+void Dx::Graphics::SetVertexShader(com_ptr<ID3D11VertexShader> const& shader)
+{
+	m_context->VSSetShader(shader.get(), nullptr, 0);
+}
+
+com_ptr<ID3D11PixelShader> Dx::Graphics::LoadPixelShader(std::wstring const& filename)
+{
+	return m_loader.LoadPixelShader(filename);
+}
+
+void Dx::Graphics::SetPixelShader(com_ptr<ID3D11PixelShader> const& shader)
+{
+	m_context->PSSetShader(shader.get(), nullptr, 0);
 }
 
 void Dx::Graphics::Present()

@@ -9,6 +9,12 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Dx</Filter>
     </ClCompile>
+    <ClCompile Include="Loader.cpp">
+      <Filter>Dx</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>Dx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -19,6 +25,13 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
+      <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders.h" />
+    <ClInclude Include="Loader.h">
+      <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
       <Filter>Dx</Filter>
     </ClInclude>
   </ItemGroup>
@@ -58,6 +71,9 @@
     <Filter Include="Game">
       <UniqueIdentifier>{83a338da-8688-4b40-978c-fabec5eefa68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{9ad4c64f-d2e2-402c-92b9-1186889c9ac8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -65,5 +81,13 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
