@@ -18,6 +18,8 @@ private:
 	void Render();
 	void Present();
 
+	void KeyUp(CoreWindow window, KeyEventArgs args);
+
 	std::shared_ptr<Dx::Graphics>						m_graphics;
 	std::unique_ptr<Dx::Levels::ILevel>				m_level{ nullptr };
 	CoreWindow												m_parentWindow{ nullptr };

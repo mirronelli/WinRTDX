@@ -1,9 +1,10 @@
 #pragma once
 #include <winrt\Windows.UI.Core.h>
-#include "Loader.h"
 
 using namespace winrt;
 using namespace winrt::Windows::UI::Core;
+using namespace winrt::Windows::Storage::Streams;
+using namespace winrt::Windows::Foundation;
 
 namespace Dx
 {
@@ -16,15 +17,18 @@ namespace Dx
 		void Resize();
 
 		void StartFrame();
-		void SetColor(DXGI_RGBA& color);
+		void SetColor(float color[4]);
 		void Present();
 
+		com_ptr<ID3D11Device3> Device();
+		com_ptr<ID3D11DeviceContext4> Context();
 
-		com_ptr<ID3D11VertexShader> LoadVertexShader(std::wstring const& filename);
+
 		void SetVertexShader(com_ptr<ID3D11VertexShader> const& shader);
-
-		com_ptr<ID3D11PixelShader> LoadPixelShader(std::wstring const& filename);
 		void SetPixelShader(com_ptr<ID3D11PixelShader> const& shader);
+
+		com_ptr<ID3D11VertexShader> CreateVertexShader(IBuffer buffer);
+		com_ptr<ID3D11PixelShader> CreatePixelShader(IBuffer buffer);
 
 	private:
 		void CreateDeviceResources();
@@ -43,8 +47,5 @@ namespace Dx
 		UINT												m_width;
 		UINT												m_height;
 		float												m_dpi = 1;
-
-		// My objects
-		Loader											m_loader{ nullptr };
 	};
 }

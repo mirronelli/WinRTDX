@@ -113,9 +113,7 @@
     <ClInclude Include="ILevel.h" />
     <ClInclude Include="IO.h" />
     <ClInclude Include="Level1.h" />
-    <ClInclude Include="Loader.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Shaders.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -137,7 +135,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="Level1.cpp" />
-    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

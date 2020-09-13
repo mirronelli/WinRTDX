@@ -2,6 +2,9 @@
 #include "Graphics.h"
 #include "DxTools.h"
 
+using namespace winrt::Windows::Storage::Streams;
+using namespace winrt::Windows::Foundation;
+
 Dx::Graphics::Graphics()
 {
 	CreateDeviceResources();
@@ -52,7 +55,6 @@ void Dx::Graphics::CreateDeviceResources()
 	m_device = device.as<ID3D11Device3>();
 	m_context = context.as<ID3D11DeviceContext4>();
 	m_factory = dxgiFactory.as<IDXGIFactory7>();
-	m_loader = Loader{ m_device };
 }
 
 void Dx::Graphics::CreateWindowSizeDependentResources()
@@ -71,7 +73,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	else {
 		winrt::com_ptr<IDXGISwapChain1> swapChain;
 
-		DXGI_SWAP_CHAIN_DESC1 swapChainDescriptor;
+		DXGI_SWAP_CHAIN_DESC1 swapChainDescriptor { 0 };
 		swapChainDescriptor.Height = 0;
 		swapChainDescriptor.Width = 0;
 		swapChainDescriptor.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -83,7 +85,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 		swapChainDescriptor.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 		swapChainDescriptor.Flags = 0;
 		swapChainDescriptor.Scaling = DXGI_SCALING_NONE;
-		swapChainDescriptor.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
+		swapChainDescriptor.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 
 		if (
 			FAILED(
@@ -97,9 +99,6 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 			)
 			)
 		{
-			std::wostringstream debug;
-			debug << "Cele zle. \n";
-			OutputDebugStringW(debug.str().c_str());
 			return;
 		}
 
@@ -116,15 +115,15 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	D3D11_TEXTURE2D_DESC backBufferDesc = { 0 };
 	backBuffer->GetDesc(&backBufferDesc);
 
-	D3D11_VIEWPORT viewport;
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	viewport.Width = static_cast<float>(backBufferDesc.Width);
-	viewport.Height = static_cast<float>(backBufferDesc.Height);
-	viewport.MinDepth = D3D11_MIN_DEPTH;
-	viewport.MaxDepth = D3D11_MAX_DEPTH;
+	D3D11_VIEWPORT viewports[1];
+	viewports[0].TopLeftX = 0.0f;
+	viewports[0].TopLeftY = 0.0f;
+	viewports[0].Width = static_cast<float>(backBufferDesc.Width);
+	viewports[0].Height = static_cast<float>(backBufferDesc.Height);
+	viewports[0].MinDepth = D3D11_MIN_DEPTH;
+	viewports[0].MaxDepth = D3D11_MAX_DEPTH;
 
-	m_context->RSSetViewports(1, &viewport);
+	m_context->RSSetViewports(1, viewports);
 }
 
 void Dx::Graphics::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
@@ -150,18 +149,12 @@ void Dx::Graphics::StartFrame()
 	);
 }
 
-void Dx::Graphics::SetColor(DXGI_RGBA& color)
+void Dx::Graphics::SetColor(float color[4])
 {
-	const float clearColor[4] = { color.r, color.g, color.b, color.a };
 	m_context->ClearRenderTargetView(
 		m_renderTargetView.get(),
-		clearColor
+		color
 	);
-}
-
-com_ptr<ID3D11VertexShader> Dx::Graphics::LoadVertexShader(std::wstring const& filename)
-{
-	return m_loader.LoadVertexShader(filename);
 }
 
 void Dx::Graphics::SetVertexShader(com_ptr<ID3D11VertexShader> const& shader)
@@ -169,17 +162,51 @@ void Dx::Graphics::SetVertexShader(com_ptr<ID3D11VertexShader> const& shader)
 	m_context->VSSetShader(shader.get(), nullptr, 0);
 }
 
-com_ptr<ID3D11PixelShader> Dx::Graphics::LoadPixelShader(std::wstring const& filename)
-{
-	return m_loader.LoadPixelShader(filename);
-}
-
 void Dx::Graphics::SetPixelShader(com_ptr<ID3D11PixelShader> const& shader)
 {
 	m_context->PSSetShader(shader.get(), nullptr, 0);
 }
 
+com_ptr<ID3D11VertexShader> Dx::Graphics::CreateVertexShader(IBuffer buffer)
+{
+	uint8_t* data = buffer.data();
+
+	com_ptr<ID3D11VertexShader> shader;
+	m_device->CreateVertexShader(
+		data,
+		buffer.Length(),
+		nullptr,
+		shader.put()
+	);
+
+	return shader;
+}
+
+com_ptr<ID3D11PixelShader> Dx::Graphics::CreatePixelShader(IBuffer buffer)
+{
+	uint8_t* data = buffer.data();
+
+	com_ptr<ID3D11PixelShader> shader;
+	m_device->CreatePixelShader(
+		data,
+		buffer.Length(),
+		nullptr,
+		shader.put()
+	);
+	return shader;
+}
+
 void Dx::Graphics::Present()
 {
 	m_swapChain->Present(1, 0);
+}
+
+com_ptr<ID3D11Device3> Dx::Graphics::Device()
+{
+	return m_device;
+}
+
+com_ptr<ID3D11DeviceContext4> Dx::Graphics::Context()
+{
+	return m_context;
 }

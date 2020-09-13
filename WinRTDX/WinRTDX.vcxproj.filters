@@ -9,9 +9,6 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Dx</Filter>
     </ClCompile>
-    <ClCompile Include="Loader.cpp">
-      <Filter>Dx</Filter>
-    </ClCompile>
     <ClCompile Include="IO.cpp">
       <Filter>Dx</Filter>
     </ClCompile>
@@ -28,10 +25,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
-      <Filter>Dx</Filter>
-    </ClInclude>
-    <ClInclude Include="Shaders.h" />
-    <ClInclude Include="Loader.h">
       <Filter>Dx</Filter>
     </ClInclude>
     <ClInclude Include="IO.h">

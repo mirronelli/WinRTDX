@@ -11,6 +11,7 @@ public:
    ILevel(std::shared_ptr<Dx::Graphics> graphics) :m_graphics(graphics) {};
 
    virtual concurrency::task<void> Load() = 0;
+   virtual void SetupModel() = 0;
    virtual void Render() = 0;
    virtual void Update(UINT32 deltaTime) = 0;
 
