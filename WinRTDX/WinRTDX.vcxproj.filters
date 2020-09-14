@@ -15,6 +15,9 @@
     <ClCompile Include="Level1.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Level2.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -38,6 +41,9 @@
     </ClInclude>
     <ClInclude Include="StepTimer.h">
       <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="Level2.h">
+      <Filter>Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +101,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader2.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

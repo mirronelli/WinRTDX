@@ -120,7 +120,7 @@ void Dx::Levels::Level1::Update(float delta)
 	else																					// phase 6
 	{
 		m_red = 0;																			// red 0
-		m_green = 1.0 -(progress - c_fiveSixths) * 6;							// green down
+		m_green = 1.0f -(progress - c_fiveSixths) * 6;							// green down
 		m_blue = 1;																			// blue up
 	}
 }

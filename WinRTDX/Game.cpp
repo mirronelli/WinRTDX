@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "ILevel.h"
 #include "Level1.h"
+#include "Level2.h"
 
 using namespace winrt::Windows::UI::Core;
 
@@ -15,13 +16,11 @@ void Game::Init()
 	m_graphics = std::make_shared<Dx::Graphics>();
 	m_graphics->SetWindow(m_parentWindow);
 	m_parentWindow.KeyUp({ this, &Game::KeyUp });
-	m_timer.SetFixedTimeStep(true);
-	m_timer.SetTargetElapsedSeconds(1.f / 60.f);
 }
 
 void Game::LoadLevel(std::wstring name)
 {
-	m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+	m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
 	concurrency::task<void> loading = m_level->Load();
 	while (!loading.is_done()) {
 		ProcessEvents();
@@ -55,7 +54,7 @@ void Game::Update(Dx::StepTimer const& timer)
 	m_level->Update(delta);
 
 	std::wostringstream debug;
-	debug << "Frame: " << m_frame << " Delta: " << delta << "\n";
+	debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
 	OutputDebugString(debug.str().c_str());
 }
 

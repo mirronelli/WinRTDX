@@ -1,11 +1,14 @@
 #pragma once
 #include "pch.h"
 #include "ILevel.h"
+#include "winrt/Windows.Foundation.Numerics.h"
+
+using namespace winrt::Windows::Foundation::Numerics;
 
 namespace Dx::Levels
 {
 
-	class Level1 : public ILevel
+	class Level2 : public ILevel
 	{
 		struct Vertex
 		{
@@ -13,30 +16,29 @@ namespace Dx::Levels
 			float r, g, b, a; // vertex color
 		};
 
+		struct Matrix {
+			float element[4][4];
+		};
+
 	public:
-		Level1(std::shared_ptr<Dx::Graphics> graphics) : ILevel(graphics) {};
+		Level2(std::shared_ptr<Dx::Graphics> graphics) : ILevel(graphics) {};
 
 		concurrency::task<void> Load();
 		void SetupModel();
 		void Render();
 		void Update(float delta);
-	
+
 	private:
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;
 		com_ptr<ID3D11Buffer>	m_indexBuffer;
+		com_ptr<ID3D11Buffer>	m_constantBuffer;
 		IBuffer						m_compiledVertexShader{ nullptr };
 		IBuffer						m_compiledPixelShader{ nullptr };
 		float							m_red{ 0 }, m_green{ 0 }, m_blue{ 0 };
 		float							m_elapsedTime{ 0 };
-		float							m_effectDuration{ 10.0f };
+		float							m_effectDuration{ 5.f };
 
-		const float					c_oneSixth{ 1.0f / 6.0f };
-		const float					c_twoSixths{ 2.0f / 6.0f };
-		const float					c_threeSixths{ 3.0f / 6.0f };
-		const float					c_fourSixths{ 4.0f / 6.0f };
-		const float					c_fiveSixths{ 5.0f / 6.0f };
-		const float					c_sixSixths{ 6.0f / 6.0f };
-		const float					c_maxColorIntensity{ 0.2f };
+		DirectX::XMMATRIX m_matrices = DirectX::XMMatrixRotationZ(0.f);
 	};
 
 }
