@@ -26,13 +26,6 @@ void Dx::Levels::Level1::SetupModel()
 		{   .45f, -0.8f, 0.0f, 1.0f,		0.0f,  .0f, 1.0f, 1.0f },
 	};
 
-	// Create Vertex Buffer over vertices
-	D3D11_BUFFER_DESC bd = { 0 };
-	bd.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	D3D11_SUBRESOURCE_DATA srd = { vertices, 0, 0 };
-	m_graphics->Device()->CreateBuffer(&bd, &srd, m_vertexBuffer.put());
-	
 	// Describe Input Layout for vertex shader
 	D3D11_INPUT_ELEMENT_DESC ieds[] =
 	{
@@ -48,6 +41,28 @@ void Dx::Levels::Level1::SetupModel()
 		inputLayout.put()
 	);
 	m_graphics->Context()->IASetInputLayout(inputLayout.get());
+
+	// Create Vertex Buffer over vertices
+	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
+	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
+	vertexBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
+	m_graphics->Device()->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
+	
+	// define indices
+	const unsigned short indices[] = {
+		0, 1, 2,
+		3, 5, 4,
+		5, 2, 1
+	};
+
+	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
+	indexBufferDesc.ByteWidth = sizeof(unsigned short) * ARRAYSIZE(indices);
+	indexBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+	indexBufferDesc.StructureByteStride = sizeof(unsigned short);
+	D3D11_SUBRESOURCE_DATA srdIndices = { indices, 0, 0 };
+	m_graphics->Device()->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
 }
 
 void Dx::Levels::Level1::Render()
@@ -55,14 +70,13 @@ void Dx::Levels::Level1::Render()
 	float color[4]{ m_red * c_maxColorIntensity, m_green * c_maxColorIntensity, m_blue * c_maxColorIntensity, .0 };
 	m_graphics->SetColor(color);
 
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
+	UINT strideVertices = sizeof(Vertex);
+	UINT offsetVertices = 0;
 	ID3D11Buffer* vertexBuffers[1] = { m_vertexBuffer.get() };
-	m_graphics->Context()->IASetVertexBuffers(0, 1, vertexBuffers, &stride, &offset);
-
-	m_graphics->Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
-	m_graphics->Context()->Draw(6, 0);
-
+	m_graphics->Context()->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
+	m_graphics->Context()->IASetIndexBuffer(m_indexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
+	m_graphics->Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_graphics->Context()->DrawIndexed(9, 0, 0);
 }
 
 void Dx::Levels::Level1::Update(float delta)
