@@ -114,6 +114,7 @@
     <ClInclude Include="IO.h" />
     <ClInclude Include="Level1.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

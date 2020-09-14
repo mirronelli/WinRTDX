@@ -15,6 +15,8 @@ void Game::Init()
 	m_graphics = std::make_shared<Dx::Graphics>();
 	m_graphics->SetWindow(m_parentWindow);
 	m_parentWindow.KeyUp({ this, &Game::KeyUp });
+	m_timer.SetFixedTimeStep(true);
+	m_timer.SetTargetElapsedSeconds(1.f / 60.f);
 }
 
 void Game::LoadLevel(std::wstring name)
@@ -35,7 +37,7 @@ void Game::Run()
 	while (!m_isClosing)
 	{
 		ProcessEvents();
-		Update();
+		Tick();
 		Render();
 		Present();
 	}
@@ -46,8 +48,25 @@ void Game::ProcessEvents()
 	m_parentWindow.Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
 }
 
-void Game::Update()
+void Game::Update(Dx::StepTimer const& timer)
 {
+	float delta = float(timer.GetElapsedSeconds());
+
+	m_level->Update(delta);
+
+	std::wostringstream debug;
+	debug << "Frame: " << m_frame << " Delta: " << delta << "\n";
+	OutputDebugString(debug.str().c_str());
+}
+
+void Game::Tick()
+{
+	m_timer.Tick([&]()
+		{
+			Update(m_timer);
+		}
+	);
+	m_frame++;
 }
 
 void Game::Render()

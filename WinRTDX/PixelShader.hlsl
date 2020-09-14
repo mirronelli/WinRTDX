@@ -1,4 +1,10 @@
-float4 main() : SV_TARGET
+struct VS_OUTPUT
 {
-	return float4(1.0f, 1.0f, 1.0f, 1.0f);
+	float4 Position  : SV_POSITION;
+	float4 Color     : COLOR0;
+};
+
+float4 main(VS_OUTPUT data) : SV_TARGET
+{
+	return data.Color;
 }

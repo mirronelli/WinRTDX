@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphics.h"
 #include "ILevel.h"
+#include "StepTimer.h"
 
 class Game
 {
@@ -14,7 +15,8 @@ public:
 
 private:
 	void ProcessEvents();
-	void Update();
+	void Update(Dx::StepTimer const& timer);
+	void Tick();
 	void Render();
 	void Present();
 
@@ -24,5 +26,7 @@ private:
 	std::unique_ptr<Dx::Levels::ILevel>				m_level{ nullptr };
 	CoreWindow												m_parentWindow{ nullptr };
 	bool														m_isClosing = false;
+	Dx::StepTimer											m_timer;
+	ULONG64													m_frame = 0;
 };
 

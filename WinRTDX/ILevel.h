@@ -13,7 +13,7 @@ public:
    virtual concurrency::task<void> Load() = 0;
    virtual void SetupModel() = 0;
    virtual void Render() = 0;
-   virtual void Update(UINT32 deltaTime) = 0;
+   virtual void Update(float delta) = 0;
 
    virtual ~ILevel() {}
 protected:
