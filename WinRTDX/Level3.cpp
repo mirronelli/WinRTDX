@@ -8,10 +8,10 @@ concurrency::task<void> Dx::Levels::Level3::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_compiledVertexShader = IO::ReadFile(L"VertexShader2.cso");
+			m_compiledVertexShader = IO::ReadFile(L"VertexShader3.cso");
 			m_graphics->SetVertexShader(m_graphics->CreateVertexShader(m_compiledVertexShader));
 
-			m_compiledPixelShader = IO::ReadFile(L"PixelShader.cso");
+			m_compiledPixelShader = IO::ReadFile(L"PixelShader3.cso");
 			m_graphics->SetPixelShader(m_graphics->CreatePixelShader(m_compiledPixelShader));
 		}
 	);
@@ -25,7 +25,6 @@ void Dx::Levels::Level3::SetupModel()
 	D3D11_INPUT_ELEMENT_DESC ieds[] =
 	{
 		 {"POSITION",	0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 0,										D3D11_INPUT_PER_VERTEX_DATA, 0},
-		 {"COLOR",		0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 	com_ptr<ID3D11InputLayout> inputLayout;
 	m_device->CreateInputLayout(
@@ -39,10 +38,14 @@ void Dx::Levels::Level3::SetupModel()
 
 	// define vertices and its buffer
 	Vertex vertices[] = {
-		{  -0.5f,  0.5f, 1.0f, 1.0f,		1.0f,  .0f,  .0f, 1.0f },
-		{   0.5f, -0.5f, 1.0f, 1.0f,		 .0f, 1.0f,  .0f, 1.0f },
-		{  -0.5f, -0.5f, 1.0f, 1.0f,		 .0f,  .0f, 1.0f, 1.0f },
-		{   0.5f,  0.5f, 1.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f },
+		{	-1.0f,	 1.0f,	-1.0f,	 1.0f	},
+		{	 1.0f,	 1.0f,	-1.0f,	 1.0f	},
+		{	 1.0f,	-1.0f,	-1.0f,	 1.0f	},
+		{	-1.0f,	-1.0f,	-1.0f,	 1.0f	},
+		{	-1.0f,	 1.0f,	 1.0f,	 1.0f	},
+		{	 1.0f,	 1.0f,	 1.0f,	 1.0f	},
+		{	 1.0f,	-1.0f,	 1.0f,	 1.0f	},
+		{	-1.0f,	-1.0f,	 1.0f,	 1.0f	},
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
@@ -57,9 +60,19 @@ void Dx::Levels::Level3::SetupModel()
 	
 #pragma region indices
 
-	const unsigned short indices[] = {
-		0, 1, 2,
-		0, 3, 1,
+	const unsigned short indices[] {
+		0, 1, 2,  // front
+		0, 2, 3,
+		1, 5, 2,  // right
+		5, 6, 2,
+		0, 7, 4,  // left
+		0, 3, 7,
+		0,	5, 1,  // top
+		0, 4, 5,
+		3, 2, 7,  // bottom
+		2, 6, 7,
+		4, 6, 5,  // back
+		4, 7, 6
 	};
 
 	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
@@ -103,16 +116,6 @@ void Dx::Levels::Level3::SetupModel()
 	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Dx::Levels::Level3::Render()
-{
-	float color[4]{ .2f, .2f, .2f, .2f};
-
-	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_matrices, 0, 0);
-
-	m_graphics->SetColor(color);
-	m_context->DrawIndexed(6, 0, 0);
-}
-
 void Dx::Levels::Level3::Update(float delta)
 {
 	m_elapsedTime += delta;
@@ -120,5 +123,19 @@ void Dx::Levels::Level3::Update(float delta)
 		m_elapsedTime -= m_effectDuration;
 
 	float progress = m_elapsedTime / m_effectDuration * DirectX::XM_2PI;
-	m_matrices = DirectX::XMMatrixRotationZ(progress);
+	m_matrices =
+		DirectX::XMMatrixRotationX(progress) *
+		DirectX::XMMatrixRotationZ(progress) *
+		DirectX::XMMatrixRotationY(progress) *
+		DirectX::XMMatrixTranslation(m_graphics->MouseX(), m_graphics->MouseY(), 4.0f) *
+		DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), 0.5f, 10.0f);
+}
+
+void Dx::Levels::Level3::Render()
+{
+	float color[4]{ .2f, .2f, .2f, .2f};
+	m_graphics->SetColor(color);
+
+	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_matrices, 0, 0);
+	m_context->DrawIndexed(36, 0, 0);
 }

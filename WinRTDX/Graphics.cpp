@@ -91,7 +91,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 			FAILED(
 				m_factory->CreateSwapChainForCoreWindow(
 					m_device.get(),
-					winrt::get_unknown(m_parentWindow),
+					winrt::get_unknown(m_window),
 					&swapChainDescriptor,
 					nullptr,
 					swapChain.put()
@@ -126,16 +126,23 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	m_context->RSSetViewports(1, viewports);
 }
 
+void Dx::Graphics::OnMouseMove(CoreWindow sender, PointerEventArgs args)
+{
+	m_mouseX = 4 * (args.CurrentPoint().Position().X - m_width / 2) / m_width;
+	m_mouseY = 4 *(- args.CurrentPoint().Position().Y + m_height / 2) / m_height;
+}
+
 void Dx::Graphics::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
 {
-	m_parentWindow = window;
+	m_window = window;
+	m_window.PointerMoved({ this, &Graphics::OnMouseMove });
 	Resize();
 }
 
 void Dx::Graphics::Resize()
 {
-	m_width = (UINT)m_parentWindow.Bounds().Width;
-	m_height = (UINT)m_parentWindow.Bounds().Height;
+	m_width = m_window.Bounds().Width;
+	m_height = m_window.Bounds().Height;
 	this->CreateWindowSizeDependentResources();
 }
 
@@ -196,6 +203,26 @@ com_ptr<ID3D11PixelShader> Dx::Graphics::CreatePixelShader(IBuffer buffer)
 	return shader;
 }
 
+float Dx::Graphics::Width()
+{
+	return m_width;
+}
+
+float Dx::Graphics::Height()
+{
+	return m_height;
+}
+
+float Dx::Graphics::MouseX()
+{
+	return m_mouseX;
+}
+
+float Dx::Graphics::MouseY()
+{
+	return m_mouseY;
+}
+
 void Dx::Graphics::Present()
 {
 	m_swapChain->Present(1, 0);
@@ -209,4 +236,9 @@ com_ptr<ID3D11Device3> Dx::Graphics::Device()
 com_ptr<ID3D11DeviceContext4> Dx::Graphics::Context()
 {
 	return m_context;
+}
+
+CoreWindow Dx::Graphics::Window()
+{
+	return m_window;
 }

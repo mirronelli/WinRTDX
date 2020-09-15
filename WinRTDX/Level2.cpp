@@ -11,7 +11,7 @@ concurrency::task<void> Dx::Levels::Level2::Load()
 			m_compiledVertexShader = IO::ReadFile(L"VertexShader2.cso");
 			m_graphics->SetVertexShader(m_graphics->CreateVertexShader(m_compiledVertexShader));
 
-			m_compiledPixelShader = IO::ReadFile(L"PixelShader.cso");
+			m_compiledPixelShader = IO::ReadFile(L"PixelShader2.cso");
 			m_graphics->SetPixelShader(m_graphics->CreatePixelShader(m_compiledPixelShader));
 		}
 	);

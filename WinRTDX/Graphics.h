@@ -22,7 +22,7 @@ namespace Dx
 
 		com_ptr<ID3D11Device3> Device();
 		com_ptr<ID3D11DeviceContext4> Context();
-
+		CoreWindow Window();
 
 		void SetVertexShader(com_ptr<ID3D11VertexShader> const& shader);
 		void SetPixelShader(com_ptr<ID3D11PixelShader> const& shader);
@@ -30,9 +30,15 @@ namespace Dx
 		com_ptr<ID3D11VertexShader> CreateVertexShader(IBuffer buffer);
 		com_ptr<ID3D11PixelShader> CreatePixelShader(IBuffer buffer);
 
+		float Width();
+		float Height();
+		float MouseX();
+		float MouseY();
+
 	private:
 		void CreateDeviceResources();
 		void CreateWindowSizeDependentResources();
+		void OnMouseMove(CoreWindow sender, PointerEventArgs args);
 
 
 		// Direct3D objects.
@@ -43,9 +49,11 @@ namespace Dx
 		winrt::com_ptr<ID3D11RenderTargetView>	m_renderTargetView;
 
 		// Windows objects
-		CoreWindow										m_parentWindow{ nullptr };
-		UINT												m_width;
-		UINT												m_height;
+		CoreWindow										m_window{ nullptr };
+		float												m_width;
+		float												m_height;
 		float												m_dpi = 1;
+		float												m_mouseX;
+		float												m_mouseY;
 	};
 }
