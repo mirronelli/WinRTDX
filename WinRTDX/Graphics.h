@@ -53,7 +53,7 @@ namespace Dx
 		float												m_width;
 		float												m_height;
 		float												m_dpi = 1;
-		float												m_mouseX;
-		float												m_mouseY;
+		float												m_mouseX{ 0 };
+		float												m_mouseY{ 0 };
 	};
 }
