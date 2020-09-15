@@ -144,8 +144,8 @@ void Dx::Levels::Level3::DrawCube(float angle, float x, float y, float z)
 void Dx::Levels::Level3::Render()
 {
 	float color[4]{ .2f, .2f, .2f, .2f};
-	m_graphics->SetColor(color);
+	m_graphics->StartFrame(color);
 
-	DrawCube(m_progress, m_graphics->MouseX() -2.f, m_graphics->MouseY(), 8.0f);
-	DrawCube(-m_progress, m_graphics->MouseX() +2.f, 0, m_graphics->MouseY() + 8.0f);
+	DrawCube(m_progress, m_graphics->MouseX() -.5f, m_graphics->MouseY(), 8.0f);
+	DrawCube(-m_progress, m_graphics->MouseX() +.5f, 0, m_graphics->MouseY() + 8.0f);
 }

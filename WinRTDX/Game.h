@@ -29,7 +29,7 @@ private:
 	Dx::StepTimer											m_timer;
 	ULONG64													m_frame = 0;
 
-	byte														m_currentLevel = 3;
+	byte														m_currentLevel = 2;
 	byte														m_maxLevel = 3;
 };
 

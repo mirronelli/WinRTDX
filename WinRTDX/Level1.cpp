@@ -68,7 +68,7 @@ void Dx::Levels::Level1::SetupModel()
 void Dx::Levels::Level1::Render()
 {
 	float color[4]{ m_red * c_maxColorIntensity, m_green * c_maxColorIntensity, m_blue * c_maxColorIntensity, .0 };
-	m_graphics->SetColor(color);
+	m_graphics->StartFrame(color);
 
 	UINT strideVertices = sizeof(Vertex);
 	UINT offsetVertices = 0;

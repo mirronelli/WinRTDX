@@ -88,7 +88,6 @@ void Game::Tick()
 
 void Game::Render()
 {
-	m_graphics->StartFrame();
 	m_level->Render();
 }
 

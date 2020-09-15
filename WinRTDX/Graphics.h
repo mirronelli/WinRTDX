@@ -16,8 +16,7 @@ namespace Dx
 		void SetWindow(winrt::Windows::UI::Core::CoreWindow const& window);
 		void Resize();
 
-		void StartFrame();
-		void SetColor(float color[4]);
+		void StartFrame(float color[4]);
 		void Present();
 
 		com_ptr<ID3D11Device3> Device();
@@ -42,11 +41,12 @@ namespace Dx
 
 
 		// Direct3D objects.
-		winrt::com_ptr<ID3D11Device3>				m_device;
-		winrt::com_ptr<ID3D11DeviceContext4>	m_context;
-		winrt::com_ptr<IDXGIFactory7>				m_factory;
-		winrt::com_ptr<IDXGISwapChain4>			m_swapChain;
-		winrt::com_ptr<ID3D11RenderTargetView>	m_renderTargetView;
+		com_ptr<ID3D11Device3>						m_device;
+		com_ptr<ID3D11DeviceContext4>				m_context;
+		com_ptr<IDXGIFactory7>						m_factory;
+		com_ptr<IDXGISwapChain4>					m_swapChain;
+		com_ptr<ID3D11RenderTargetView>			m_renderTargetView;
+		com_ptr<ID3D11DepthStencilView>			m_depthStencilView;
 
 		// Windows objects
 		CoreWindow										m_window{ nullptr };

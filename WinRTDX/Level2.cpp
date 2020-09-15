@@ -39,10 +39,10 @@ void Dx::Levels::Level2::SetupModel()
 
 	// define vertices and its buffer
 	Vertex vertices[] = {
-		{  -0.5f,  0.5f, 1.0f, 1.0f,		1.0f,  .0f,  .0f, 1.0f },
-		{   0.5f, -0.5f, 1.0f, 1.0f,		 .0f, 1.0f,  .0f, 1.0f },
-		{  -0.5f, -0.5f, 1.0f, 1.0f,		 .0f,  .0f, 1.0f, 1.0f },
-		{   0.5f,  0.5f, 1.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f },
+		{  -0.5f,  0.5f, 1.0f, .50f,		1.0f,  .0f,  .0f, 1.0f },
+		{   0.5f, -0.5f, 1.0f, .50f,		 .0f, 1.0f,  .0f, 1.0f },
+		{  -0.5f, -0.5f, 1.0f, .50f,		 .0f,  .0f, 1.0f, 1.0f },
+		{   0.5f,  0.5f, 1.0f, .50f,		1.0f, 1.0f, 1.0f, 1.0f },
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
@@ -103,16 +103,6 @@ void Dx::Levels::Level2::SetupModel()
 	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Dx::Levels::Level2::Render()
-{
-	float color[4]{ .2f, .2f, .2f, .2f};
-
-	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_matrices, 0, 0);
-
-	m_graphics->SetColor(color);
-	m_context->DrawIndexed(6, 0, 0);
-}
-
 void Dx::Levels::Level2::Update(float delta)
 {
 	m_elapsedTime += delta;
@@ -121,4 +111,12 @@ void Dx::Levels::Level2::Update(float delta)
 
 	float progress = m_elapsedTime / m_effectDuration * DirectX::XM_2PI;
 	m_matrices = DirectX::XMMatrixRotationZ(progress);
+}
+
+void Dx::Levels::Level2::Render()
+{
+	float color[4]{ .4f, .2f, .2f, .2f};
+	m_graphics->StartFrame(color);
+	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_matrices, 0, 0);
+	m_context->DrawIndexed(6, 0, 0);
 }
