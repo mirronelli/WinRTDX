@@ -63,6 +63,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	if (m_swapChain != nullptr)
 	{
 		m_renderTargetView = nullptr;
+		m_depthStencilView = nullptr;
 		m_swapChain->ResizeBuffers(
 			2,
 			0,
@@ -189,15 +190,15 @@ void Dx::Graphics::Resize()
 
 void Dx::Graphics::StartFrame(float color[4])
 {
-	m_context->ClearDepthStencilView(m_depthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
-	m_context->ClearRenderTargetView(m_renderTargetView.get(), color);
-
 	ID3D11RenderTargetView* views[] = { m_renderTargetView.get() };
 	m_context->OMSetRenderTargets(
 		1,
 		views,
 		m_depthStencilView.get()
 	);
+
+	m_context->ClearRenderTargetView(m_renderTargetView.get(), color);
+	m_context->ClearDepthStencilView(m_depthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
 }
 
 void Dx::Graphics::SetVertexShader(com_ptr<ID3D11VertexShader> const& shader)

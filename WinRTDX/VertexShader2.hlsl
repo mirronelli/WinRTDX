@@ -18,8 +18,10 @@ VS_OUTPUT main(VS_INPUT Input)
 {
 	VS_OUTPUT Output;
 
-	Output.Position = mul(Input.Position, transform);
+	//Output.Position = mul(Input.Position, transform);
+	Output.Position = Input.Position;
 	Output.Color = Input.Color;
 
-	return Output;
+	//return Output;
+	return Input;
 }
