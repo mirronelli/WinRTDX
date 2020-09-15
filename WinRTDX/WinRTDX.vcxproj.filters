@@ -18,6 +18,9 @@
     <ClCompile Include="Level2.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Level3.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -43,6 +46,9 @@
       <Filter>Dx</Filter>
     </ClInclude>
     <ClInclude Include="Level2.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Level3.h">
       <Filter>Levels</Filter>
     </ClInclude>
   </ItemGroup>
