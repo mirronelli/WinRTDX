@@ -4,7 +4,8 @@ struct VS_OUTPUT
 	float4 Color     : COLOR0;
 };
 
-float4 main(VS_OUTPUT data) : SV_TARGET
+
+float4 main(VS_OUTPUT Input) : SV_TARGET
 {
-	return data.Color;
+	return Input.Color;
 }

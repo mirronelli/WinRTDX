@@ -17,15 +17,12 @@ concurrency::task<void> Dx::Levels::Level2::Load()
 	);
 }
 
-void Dx::Levels::Level2::SetupModel()
+void Dx::Levels::Level2::CreateVertices()
 {
-#pragma region vertices
-
-	// Describe Input Layout for vertex shader
 	D3D11_INPUT_ELEMENT_DESC ieds[] =
 	{
-		 {"POSITION",	0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 0,										D3D11_INPUT_PER_VERTEX_DATA, 0},
-		 {"COLOR",		0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 0,										D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",		0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 16,									D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	com_ptr<ID3D11InputLayout> inputLayout;
 	m_device->CreateInputLayout(
@@ -39,10 +36,10 @@ void Dx::Levels::Level2::SetupModel()
 
 	// define vertices and its buffer
 	Vertex vertices[] = {
-		{  -0.5f,  0.5f, 1.0f, .50f,		1.0f,  .0f,  .0f, 1.0f },
-		{   0.5f, -0.5f, 1.0f, .50f,		 .0f, 1.0f,  .0f, 1.0f },
-		{  -0.5f, -0.5f, 1.0f, .50f,		 .0f,  .0f, 1.0f, 1.0f },
-		{   0.5f,  0.5f, 1.0f, .50f,		1.0f, 1.0f, 1.0f, 1.0f },
+		{ -1.0f,	 1.0f,	1.0f,	 1.0f,	1.f,	.0f,	0.f, 0.f},
+		{ 1.0f,	 1.0f,	1.0f,	 1.0f,	0.f,	1.f,	0.f, 0.f},
+		{ 1.0f,	-1.0f,	1.0f,	 1.0f,	0.f,	0.f,	1.f, 0.f},
+		{ -1.0f,	-1.0f,	1.0f,	 1.0f,	1.f,	1.f,	1.f, 0.f},
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
@@ -52,14 +49,13 @@ void Dx::Levels::Level2::SetupModel()
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
 
 	m_device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
+}
 
-#pragma endregion
-	
-#pragma region indices
-
-	const unsigned short indices[] = {
-		0, 1, 2,
-		0, 3, 1,
+void Dx::Levels::Level2::CreateIndices()
+{
+	const unsigned short indices[]{
+		0, 1, 2,  // front
+		0, 2, 3,
 	};
 
 	D3D11_BUFFER_DESC indexBufferDesc = { 0 };
@@ -67,40 +63,46 @@ void Dx::Levels::Level2::SetupModel()
 	indexBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	indexBufferDesc.StructureByteStride = sizeof(unsigned short);
-	
+
 	D3D11_SUBRESOURCE_DATA srdIndices = { indices, 0, 0 };
-	
+
 	m_device->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
+}
 
-#pragma endregion
-
-#pragma region matrices
-
+void Dx::Levels::Level2::CreateConstantData()
+{
 	D3D11_BUFFER_DESC	transformDesc{ 0 };
 	transformDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
 	transformDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	transformDesc.CPUAccessFlags = 0;
-	transformDesc.ByteWidth = sizeof(m_matrices);
-	
+	transformDesc.ByteWidth = sizeof(m_constantData);
+
 	D3D11_SUBRESOURCE_DATA transformSrd{ 0 };
-	transformSrd.pSysMem = &m_matrices;
-	
+	transformSrd.pSysMem = &m_constantData;
+
 	m_device->CreateBuffer(&transformDesc, &transformSrd, m_constantBuffer.put());
+}
 
-#pragma endregion
-
-
+void Dx::Levels::Level2::RegisterBuffers()
+{
 	UINT strideVertices = sizeof(Vertex);
 	UINT offsetVertices = 0;
 	ID3D11Buffer* vertexBuffers[1] = { m_vertexBuffer.get() };
 	m_context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
-	
+
 	m_context->IASetIndexBuffer(m_indexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
 
 	ID3D11Buffer* constantBuffers[1] = { m_constantBuffer.get() };
 	m_context->VSSetConstantBuffers(0, 1, constantBuffers);
-	
-	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_context->PSSetConstantBuffers(0, 1, constantBuffers);
+}
+
+void Dx::Levels::Level2::SetupModel()
+{
+	CreateVertices();
+	CreateIndices();
+	CreateConstantData();
+	RegisterBuffers();
 }
 
 void Dx::Levels::Level2::Update(float delta)
@@ -109,14 +111,24 @@ void Dx::Levels::Level2::Update(float delta)
 	while (m_elapsedTime > m_effectDuration)
 		m_elapsedTime -= m_effectDuration;
 
-	float progress = m_elapsedTime / m_effectDuration * DirectX::XM_2PI;
-	m_matrices = DirectX::XMMatrixRotationZ(progress);
+	m_progress = m_elapsedTime / m_effectDuration * DirectX::XM_2PI;
+}
+
+void Dx::Levels::Level2::Draw(float angle, float x, float y, float z)
+{
+	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_constantData.matrix = DirectX::XMMatrixRotationZ(angle);
+	m_constantData.matrix *= DirectX::XMMatrixTranslation(x, y, z);
+	m_constantData.matrix *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
+	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_constantData, 0, 0);
+	
+	m_context->DrawIndexed(6, 0, 0);
 }
 
 void Dx::Levels::Level2::Render()
 {
-	float color[4]{ .4f, .2f, .2f, .2f};
+	float color[4]{ .4f, .2f, .2f, .2f };
 	m_graphics->StartFrame(color);
-	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_matrices, 0, 0);
-	m_context->DrawIndexed(6, 0, 0);
+
+	Draw(m_progress, m_graphics->MouseX(), m_graphics->MouseY(), 2.0f);
 }

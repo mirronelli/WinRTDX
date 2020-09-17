@@ -15,11 +15,17 @@
     <ClCompile Include="Level1.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Level3.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
     <ClCompile Include="Level2.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Level3.cpp">
+    <ClCompile Include="Level4.cpp">
       <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Dx\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,11 +51,35 @@
     <ClInclude Include="StepTimer.h">
       <Filter>Dx</Filter>
     </ClInclude>
+    <ClInclude Include="Level3.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
     <ClInclude Include="Level2.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Level3.h">
+    <ClInclude Include="Level4.h">
       <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Dx\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Dx\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="Attachable.h">
+      <Filter>Dx\Attachables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +124,12 @@
     <Filter Include="Levels">
       <UniqueIdentifier>{4fa04f32-faae-4c44-bb29-99f2f0c58d94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dx\Shapes">
+      <UniqueIdentifier>{b9ecc9a9-2bb3-4d0e-921b-4795a6f9d0c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dx\Attachables">
+      <UniqueIdentifier>{8aea8585-4468-4573-81fe-dae55b3b553e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -109,9 +145,6 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader2.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader3.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
@@ -119,6 +152,15 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader2.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader2.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader4.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader4.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

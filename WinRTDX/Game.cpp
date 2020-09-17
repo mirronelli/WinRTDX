@@ -4,6 +4,7 @@
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
+#include "Level4.h"
 
 using namespace winrt::Windows::UI::Core;
 
@@ -21,17 +22,20 @@ void Game::Init()
 
 void Game::LoadLevel(byte name)
 {
-	switch (name) {
-	case 1:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
-		break;
-	case 2:
-		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
-		break;
-	case 3:
-		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
-		break;
-	}
+	//switch (name) {
+	//case 1:
+	//	m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+	//	break;
+	//case 2:
+	//	m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
+	//	break;
+	//case 3:
+	//	m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
+	//	break;
+	//case 4:
+		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics);
+	//	break;
+	//}
 
 	concurrency::task<void> loading = m_level->Load();
 	while (!loading.is_done()) {

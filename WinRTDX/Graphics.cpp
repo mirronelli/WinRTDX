@@ -147,8 +147,8 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 
 	com_ptr<ID3D11Texture2D> depthBufferTexture;
 	D3D11_TEXTURE2D_DESC depthBufferTextureDesc{ 0 };
-	depthBufferTextureDesc.Width = m_width;
-	depthBufferTextureDesc.Height = m_height;
+	depthBufferTextureDesc.Width = static_cast<UINT>(m_width);
+	depthBufferTextureDesc.Height = static_cast<UINT>(m_height);
 	depthBufferTextureDesc.MipLevels = 1;
 	depthBufferTextureDesc.ArraySize = 1;
 	depthBufferTextureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
