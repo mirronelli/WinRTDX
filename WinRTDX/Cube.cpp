@@ -44,10 +44,10 @@ void Dx::Cube::RegisterResources() {
 		}
 	};
 
-	m_vertexBuffer = std::make_unique<VertexBuffer<Vertex>>(m_graphics, vertices);
-	m_indexBuffer = std::make_unique<IndexBuffer>(m_graphics, indices);
-	m_inputLayout = std::make_unique<InputLayout>(m_graphics, ieds, m_vertexShaderByteCode);
-	m_constantBuffer = std::make_unique<ConstantBuffer<Constants>>(m_graphics, m_constants);
+	m_vertexBuffer = VertexBuffer<Vertex>::Create("cube", false, m_graphics, vertices);
+	m_indexBuffer = IndexBuffer::Create("cube", false, m_graphics, indices);
+	m_constantBuffer = std::make_unique<ConstantBuffer<Constants>>("cube", m_graphics, m_constants);
+	m_inputLayout = InputLayout::Create("key", false, m_graphics, ieds, m_vertexShaderByteCode);
 }
 
 void Dx::Cube::AttachResources() {
@@ -69,8 +69,8 @@ void Dx::Cube::Draw() {
 };
 
 void Dx::Cube::DrawAt(float x, float y, float z) {
-	//m_x = x;
-	//m_y = y;
+	m_x = x;
+	m_y = y;
 	m_z = z;
 
 	Draw();

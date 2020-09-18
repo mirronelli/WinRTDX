@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "Attachable.h"
+#include <map>
 
 namespace Dx::Attachables
 {
@@ -9,7 +10,22 @@ namespace Dx::Attachables
 	class ConstantBuffer : public Attachable
 	{
 	public:
-		ConstantBuffer(std::shared_ptr<Graphics> graphics, T & constantData) : Attachable(graphics)
+		static std::shared_ptr<ConstantBuffer<T>> Create(std::string const& key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData)
+		{
+			std::shared_ptr<ConstantBuffer<T>> instance = m_instances[key];
+
+			if (overwrite || instance == nullptr)
+			{
+				instance = std::make_shared<ConstantBuffer>(graphics, vertices, constantData);
+				m_instances[key] = instance;
+			}
+
+			return instance;
+		}
+
+			
+		ConstantBuffer(std::string key, std::shared_ptr<Graphics> graphics, T & constantData)
+			: Attachable(graphics)
 		{
 			D3D11_BUFFER_DESC	desc{ 0 };
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
@@ -20,7 +36,7 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = &constantData;
 
-			m_device->CreateBuffer(&desc, &srd, m_buffer.put());
+			HRESULT hr = m_device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
 		void AttachForPixelShader()
@@ -47,6 +63,7 @@ namespace Dx::Attachables
 		}
 
 	private:
-		com_ptr<ID3D11Buffer>				m_buffer;
+		inline static std::shared_ptr<std::map<std::string, com_ptr<ID3D11Buffer>>> m_buffers = std::make_shared< std::map<std::string, com_ptr<ID3D11Buffer>>>();
+		com_ptr<ID3D11Buffer> m_buffer;
 	};
 }

@@ -40,10 +40,10 @@ namespace Dx {
 		void Draw();
 		void DrawAt(float x, float y, float z);
 	private:
-		std::unique_ptr<InputLayout>									m_inputLayout;
-		std::unique_ptr<VertexBuffer<Vertex>>						m_vertexBuffer;
-		std::unique_ptr<IndexBuffer>									m_indexBuffer;
-		std::unique_ptr<ConstantBuffer<Constants>>				m_constantBuffer;
+		std::shared_ptr<InputLayout>									m_inputLayout;
+		std::shared_ptr<VertexBuffer<Vertex>>						m_vertexBuffer;
+		std::shared_ptr<IndexBuffer>									m_indexBuffer;
+		std::shared_ptr<ConstantBuffer<Constants>>				m_constantBuffer;
 
 		Constants															m_constants = {};
 

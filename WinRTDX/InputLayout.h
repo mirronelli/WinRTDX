@@ -2,13 +2,28 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "Attachable.h"
+#include <map>
 
 namespace Dx::Attachables
 {
 	class InputLayout : public Attachable
 	{
 	public:
-		InputLayout(std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, IBuffer vertexShaderByteCode) : Attachable(graphics)
+		static std::shared_ptr<InputLayout> Create(std::string const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, IBuffer vertexShaderByteCode)
+		{
+			std::shared_ptr<InputLayout> instance = m_instances[key];
+
+			if (overwrite || instance == nullptr)
+			{
+				instance = std::make_shared<InputLayout>(graphics, ieds, vertexShaderByteCode);
+				m_instances[key] = instance;
+			}
+
+			return instance;
+		}
+
+		InputLayout(std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, IBuffer vertexShaderByteCode)
+			: Attachable(graphics)
 		{
 			m_graphics->Device()->CreateInputLayout(
 				ieds.data(),
@@ -25,6 +40,7 @@ namespace Dx::Attachables
 		}
 
 	private:
-		com_ptr<ID3D11InputLayout>			m_inputLayout;
+		inline static std::map<std::string, std::shared_ptr<InputLayout>> m_instances = {};
+		com_ptr<ID3D11InputLayout>					m_inputLayout;
 	};
 }

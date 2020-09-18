@@ -23,9 +23,9 @@ void Dx::Levels::Level4::SetupModel()
 {
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(rd());
-	std::uniform_real_distribution<float> rotationSpeed(4.0, 8.);
+	std::uniform_real_distribution<float> rotationSpeed(4., 8.);
 	std::uniform_real_distribution<float> movementSpeed(.0, .0);
-	std::uniform_real_distribution<float> location(-15.0, 85.0);
+	std::uniform_real_distribution<float> location(-25.0, 25.0);
 	std::uniform_real_distribution<float> startAngle(.0, DirectX::XM_2PI);
 
 	for (int i = 0; i <= 128; i++)

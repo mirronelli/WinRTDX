@@ -1,14 +1,29 @@
 #pragma once
 #include "pch.h"
-#include "Attachable.h"
 #include "Graphics.h"
+#include "Attachable.h"
+#include <map>
 
 namespace Dx::Attachables
 {
 	class IndexBuffer : public Attachable
 	{
 	public:
-		IndexBuffer(std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices) : Attachable(graphics)
+		static std::shared_ptr<IndexBuffer> Create(std::string const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+		{
+			std::shared_ptr<IndexBuffer> instance = m_instances[key];
+
+			if (overwrite || instance == nullptr)
+			{
+				instance = std::make_shared<IndexBuffer>(graphics, indices);
+				m_instances[key] = instance;
+			}
+
+			return instance;
+		}
+
+		IndexBuffer(std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+			: Attachable(graphics)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(UINT) * indices.size());
@@ -28,6 +43,7 @@ namespace Dx::Attachables
 		}
 
 	private:
-		com_ptr<ID3D11Buffer>				m_buffer;
+		inline static std::map<std::string, std::shared_ptr<IndexBuffer>> m_instances = {};
+		com_ptr<ID3D11Buffer> m_buffer;
 	};
 }

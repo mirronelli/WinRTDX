@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "Attachable.h"
+#include <map>
 
 namespace Dx::Attachables
 {
@@ -9,9 +10,21 @@ namespace Dx::Attachables
 	class VertexBuffer : public Attachable
 	{
 	public:
-		VertexBuffer() = delete;
-		VertexBuffer(VertexBuffer&) = delete;
-		VertexBuffer(std::shared_ptr<Graphics> graphics, std::vector<T> const & vertices) : Attachable(graphics)
+		static std::shared_ptr<VertexBuffer<T>> Create(std::string const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices) 
+		{
+			std::shared_ptr<VertexBuffer<T>> instance = m_instances[key];
+
+			if (overwrite || instance == nullptr)
+			{
+				instance = std::make_shared<VertexBuffer>(graphics, vertices);
+				m_instances[key] = instance;
+			}
+
+			return instance;
+		}
+
+		VertexBuffer(std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)	
+			: Attachable(graphics)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(T) * vertices.size());
@@ -21,7 +34,7 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = vertices.data();
 
-			HRESULT hr = m_device->CreateBuffer(&desc, &srd, m_buffer.put());
+			m_device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
 		void AttachPrivate()
@@ -33,6 +46,7 @@ namespace Dx::Attachables
 		}
 
 	private:
-		com_ptr<ID3D11Buffer>				m_buffer;
+		inline static std::map<std::string, std::shared_ptr<VertexBuffer<T>>> m_instances = {};
+		com_ptr<ID3D11Buffer> m_buffer;
 	};
 }
