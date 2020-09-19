@@ -129,6 +129,8 @@
     <ClInclude Include="Level4.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Attachable.h" />
+    <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>

@@ -4,17 +4,20 @@
 #include "InputLayout.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 #include "ConstantBuffer.h"
 
+using namespace Dx::Attachables;
 namespace Dx {
 
 	class Drawable
 	{
 	public:
 		Drawable(
-			std::shared_ptr<Dx::Graphics> graphics,
-			IBuffer vertexShaderBytCode,
-			IBuffer pixelShaderByteCode,
+			std::shared_ptr<Graphics> graphics,
+			std::shared_ptr<VertexShader> vertexShader,
+			std::shared_ptr<PixelShader> pixelShader,
 
 			float x = 0, float y = 0, float z = 0,
 			float speedX = 0, float speedY = 1, float speedZ = 0,
@@ -24,8 +27,8 @@ namespace Dx {
 			m_graphics(graphics), 
 			m_device(graphics->Device()), 
 			m_context(graphics->Context()),
-			m_vertexShaderByteCode(vertexShaderBytCode),
-			m_pixelShaderByteCode(pixelShaderByteCode),
+			m_vertexShader(vertexShader),
+			m_pixelShader(pixelShader),
 
 			m_x(x), m_y(y), m_z(z),
 			m_speedX(speedX), m_speedY(speedY), m_speedZ(speedZ),
@@ -42,12 +45,11 @@ namespace Dx {
 		virtual ~Drawable() {};
 
 	protected:
-		bool													m_registered = false;
-		std::shared_ptr<Dx::Graphics>					m_graphics;
+		std::shared_ptr<Graphics>						m_graphics;
 		com_ptr<ID3D11Device3>							m_device;
 		com_ptr<ID3D11DeviceContext4>					m_context;
-		IBuffer												m_pixelShaderByteCode;
-		IBuffer												m_vertexShaderByteCode;
+		std::shared_ptr<PixelShader>					m_pixelShader;
+		std::shared_ptr<VertexShader>					m_vertexShader;
 
 		// state
 		float		m_x;

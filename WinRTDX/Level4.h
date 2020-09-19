@@ -2,10 +2,11 @@
 #include "pch.h"
 #include "ILevel.h"
 #include "winrt/Windows.Foundation.Numerics.h"
-#include "VertexBuffer.h"
 #include "Drawable.h"
+#include "VertexShader.h"
 
 using namespace winrt::Windows::Foundation::Numerics;
+using namespace Dx::Attachables;
 
 namespace Dx::Levels
 {
@@ -24,13 +25,12 @@ namespace Dx::Levels
 	private:
 		std::vector<std::shared_ptr<Drawable>>	m_drawables;
 		com_ptr<ID3D11Buffer>						m_constantBuffer;
-		IBuffer											m_compiledVertexShader{ nullptr };
-		IBuffer											m_compiledPixelShader{ nullptr };
-
+		std::shared_ptr<VertexShader>				m_VertexShader;
+		std::shared_ptr<PixelShader>				m_PixelShader;
+		IBuffer						m_compiledVertexShader{ nullptr };
+		IBuffer						m_compiledPixelShader{ nullptr };
 		float												m_elapsedTime{ 0 };
 		float												m_effectDuration{ 5.f };
 		float												m_progress{ 0 };
-
-		
 	};
 }

@@ -81,6 +81,12 @@
     <ClInclude Include="Attachable.h">
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -129,6 +135,9 @@
     </Filter>
     <Filter Include="Dx\Attachables">
       <UniqueIdentifier>{8aea8585-4468-4573-81fe-dae55b3b553e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dx\Shaders">
+      <UniqueIdentifier>{9c300f4f-a2e5-40ba-b1bc-0721e33870ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

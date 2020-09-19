@@ -10,22 +10,23 @@ namespace Dx::Attachables
 	class ConstantBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<ConstantBuffer<T>> Create(std::string const& key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData)
+		static void ClearCache() { m_instances.clear(); m_current_pixel_instance_key.clear(); m_current_vertex_instance_key.clear(); }
+		static std::shared_ptr<ConstantBuffer<T>> Create(std::wstring const& key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData)
 		{
 			std::shared_ptr<ConstantBuffer<T>> instance = m_instances[key];
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<ConstantBuffer>(graphics, vertices, constantData);
+				instance = std::make_shared<ConstantBuffer>(key, graphics, constantData);
 				m_instances[key] = instance;
 			}
 
 			return instance;
 		}
 
-			
-		ConstantBuffer(std::string key, std::shared_ptr<Graphics> graphics, T & constantData)
-			: Attachable(graphics)
+
+		ConstantBuffer(std::wstring key, std::shared_ptr<Graphics> graphics, T& constantData)
+			: Attachable(key, graphics)
 		{
 			D3D11_BUFFER_DESC	desc{ 0 };
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
@@ -39,22 +40,30 @@ namespace Dx::Attachables
 			HRESULT hr = m_device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
-		void AttachForPixelShader()
+		void AttachForPixelShader(bool force)
 		{
-			ID3D11Buffer* constantBuffers[1] = { m_buffer.get() };
-			m_context->PSSetConstantBuffers(0, 1, constantBuffers);
-		}
-		
-		void AttachForVertexShader()
-		{
-			ID3D11Buffer* constantBuffers[1] = { m_buffer.get() };
-			m_context->VSSetConstantBuffers(0, 1, constantBuffers);
+			if (force || m_current_pixel_instance_key != m_key)
+			{
+				ID3D11Buffer* constantBuffers[1] = { m_buffer.get() };
+				m_context->PSSetConstantBuffers(0, 1, constantBuffers);
+				m_current_pixel_instance_key = m_key;
+			}
 		}
 
-		void AttachPrivate()
+		void AttachForVertexShader(bool force)
 		{
-			AttachForVertexShader();
-			AttachForPixelShader();
+			if (force || m_current_vertex_instance_key != m_key)
+			{
+				ID3D11Buffer* constantBuffers[1] = { m_buffer.get() };
+				m_context->VSSetConstantBuffers(0, 1, constantBuffers);
+				m_current_vertex_instance_key = m_key;
+			}
+		}
+
+		void AttachPrivate(bool force)
+		{
+			AttachForVertexShader(force);
+			AttachForPixelShader(force);
 		}
 
 		void Update(T const& constantData)
@@ -63,7 +72,9 @@ namespace Dx::Attachables
 		}
 
 	private:
-		inline static std::shared_ptr<std::map<std::string, com_ptr<ID3D11Buffer>>> m_buffers = std::make_shared< std::map<std::string, com_ptr<ID3D11Buffer>>>();
+		inline static std::map<std::wstring, std::shared_ptr<ConstantBuffer<T>>> m_instances = {};
+		inline static std::wstring m_current_vertex_instance_key = {};
+		inline static std::wstring m_current_pixel_instance_key = {};
 		com_ptr<ID3D11Buffer> m_buffer;
 	};
 }

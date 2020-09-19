@@ -1,11 +1,14 @@
 #pragma once
 #include "Drawable.h"
+#include "VertexShader.h"
 
 using namespace Dx::Attachables;
 namespace Dx {
 
 	class Cube : public Drawable
 	{
+
+	public:
 		struct Vertex {
 			float	x, y, z, w;
 		};
@@ -15,15 +18,14 @@ namespace Dx {
 			DirectX::XMFLOAT4 colors[6]; 
 		} Constants;
 
-	public:
-		Cube(std::shared_ptr<Dx::Graphics> graphics, IBuffer vertexShaderByteCode, IBuffer pixelShaderByteCode,
+		Cube(std::shared_ptr<Dx::Graphics> graphics, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader,
 			float x = 0, float y = 0, float z = 0,
 			float speedX = 0, float speedY = 1, float speedZ = 0,
 			float rotationX = 0, float rotationY = 0, float rotationZ = 0,
 			float rotationSpeedX = 1, float rotationSpeedY = 1, float rotationSpeedZ = 1
 		) :
 			Drawable(
-				graphics, vertexShaderByteCode, pixelShaderByteCode,
+				graphics, vertexShader, pixelShader,
 				x, y, z,
 				speedX, speedY, speedZ,
 				rotationX, rotationY, rotationZ,
@@ -37,6 +39,7 @@ namespace Dx {
 		void RegisterResources();
 		void AttachResources();
 		void Update(float delta);
+		void ApplyMatrix();
 		void Draw();
 		void DrawAt(float x, float y, float z);
 	private:
