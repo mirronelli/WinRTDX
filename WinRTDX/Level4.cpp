@@ -8,8 +8,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_VertexShader = VertexShader::Load(L"VertexShader4.cso", true, m_graphics);
-			m_PixelShader = PixelShader::Load(L"PixelShader4.cso", true, m_graphics);
+			m_VertexShader = VertexShader::Load(L"VertexShader4.cso", false, m_graphics);
+			m_PixelShader = PixelShader::Load(L"PixelShader4.cso", false, m_graphics);
 		}
 	);
 }
@@ -63,8 +63,5 @@ void Dx::Levels::Level4::Render()
 	m_graphics->StartFrame(color);
 
 	for (auto d : m_drawables)
-	{
-		d->AttachResources();
 		d->Draw();
-	}
 }

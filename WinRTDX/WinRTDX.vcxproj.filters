@@ -24,9 +24,6 @@
     <ClCompile Include="Level4.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Dx\Shapes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

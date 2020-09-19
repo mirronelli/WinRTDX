@@ -150,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IO.cpp" />

@@ -38,7 +38,7 @@ namespace Dx {
 		Drawable(Drawable& a) = delete;
 		Drawable() = delete;
 		virtual void RegisterResources() = 0;
-		virtual void AttachResources() = 0;
+		virtual void AttachResources(bool force) = 0;
 		virtual void Update(float delta) = 0;
 		virtual void Draw() = 0;
 		virtual void DrawAt(float x, float y, float z) = 0;
