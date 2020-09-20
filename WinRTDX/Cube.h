@@ -8,6 +8,7 @@ namespace Dx {
 
 	class Cube : public Drawable
 	{
+		using Drawable::Drawable;
 
 	public:
 		struct Vertex {
@@ -21,21 +22,6 @@ namespace Dx {
 		typedef struct {
 			DirectX::XMMATRIX matrix;
 		} VSConstants;
-
-		Cube(std::shared_ptr<Dx::Graphics> graphics, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader,
-			float x = 0, float y = 0, float z = 0,
-			float speedX = 0, float speedY = 1, float speedZ = 0,
-			float rotationX = 0, float rotationY = 0, float rotationZ = 0,
-			float rotationSpeedX = 1., float rotationSpeedY = 1, float rotationSpeedZ = 1
-		) :
-			Drawable(
-				graphics, vertexShader, pixelShader,
-				x, y, z,
-				speedX, speedY, speedZ,
-				rotationX, rotationY, rotationZ,
-				rotationSpeedX, rotationSpeedY, rotationSpeedZ
-			)
-		{};
 
 		inline static std::vector<D3D11_INPUT_ELEMENT_DESC> Ieds {
 			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 0,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -77,68 +63,21 @@ namespace Dx {
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			ApplyMatrix();
-
 			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(2, false, m_graphics, Vertices);
 			m_indexBuffer =		IndexBuffer::Create							(3, false, m_graphics, Indices);
 			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(4, false, m_graphics, m_psConstants);
 			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(4, false, m_graphics, m_vsConstants);
 			m_inputLayout =		InputLayout::Create							(5, false, m_graphics, Ieds, m_vertexShader);
+			m_indicesCount =		Indices.size();
 		}
 
-		void AttachResources(bool force) {
-			m_vertexBuffer->Attach(force);
-			m_indexBuffer->Attach(force);
-			m_inputLayout->Attach(force);
-			m_psConstantBuffer->Attach(force);
-			m_vsConstantBuffer->Attach(force);
-		}
-
-		void ApplyMatrix()
+		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
-			m_vsConstants.matrix =
-				DirectX::XMMatrixRotationX(m_rotationX)
-				* DirectX::XMMatrixRotationZ(m_rotationY)
-				* DirectX::XMMatrixRotationY(m_rotationZ)
-				* DirectX::XMMatrixTranslation(m_x, m_y, m_z)
-				* DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
+			m_vsConstants.matrix = matrix;			
+			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer) ->Update(m_vsConstants);
 		}
 
-		void Update(float delta) {
-			m_rotationX = fmod(m_rotationX + delta * m_rotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
-			m_rotationY = fmod(m_rotationY + delta * m_rotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
-			m_rotationX = fmod(m_rotationZ + delta * m_rotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
-
-			m_x += m_speedX * delta;
-			m_y += m_speedY * delta;
-			m_z += m_speedZ * delta;
-
-			ApplyMatrix();
-		};	
-
-		void Draw() {
-			AttachResources(false);
-			m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			//m_psConstantBuffer->Update(m_psConstants);
-			m_vsConstantBuffer->Update(m_vsConstants);
-			m_context->DrawIndexed(36, 0, 0);
-		};
-
-		void DrawAt(float x, float y, float z) {
-			m_x = x;
-			m_y = y;
-			m_z = z;
-
-			Draw();
-		}
-	
 	private:
-		std::shared_ptr<InputLayout>									m_inputLayout;
-		std::shared_ptr<VertexBuffer<Vertex>>						m_vertexBuffer;
-		std::shared_ptr<IndexBuffer>									m_indexBuffer;
-		std::shared_ptr<PSConstantBuffer<PSConstants>>			m_psConstantBuffer;
-		std::shared_ptr<VSConstantBuffer<VSConstants>>			m_vsConstantBuffer;
-
 		PSConstants															m_psConstants = {};
 		VSConstants															m_vsConstants = {};
 	};

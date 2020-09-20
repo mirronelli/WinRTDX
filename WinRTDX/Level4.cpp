@@ -21,16 +21,17 @@ void Dx::Levels::Level4::SetupModel()
 
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(rd());
-	std::uniform_real_distribution<float> location(-100.0, 100.0);
+	std::uniform_real_distribution<float> location(-140.0, 140.0);
 	std::uniform_real_distribution<float> movementSpeed(.0, .0);
-	std::uniform_real_distribution<float> startAngle(.0, DirectX::XM_2PI);
-	std::uniform_real_distribution<float> rotationSpeed(0.,2);
+//	std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
+	std::uniform_real_distribution<float> startAngle(0, 0);
+	std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI/10., DirectX::XM_PI/10.);
 
 	for (int i = 0; i <= 5000; i++)
 	{
 		m_drawables.push_back(std::make_unique<Cube>(
 			m_graphics, m_VertexShader, m_PixelShader,
-			location(generator), location(generator)/2, location(generator)/2 + 50,
+			location(generator), location(generator), location(generator),
 			movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
 			startAngle(generator), startAngle(generator), startAngle(generator),
 			rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator)
@@ -44,12 +45,18 @@ void Dx::Levels::Level4::SetupModel()
 
 	m_VertexShader->Attach(true);
 	m_PixelShader->Attach(true);
+
+	m_worldRotationSpeedY = 0.01;
 }
 
 void Dx::Levels::Level4::Update(float delta)
 {
+	m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
+	m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
+	m_worldRotationZ = fmod(m_worldRotationZ + delta * m_worldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
+
 	for (auto d : m_drawables)
-		d->Update(delta);
+		d->Update(delta, m_worldRotationX, m_worldRotationY, m_worldRotationZ);
 }
 
 void Dx::Levels::Level4::Render()
