@@ -44,13 +44,13 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
+			if (force || Dx::ResourceManager::CurrentVertexBuffer != m_key)
 			{
 				UINT strideVertices = sizeof(T);
 				UINT offsetVertices = 0;
 				ID3D11Buffer* vertexBuffers[1] = { m_buffer.get() };
 				m_context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
-				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
+				Dx::ResourceManager::CurrentVertexBuffer = m_key;
 			}
 		}
 

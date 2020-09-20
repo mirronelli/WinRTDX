@@ -42,10 +42,10 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
+			if (force || Dx::ResourceManager::CurrentIndexBuffer != m_key)
 			{
 				m_context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
-				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
+				Dx::ResourceManager::CurrentIndexBuffer = m_key;
 			}
 		}
 

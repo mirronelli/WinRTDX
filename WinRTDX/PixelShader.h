@@ -51,10 +51,10 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
+			if (force || Dx::ResourceManager::CurrentPixelShader != m_key)
 			{
 				m_context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
+				Dx::ResourceManager::CurrentPixelShader = m_key;
 			}
 		}
 

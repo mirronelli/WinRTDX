@@ -38,10 +38,10 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
+			if (force || Dx::ResourceManager::CurrentInputLayout != m_key)
 			{
 				m_context->IASetInputLayout(m_inputLayout.get());
-				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
+				Dx::ResourceManager::CurrentInputLayout =m_key;
 			}
 		}
 

@@ -42,11 +42,11 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
+			if (force || Dx::ResourceManager::CurrentVSConstantBuffer != m_key)
 			{
 				ID3D11Buffer* VSConstantBuffers[1] = { m_buffer.get() };
 				m_context->VSSetConstantBuffers(0, 1, VSConstantBuffers);
-				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
+				Dx::ResourceManager::CurrentVSConstantBuffer = m_key;
 			}
 		}
 

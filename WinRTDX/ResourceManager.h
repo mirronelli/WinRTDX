@@ -30,18 +30,19 @@ namespace Dx {
 			(*innerMap)[id] =resource;
 		}
 
-		static uint16_t GetCurrentInstance(std::type_index type)
-		{
-			return current_instances[type];
-		}
+		inline static uint16_t CurrentInputLayout = 0;
+		inline static uint16_t CurrentVertexBuffer = 0;
+		inline static uint16_t CurrentIndexBuffer = 0;
 
-		static void SetCurrentInstance(std::type_index type, uint16_t id)
-		{
-			current_instances[type] = id;
-		}
+		inline static uint16_t CurrentPSConstantBuffer = 0;
+		inline static uint16_t CurrentVSConstantBuffer = 0;
+
+		inline static uint16_t CurrentPixelShader = 0;
+		inline static uint16_t CurrentVertexShader = 0;
+
+
 	private:
 		inline static std::map<std::type_index, std::map< uint16_t, void* >* > typeInstanceMaps;
-		inline static std::map<std::type_index, uint16_t > current_instances;
 	};
 
 }
