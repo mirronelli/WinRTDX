@@ -46,7 +46,7 @@ namespace Dx {
 		virtual void RegisterResources() = 0;
 		virtual void UpdateConstants(DirectX::CXMMATRIX) = 0;
 
-		virtual void Update(float delta, float worldRotationX = 0, float worldRotationY = 0, float worldRotationZ = 0) {
+		virtual void Update(float delta) {
 			m_rotationX = fmod(m_rotationX + delta * m_rotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
 			m_rotationY = fmod(m_rotationY + delta * m_rotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
 			m_rotationZ = fmod(m_rotationZ + delta * m_rotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);

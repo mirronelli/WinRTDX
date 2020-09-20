@@ -17,16 +17,13 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 
 void Dx::Levels::Level4::SetupModel()
 {
-	//VertexShader::ClearCache();
-
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(rd());
 	std::uniform_real_distribution<float> location(-140.0, 140.0);
 	std::uniform_real_distribution<float> movementSpeed(.0, .0);
-//	std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
-	std::uniform_real_distribution<float> startAngle(0, 0);
+	std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
 	std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI/10., DirectX::XM_PI/10.);
-	std::uniform_real_distribution<float> scale(0.5,2.0);
+	std::uniform_real_distribution<float> scale(0.2,4.0);
 
 	for (int i = 0; i <= 5000; i++)
 	{
@@ -41,17 +38,17 @@ void Dx::Levels::Level4::SetupModel()
 		);
 	}
 
-
-
 	for (auto d : m_drawables) {
 		d->RegisterResources();
 	}
 
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(6, false, m_graphics, m_worldViewTransform, 0, false);
+
 	m_VertexShader->Attach(true);
 	m_PixelShader->Attach(true);
+	m_worldViewTransformConstantBuffer->Attach(false);
 
 	m_worldRotationSpeedY = 0.01;
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(6, false, m_graphics, m_worldViewTransform, 0, false);
 }
 
 void Dx::Levels::Level4::Update(float delta)
@@ -72,11 +69,10 @@ void Dx::Levels::Level4::Update(float delta)
 
 	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
-	m_worldViewTransformConstantBuffer->Attach(false);
 
 
 	for (auto d : m_drawables)
-		d->Update(delta, m_worldRotationX, m_worldRotationY, m_worldRotationZ);
+		d->Update(delta);
 }
 
 void Dx::Levels::Level4::Render()
