@@ -1,8 +1,15 @@
-cbuffer constantData {
-	row_major matrix transform;
+cbuffer modelData : register(b1)
+{
+	row_major matrix modelToWorld;
+};
+
+cbuffer levelData : register(b0)
+{
+	row_major matrix worldView;
 };
 
 float4 main(float4 pos : POSITION) : SV_POSITION
 {
-	return mul(pos, transform);
+	float4x4 finalTransform = mul(modelToWorld, worldView);
+	return mul(pos, finalTransform);
 }

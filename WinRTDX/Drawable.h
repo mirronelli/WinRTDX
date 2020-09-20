@@ -21,9 +21,10 @@ namespace Dx {
 			std::shared_ptr<PixelShader> pixelShader,
 
 			float x = 0, float y = 0, float z = 0,
-			float speedX = 0, float speedY = 1, float speedZ = 0,
+			float speedX = 0, float speedY = 0, float speedZ = 0,
 			float rotationX = 0, float rotationY = 0, float rotationZ = 0,
-			float rotationSpeedX = 1, float rotationSpeedY = 1, float rotationSpeedZ = 1
+			float rotationSpeedX = 0, float rotationSpeedY = 0, float rotationSpeedZ = 0,
+			float scaleX = 1, float scaleY = 1, float scaleZ = 1
 		) :
 			m_graphics(graphics), 
 			m_device(graphics->Device()), 
@@ -35,9 +36,10 @@ namespace Dx {
 			m_speedX(speedX), m_speedY(speedY), m_speedZ(speedZ),
 			m_rotationX(rotationX), m_rotationY(rotationY), m_rotationZ(rotationZ),
 			m_rotationSpeedX(rotationSpeedX), m_rotationSpeedY(rotationSpeedY), m_rotationSpeedZ(rotationSpeedZ),
+			m_scaleX(scaleX), m_scaleY(scaleY), m_scaleZ(scaleZ),
 
 			m_indicesCount(0),
-			m_transform(DirectX::XMMatrixIdentity())
+			m_transformToWorld(DirectX::XMMatrixIdentity())
 		{};
 		virtual ~Drawable() {};
 
@@ -53,29 +55,16 @@ namespace Dx {
 			m_worldY += m_speedY * delta;
 			m_worldZ += m_speedZ * delta;
 
-			m_worldRotationX = worldRotationX;
-			m_worldRotationY = worldRotationY;
-			m_worldRotationZ = worldRotationZ;
+			m_transformToWorld = 
+				DirectX::XMMatrixScaling(m_scaleX, m_scaleY, m_scaleX)
 
-			// rotate object
-			m_transform = 
-				DirectX::XMMatrixRotationZ(m_rotationZ)
+				// rotate object
+				* DirectX::XMMatrixRotationZ(m_rotationZ)
 				* DirectX::XMMatrixRotationX(m_rotationX)
 				* DirectX::XMMatrixRotationY(m_rotationY)
 
 				// move object to its world coords
 				* DirectX::XMMatrixTranslation(m_worldX, m_worldY, m_worldZ);
-
-			if (m_worldRotationZ != 0)
-				m_transform *= DirectX::XMMatrixRotationZ(m_worldRotationZ);
-
-			if (m_worldRotationX != 0)
-				m_transform *= DirectX::XMMatrixRotationX(m_worldRotationX);
-
-			if (m_worldRotationY != 0)
-				m_transform *= DirectX::XMMatrixRotationY(m_worldRotationY);
-
-			m_transform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
 		};
 
 		void AttachResources(bool force) {
@@ -96,7 +85,7 @@ namespace Dx {
 		}
 
 		void Draw() {
-			UpdateConstants(m_transform);
+			UpdateConstants(m_transformToWorld);
 			AttachResources(false);
 			m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			m_context->DrawIndexed(m_indicesCount, 0, 0);
@@ -143,10 +132,9 @@ namespace Dx {
 		float		m_rotationY;
 		float		m_rotationZ;
 
-		float		m_worldRotationX;
-		float		m_worldRotationY;
-		float		m_worldRotationZ;
-
-		DirectX::XMMATRIX m_transform{};
+		float		m_scaleX;
+		float		m_scaleY;
+		float		m_scaleZ;
+		DirectX::XMMATRIX m_transformToWorld{};
 	};
 }

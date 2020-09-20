@@ -23,22 +23,19 @@ namespace Dx::Levels
 		void Update(float delta);
 
 	private:
-		std::vector<std::shared_ptr<Drawable>>	m_drawables;
-		com_ptr<ID3D11Buffer>						m_constantBuffer;
-		std::shared_ptr<VertexShader>				m_VertexShader;
-		std::shared_ptr<PixelShader>				m_PixelShader;
-		IBuffer											m_compiledVertexShader{ nullptr };
-		IBuffer											m_compiledPixelShader{ nullptr };
-		float												m_elapsedTime{ 0 };
-		float												m_effectDuration{ 5.f };
-		float												m_progress{ 0 };
+		std::vector<std::shared_ptr<Drawable>>								m_drawables;
+		std::shared_ptr<VertexShader>											m_VertexShader;
+		std::shared_ptr<PixelShader>											m_PixelShader;
 
-		float												m_worldRotationX{ 0 };
-		float												m_worldRotationY{ 0 };
-		float												m_worldRotationZ{ 0 };
-
-		float												m_worldRotationSpeedX{ 0 };
-		float												m_worldRotationSpeedY{ 0 };
-		float												m_worldRotationSpeedZ{ 0 };
+		float																			m_worldRotationX{ 0 };
+		float																			m_worldRotationY{ 0 };
+		float																			m_worldRotationZ{ 0 };
+																						
+		float																			m_worldRotationSpeedX{ 0 };
+		float																			m_worldRotationSpeedY{ 0 };
+		float																			m_worldRotationSpeedZ{ 0 };
+																						
+		DirectX::XMMATRIX															m_worldViewTransform{};
+		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
 	};
 }

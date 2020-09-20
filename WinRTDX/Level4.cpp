@@ -26,6 +26,7 @@ void Dx::Levels::Level4::SetupModel()
 //	std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
 	std::uniform_real_distribution<float> startAngle(0, 0);
 	std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI/10., DirectX::XM_PI/10.);
+	std::uniform_real_distribution<float> scale(0.5,2.0);
 
 	for (int i = 0; i <= 5000; i++)
 	{
@@ -34,10 +35,13 @@ void Dx::Levels::Level4::SetupModel()
 			location(generator), location(generator), location(generator),
 			movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
 			startAngle(generator), startAngle(generator), startAngle(generator),
-			rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator)
+			rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator),
+			scale(generator), scale(generator), scale(generator)
 			)
 		);
 	}
+
+
 
 	for (auto d : m_drawables) {
 		d->RegisterResources();
@@ -47,6 +51,7 @@ void Dx::Levels::Level4::SetupModel()
 	m_PixelShader->Attach(true);
 
 	m_worldRotationSpeedY = 0.01;
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(6, false, m_graphics, m_worldViewTransform, 0, false);
 }
 
 void Dx::Levels::Level4::Update(float delta)
@@ -54,6 +59,21 @@ void Dx::Levels::Level4::Update(float delta)
 	m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
 	m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
 	m_worldRotationZ = fmod(m_worldRotationZ + delta * m_worldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
+
+	m_worldViewTransform = DirectX::XMMatrixIdentity();
+	if (m_worldRotationZ != 0)
+		m_worldViewTransform *= DirectX::XMMatrixRotationZ(m_worldRotationZ);
+
+	if (m_worldRotationX != 0)
+		m_worldViewTransform *= DirectX::XMMatrixRotationX(m_worldRotationX);
+
+	if (m_worldRotationY != 0)
+		m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
+
+	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
+	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
+	m_worldViewTransformConstantBuffer->Attach(false);
+
 
 	for (auto d : m_drawables)
 		d->Update(delta, m_worldRotationX, m_worldRotationY, m_worldRotationZ);
