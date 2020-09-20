@@ -1,48 +1,55 @@
 #pragma once
-#include <typeindex>
+#include <pch.h>
 #include <map>
 
-namespace Dx {
+namespace Dx::Attachables {
 
 	class ResourceManager
 	{
 	public:
-		static void* GetResource(std::type_index type, uint16_t id)
+		inline static void ClearCache()
 		{
-			void* result = nullptr;
-			std::map<uint16_t, void*>* innerMap;
-			innerMap = typeInstanceMaps[type];
-			if (innerMap != nullptr)
-				result = (*innerMap)[id];
+			CurrentInputLayout = 0;
+			InputLayouts.clear();
 
-			return result;
-		}
+			CurrentVertexBuffer = 0;
+			VertexBuffers.clear();
 
-		static void SetResource(std::type_index type, uint16_t id, void* resource)
-		{
-			std::map<uint16_t, void*>* innerMap;
-			innerMap = typeInstanceMaps[type];
-			if (innerMap == nullptr)
-			{
-				innerMap = new std::map<uint16_t, void*>;
-				typeInstanceMaps[type] = innerMap;
-			}
-			(*innerMap)[id] =resource;
+			CurrentIndexBuffer = 0;
+			IndexBuffers.clear();
+
+			CurrentPSConstantBuffer = 0;
+			PSConstantBuffers.clear();
+
+			CurrentVSConstantBuffer = 0;
+			VSConstantBuffers.clear();
+
+			CurrentPixelShader = 0;
+			PixelShaders.clear();
+
+			CurrentVertexShader = 0;
+			VertexShaders.clear();
 		}
 
 		inline static uint16_t CurrentInputLayout = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	InputLayouts;
+
 		inline static uint16_t CurrentVertexBuffer = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	VertexBuffers;
+
 		inline static uint16_t CurrentIndexBuffer = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	IndexBuffers;
 
 		inline static uint16_t CurrentPSConstantBuffer = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	PSConstantBuffers;
+
 		inline static uint16_t CurrentVSConstantBuffer = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	VSConstantBuffers;
 
 		inline static uint16_t CurrentPixelShader = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	PixelShaders;
+		
 		inline static uint16_t CurrentVertexShader = 0;
-
-
-	private:
-		inline static std::map<std::type_index, std::map< uint16_t, void* >* > typeInstanceMaps;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	VertexShaders;
 	};
-
 }

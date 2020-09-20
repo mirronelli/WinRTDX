@@ -12,13 +12,12 @@ namespace Dx::Attachables
 	public:
 		static std::shared_ptr<VertexShader> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName)
 		{
-			VertexShader* instancePtr = (VertexShader*)Dx::ResourceManager::GetResource(TypeIndex, key);
-			std::shared_ptr<VertexShader> instance = std::shared_ptr<VertexShader>(instancePtr);
+			std::shared_ptr<VertexShader> instance = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[key]);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<VertexShader>(key, graphics, fileName);
-				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
+				ResourceManager::VertexShaders[key] = instance;
 			}
 
 			return instance;
@@ -27,7 +26,6 @@ namespace Dx::Attachables
 		VertexShader(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename)
 			: Attachable(key, graphics)
 		{
-			VertexShader::TypeIndex = std::type_index(typeid(VertexShader));
 			m_rawDataBuffer = IO::ReadFile(filename);
 
 			com_ptr<ID3D11VertexShader> shader;
@@ -51,10 +49,10 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::CurrentVertexShader != m_key)
+			if (force || ResourceManager::CurrentVertexShader != m_key)
 			{
 				m_context->VSSetShader(m_compiledShader.get(), nullptr, 0);
-				Dx::ResourceManager::CurrentVertexShader = m_key;
+				ResourceManager::CurrentVertexShader = m_key;
 			}
 		}
 
@@ -62,7 +60,5 @@ namespace Dx::Attachables
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11VertexShader>	m_compiledShader;
 		std::shared_ptr<Dx::Graphics>	m_graphics;
-
-		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

@@ -2,7 +2,6 @@
 #include <pch.h>
 #include "Graphics.h"
 #include "Attachable.h"
-#include <map>
 #include "IO.h"
 
 namespace Dx::Attachables
@@ -12,13 +11,12 @@ namespace Dx::Attachables
 	public:
 		static std::shared_ptr<PixelShader> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring filename)
 		{
-			PixelShader* instancePtr = (PixelShader*)Dx::ResourceManager::GetResource(TypeIndex, key);
-			std::shared_ptr<PixelShader> instance = std::shared_ptr<PixelShader>(instancePtr);
+			std::shared_ptr<PixelShader> instance = std::static_pointer_cast<PixelShader>(ResourceManager::PixelShaders[key]);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<PixelShader>(key, graphics, filename);
-				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
+				ResourceManager::PixelShaders[key] = instance;
 			}
 
 			return instance;
@@ -27,8 +25,6 @@ namespace Dx::Attachables
 		PixelShader(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename)
 			: Attachable(key, graphics)
 		{
-			PixelShader::TypeIndex = std::type_index(typeid(PixelShader));
-
 			m_rawDataBuffer = IO::ReadFile(filename);
 
 			com_ptr<ID3D11PixelShader> shader;
@@ -51,10 +47,10 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || Dx::ResourceManager::CurrentPixelShader != m_key)
+			if (force || ResourceManager::CurrentPixelShader != m_key)
 			{
 				m_context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				Dx::ResourceManager::CurrentPixelShader = m_key;
+				ResourceManager::CurrentPixelShader = m_key;
 			}
 		}
 
@@ -62,7 +58,5 @@ namespace Dx::Attachables
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11PixelShader>		m_compiledShader;
 		std::shared_ptr<Dx::Graphics>	m_graphics;
-
-		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

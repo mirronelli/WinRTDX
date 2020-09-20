@@ -12,13 +12,12 @@ namespace Dx::Attachables
 	public:
 		static std::shared_ptr<InputLayout> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
 		{
-			InputLayout* instancePtr = (InputLayout*)Dx::ResourceManager::GetResource(TypeIndex, key);
-			std::shared_ptr<InputLayout> instance = std::shared_ptr<InputLayout>(instancePtr);
+			std::shared_ptr<InputLayout> instance = std::static_pointer_cast<InputLayout>(ResourceManager::InputLayouts[key]);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<InputLayout>(key, graphics, ieds, vertexShader);
-				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
+				ResourceManager::InputLayouts[key] = instance;
 			}
 
 			return instance;
@@ -38,16 +37,14 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::CurrentInputLayout != m_key)
+			if (force || ResourceManager::CurrentInputLayout != m_key)
 			{
 				m_context->IASetInputLayout(m_inputLayout.get());
-				Dx::ResourceManager::CurrentInputLayout =m_key;
+				ResourceManager::CurrentInputLayout =m_key;
 			}
 		}
 
 	private:
 		com_ptr<ID3D11InputLayout>	m_inputLayout;
-
-		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

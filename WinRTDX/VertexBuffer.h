@@ -14,13 +14,12 @@ namespace Dx::Attachables
 	public:
 		static std::shared_ptr<VertexBuffer<T>> Create(uint16_t const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)
 		{
-			VertexBuffer<T>* instancePtr = (VertexBuffer<T>*) Dx::ResourceManager::GetResource(TypeIndex, key);
-			std::shared_ptr<VertexBuffer<T>> instance = std::shared_ptr<VertexBuffer<T>>(instancePtr);
+			std::shared_ptr<VertexBuffer<T>> instance = std::static_pointer_cast<VertexBuffer<T>>(ResourceManager::VertexBuffers[key]);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<VertexBuffer>(key, graphics, vertices);
-				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
+				ResourceManager::VertexBuffers[key] = instance;
 			}
 
 			return instance;
@@ -29,8 +28,6 @@ namespace Dx::Attachables
 		VertexBuffer(uint16_t key, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)
 			: Attachable(key, graphics)
 		{
-			VertexBuffer<T>::TypeIndex = std::type_index(typeid(VertexBuffer<T>));
-			
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(T) * vertices.size());
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
@@ -44,19 +41,17 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || Dx::ResourceManager::CurrentVertexBuffer != m_key)
+			if (force || ResourceManager::CurrentVertexBuffer != m_key)
 			{
 				UINT strideVertices = sizeof(T);
 				UINT offsetVertices = 0;
 				ID3D11Buffer* vertexBuffers[1] = { m_buffer.get() };
 				m_context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
-				Dx::ResourceManager::CurrentVertexBuffer = m_key;
+				ResourceManager::CurrentVertexBuffer = m_key;
 			}
 		}
 
 	private:
 		com_ptr<ID3D11Buffer> m_buffer;
-
-		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

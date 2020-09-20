@@ -90,7 +90,6 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceType.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

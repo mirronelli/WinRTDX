@@ -8,6 +8,7 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
+			Dx::Attachables::ResourceManager::ClearCache();
 			m_VertexShader = VertexShader::Load(0, false, m_graphics, L"VertexShader4.cso");
 			m_PixelShader = PixelShader::Load(1, false, m_graphics, L"PixelShader4.cso");
 		}

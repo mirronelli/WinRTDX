@@ -1,6 +1,7 @@
 #pragma once
 #include "Drawable.h"
 #include "VertexShader.h"
+#include "PixelShader.h"
 
 using namespace Dx::Attachables;
 namespace Dx {
