@@ -3,6 +3,8 @@
 #include "Graphics.h"
 #include "Attachable.h"
 #include <map>
+#include "ResourceManager.h"
+#include <typeindex>
 
 namespace Dx::Attachables
 {
@@ -10,23 +12,25 @@ namespace Dx::Attachables
 	class VertexBuffer : public Attachable
 	{
 	public:
-		static void ClearCache() { m_instances.clear(); m_current_instance_key.clear(); }
-		static std::shared_ptr<VertexBuffer<T>> Create(std::wstring const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)
+		static std::shared_ptr<VertexBuffer<T>> Create(uint16_t const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)
 		{
-			std::shared_ptr<VertexBuffer<T>> instance = m_instances[key];
+			VertexBuffer<T>* instancePtr = (VertexBuffer<T>*) Dx::ResourceManager::GetResource(TypeIndex, key);
+			std::shared_ptr<VertexBuffer<T>> instance = std::shared_ptr<VertexBuffer<T>>(instancePtr);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<VertexBuffer>(key, graphics, vertices);
-				m_instances[key] = instance;
+				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
 			}
 
 			return instance;
 		}
 
-		VertexBuffer(std::wstring key, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)
+		VertexBuffer(uint16_t key, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices)
 			: Attachable(key, graphics)
 		{
+			VertexBuffer<T>::TypeIndex = std::type_index(typeid(VertexBuffer<T>));
+			
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(T) * vertices.size());
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
@@ -40,19 +44,19 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || m_current_instance_key != m_key)
+			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
 			{
 				UINT strideVertices = sizeof(T);
 				UINT offsetVertices = 0;
 				ID3D11Buffer* vertexBuffers[1] = { m_buffer.get() };
 				m_context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
-				m_current_instance_key = m_key;
+				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
 			}
 		}
 
 	private:
-		inline static std::map<std::wstring, std::shared_ptr<VertexBuffer<T>>> m_instances = {};
-		inline static std::wstring m_current_instance_key = {};
 		com_ptr<ID3D11Buffer> m_buffer;
+
+		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

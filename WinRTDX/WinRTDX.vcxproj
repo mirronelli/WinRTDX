@@ -113,7 +113,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="PSConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Graphics.h" />
@@ -130,9 +130,11 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Attachable.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VSConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -10,23 +10,24 @@ namespace Dx::Attachables
 	class VertexShader : public Attachable
 	{
 	public:
-		static void ClearCache() { m_instances.clear(); m_current_instance_key.clear(); }
-		static std::shared_ptr<VertexShader> Load(std::wstring fileName, bool overwrite, std::shared_ptr<Graphics> graphics)
+		static std::shared_ptr<VertexShader> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName)
 		{
-			std::shared_ptr<VertexShader> instance = m_instances[fileName];
+			VertexShader* instancePtr = (VertexShader*)Dx::ResourceManager::GetResource(TypeIndex, key);
+			std::shared_ptr<VertexShader> instance = std::shared_ptr<VertexShader>(instancePtr);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<VertexShader>(graphics, fileName);
-				m_instances[fileName] = instance;
+				instance = std::make_shared<VertexShader>(key, graphics, fileName);
+				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
 			}
 
 			return instance;
 		}
 
-		VertexShader(std::shared_ptr<Graphics> graphics, std::wstring filename)
-			: Attachable(filename, graphics)
+		VertexShader(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename)
+			: Attachable(key, graphics)
 		{
+			VertexShader::TypeIndex = std::type_index(typeid(VertexShader));
 			m_rawDataBuffer = IO::ReadFile(filename);
 
 			com_ptr<ID3D11VertexShader> shader;
@@ -50,19 +51,18 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || m_current_instance_key != m_key)
+			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
 			{
 				m_context->VSSetShader(m_compiledShader.get(), nullptr, 0);
-				m_current_instance_key = m_key;
+				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
 			}
 		}
 
 	private:
-		inline static std::map<std::wstring, std::shared_ptr<VertexShader>> m_instances = {};
-		inline static std::wstring m_current_instance_key = {};
-
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11VertexShader>	m_compiledShader;
 		std::shared_ptr<Dx::Graphics>	m_graphics;
+
+		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

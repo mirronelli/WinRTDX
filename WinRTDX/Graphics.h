@@ -1,5 +1,6 @@
 #pragma once
 #include <winrt\Windows.UI.Core.h>
+#include "ResourceManager.h"
 
 using namespace winrt;
 using namespace winrt::Windows::UI::Core;

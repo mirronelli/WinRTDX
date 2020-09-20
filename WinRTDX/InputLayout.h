@@ -10,21 +10,21 @@ namespace Dx::Attachables
 	class InputLayout : public Attachable
 	{
 	public:
-		static void ClearCache() { m_instances.clear(); m_current_instance_key.clear(); }
-		static std::shared_ptr<InputLayout> Create(std::wstring const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
+		static std::shared_ptr<InputLayout> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
 		{
-			std::shared_ptr<InputLayout> instance = m_instances[key];
+			InputLayout* instancePtr = (InputLayout*)Dx::ResourceManager::GetResource(TypeIndex, key);
+			std::shared_ptr<InputLayout> instance = std::shared_ptr<InputLayout>(instancePtr);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<InputLayout>(key, graphics, ieds, vertexShader);
-				m_instances[key] = instance;
+				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
 			}
 
 			return instance;
 		}
 
-		InputLayout(std::wstring const& key, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
+		InputLayout(uint16_t key, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
 			: Attachable(key, graphics)
 		{
 			m_graphics->Device()->CreateInputLayout(
@@ -38,16 +38,16 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || m_current_instance_key != m_key)
+			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
 			{
 				m_context->IASetInputLayout(m_inputLayout.get());
-				m_current_instance_key = m_key;
+				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
 			}
 		}
 
 	private:
-		inline static std::map<std::wstring, std::shared_ptr<InputLayout>> m_instances = {};
-		inline static std::wstring m_current_instance_key = {};
-		com_ptr<ID3D11InputLayout>					m_inputLayout;
+		com_ptr<ID3D11InputLayout>	m_inputLayout;
+
+		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

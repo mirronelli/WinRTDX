@@ -72,9 +72,6 @@
     <ClInclude Include="InputLayout.h">
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>Dx\Attachables</Filter>
-    </ClInclude>
     <ClInclude Include="Attachable.h">
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
@@ -82,6 +79,15 @@
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="PixelShader.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="PSConstantBuffer.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="VSConstantBuffer.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,4 @@
 cbuffer constantData {
-	row_major matrix transform;
 	float4 colors[6];
 };
 

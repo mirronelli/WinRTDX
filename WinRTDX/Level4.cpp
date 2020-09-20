@@ -8,28 +8,22 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_VertexShader = VertexShader::Load(L"VertexShader4.cso", false, m_graphics);
-			m_PixelShader = PixelShader::Load(L"PixelShader4.cso", false, m_graphics);
+			m_VertexShader = VertexShader::Load(0, false, m_graphics, L"VertexShader4.cso");
+			m_PixelShader = PixelShader::Load(1, false, m_graphics, L"PixelShader4.cso");
 		}
 	);
 }
 
 void Dx::Levels::Level4::SetupModel()
 {
-	VertexBuffer<Cube::Vertex>::ClearCache();
-	IndexBuffer::ClearCache();
-	InputLayout::ClearCache();
-	IndexBuffer::ClearCache();
-	PixelShader::ClearCache();
-	VertexShader::ClearCache();
-	ConstantBuffer<Cube::Constants>::ClearCache();
+	//VertexShader::ClearCache();
 
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(rd());
-	std::uniform_real_distribution<float> rotationSpeed(4., 8.);
-	std::uniform_real_distribution<float> movementSpeed(.0, .0);
 	std::uniform_real_distribution<float> location(-100.0, 100.0);
+	std::uniform_real_distribution<float> movementSpeed(.0, .0);
 	std::uniform_real_distribution<float> startAngle(.0, DirectX::XM_2PI);
+	std::uniform_real_distribution<float> rotationSpeed(0.,2);
 
 	for (int i = 0; i <= 5000; i++)
 	{
@@ -37,8 +31,8 @@ void Dx::Levels::Level4::SetupModel()
 			m_graphics, m_VertexShader, m_PixelShader,
 			location(generator), location(generator)/2, location(generator)/2 + 50,
 			movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
-			rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator),
-			startAngle(generator), startAngle(generator), startAngle(generator)
+			startAngle(generator), startAngle(generator), startAngle(generator),
+			rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator)
 			)
 		);
 	}

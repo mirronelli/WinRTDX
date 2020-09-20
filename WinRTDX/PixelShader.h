@@ -10,23 +10,25 @@ namespace Dx::Attachables
 	class PixelShader : public Attachable
 	{
 	public:
-		static void ClearCache() { m_instances.clear(); m_current_instance_key.clear(); }
-		static std::shared_ptr<PixelShader> Load(std::wstring fileName, bool overwrite, std::shared_ptr<Graphics> graphics)
+		static std::shared_ptr<PixelShader> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring filename)
 		{
-			std::shared_ptr<PixelShader> instance = m_instances[fileName];
+			PixelShader* instancePtr = (PixelShader*)Dx::ResourceManager::GetResource(TypeIndex, key);
+			std::shared_ptr<PixelShader> instance = std::shared_ptr<PixelShader>(instancePtr);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<PixelShader>(graphics, fileName);
-				m_instances[fileName] = instance;
+				instance = std::make_shared<PixelShader>(key, graphics, filename);
+				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
 			}
 
 			return instance;
 		}
 
-		PixelShader(std::shared_ptr<Graphics> graphics, std::wstring filename)
-			: Attachable(filename, graphics)
+		PixelShader(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename)
+			: Attachable(key, graphics)
 		{
+			PixelShader::TypeIndex = std::type_index(typeid(PixelShader));
+
 			m_rawDataBuffer = IO::ReadFile(filename);
 
 			com_ptr<ID3D11PixelShader> shader;
@@ -49,18 +51,18 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || m_current_instance_key != m_key)
+			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
 			{
 				m_context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				m_current_instance_key = m_key;
+				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
 			}
 		}
 
 	private:
-		inline static std::map<std::wstring, std::shared_ptr<PixelShader>> m_instances = {};
-		inline static std::wstring m_current_instance_key = {};
 		IBuffer								m_rawDataBuffer;
-		com_ptr<ID3D11PixelShader>	m_compiledShader;
+		com_ptr<ID3D11PixelShader>		m_compiledShader;
 		std::shared_ptr<Dx::Graphics>	m_graphics;
+
+		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

@@ -9,23 +9,25 @@ namespace Dx::Attachables
 	class IndexBuffer : public Attachable
 	{
 	public:
-		static void ClearCache() { m_instances.clear(); m_current_instance_key.clear(); }
-		static std::shared_ptr<IndexBuffer> Create(std::wstring const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+		static std::shared_ptr<IndexBuffer> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
 		{
-			std::shared_ptr<IndexBuffer> instance = m_instances[key];
+			IndexBuffer* instancePtr = (IndexBuffer*) Dx::ResourceManager::GetResource(TypeIndex, key);
+			std::shared_ptr<IndexBuffer> instance = std::shared_ptr<IndexBuffer>(instancePtr);
 
 			if (overwrite || instance == nullptr)
 			{
 				instance = std::make_shared<IndexBuffer>(key, graphics, indices);
-				m_instances[key] = instance;
+				Dx::ResourceManager::SetResource(TypeIndex, key, instance.get());
 			}
 
 			return instance;
 		}
 
-		IndexBuffer(std::wstring const& key, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+		IndexBuffer(uint16_t const& key, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
 			: Attachable(key, graphics)
 		{
+			IndexBuffer::TypeIndex = std::type_index(typeid(IndexBuffer));
+
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(UINT) * indices.size());
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
@@ -40,16 +42,16 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || m_current_instance_key != m_key)
+			if (force || Dx::ResourceManager::GetCurrentInstance(TypeIndex) != m_key)
 			{
 				m_context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
-				m_current_instance_key = m_key;
+				Dx::ResourceManager::SetCurrentInstance(TypeIndex, m_key);
 			}
 		}
 
 	private:
-		inline static std::map<std::wstring, std::shared_ptr<IndexBuffer>> m_instances = {};
-		inline static std::wstring m_current_instance_key = {};
 		com_ptr<ID3D11Buffer> m_buffer;
+
+		inline static std::type_index TypeIndex = std::type_index(typeid(std::string)); // dummy value, is overwritten at runtime
 	};
 }

@@ -6,7 +6,8 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
-#include "ConstantBuffer.h"
+#include "PSConstantBuffer.h"
+#include "VSConstantBuffer.h"
 
 using namespace Dx::Attachables;
 namespace Dx {
@@ -35,8 +36,6 @@ namespace Dx {
 			m_rotationX(rotationX), m_rotationY(rotationY), m_rotationZ(rotationZ),
 			m_rotationSpeedX(rotationSpeedX), m_rotationSpeedY(rotationSpeedY), m_rotationSpeedZ(rotationSpeedZ)
 		{};
-		Drawable(Drawable& a) = delete;
-		Drawable() = delete;
 		virtual void RegisterResources() = 0;
 		virtual void AttachResources(bool force) = 0;
 		virtual void Update(float delta) = 0;
