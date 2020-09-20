@@ -9,21 +9,22 @@ namespace Dx::Attachables
 	class VSConstantBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<VSConstantBuffer<T>> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData)
+		static std::shared_ptr<VSConstantBuffer<T>> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot = 0)
 		{
 			std::shared_ptr<VSConstantBuffer<T>> instance = std::static_pointer_cast<VSConstantBuffer<T>>(ResourceManager::VSConstantBuffers[key]);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<VSConstantBuffer>(key, graphics, constantData);
+				instance = std::make_shared<VSConstantBuffer>(key, graphics, constantData, slot);
 				ResourceManager::VSConstantBuffers[key] = instance;
 			}
 
 			return instance;
 		}
 
-		VSConstantBuffer(uint16_t key, std::shared_ptr<Graphics> graphics, T& constantData)
-			: Attachable(key, graphics)
+		VSConstantBuffer(uint16_t key, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot)
+			: Attachable(key, graphics),
+			m_slot(slot)
 		{
 			D3D11_BUFFER_DESC	desc{ 0 };
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
@@ -42,7 +43,7 @@ namespace Dx::Attachables
 			if (force || ResourceManager::CurrentVSConstantBuffer != m_key)
 			{
 				ID3D11Buffer* VSConstantBuffers[1] = { m_buffer.get() };
-				m_context->VSSetConstantBuffers(0, 1, VSConstantBuffers);
+				m_context->VSSetConstantBuffers(m_slot, 1, VSConstantBuffers);
 				ResourceManager::CurrentVSConstantBuffer = m_key;
 			}
 		}
@@ -53,6 +54,7 @@ namespace Dx::Attachables
 		}
 
 	private:
-		com_ptr<ID3D11Buffer> m_buffer;
+		com_ptr<ID3D11Buffer>	m_buffer;
+		UINT							m_slot;
 	};
 }
