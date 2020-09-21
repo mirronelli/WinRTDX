@@ -20,33 +20,34 @@ void Game::Init()
 	m_graphics = std::make_shared<Dx::Graphics>();
 	m_graphics->SetWindow(m_parentWindow);
 	m_parentWindow.KeyUp({ this, &Game::KeyUp });
+	m_parentWindow.KeyDown({ this, &Game::KeyDown });
 }
 
 void Game::LoadLevel(byte name)
 {
 	//name = 4;
 	switch (name) {
-		case 1:
-			m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
-			break;
-		case 2:
-			m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
-			break;
-		case 3:
-			m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
-			break;
-		case 4:
-			m_level = std::make_unique<Dx::Levels::Level4>(m_graphics);
-			break;
-		case 5:
-			m_level = std::make_unique<Dx::Levels::Level5>(m_graphics);
-			break;
-		case 6:
-			m_level = std::make_unique<Dx::Levels::Level6>(m_graphics);
-			break;
-		default:
-			m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
-			break;
+	case 1:
+		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+		break;
+	case 2:
+		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
+		break;
+	case 3:
+		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
+		break;
+	case 4:
+		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics);
+		break;
+	case 5:
+		m_level = std::make_unique<Dx::Levels::Level5>(m_graphics);
+		break;
+	case 6:
+		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics);
+		break;
+	default:
+		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+		break;
 	}
 
 	concurrency::task<void> loading = m_level->Load();
@@ -88,7 +89,7 @@ void Game::ProcessKeyboard()
 			m_currentLevel = 1;
 		m_stop = false;
 	}
-	
+
 	if (m_keyMap.IsSet(VirtualKey::P))
 		m_stop = !m_stop;
 }
@@ -102,7 +103,7 @@ void Game::Update(Dx::StepTimer const& timer, Dx::KeyMap keyMap)
 {
 	float delta = float(timer.GetElapsedSeconds());
 
-	m_level->Update(delta);
+	m_level->Update(delta, keyMap);
 
 	std::wostringstream debug;
 	debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
@@ -113,7 +114,7 @@ void Game::Tick()
 {
 	m_timer.Tick([&]()
 		{
-			if(!m_stop)
+			if (!m_stop)
 				Update(m_timer, m_keyMap);
 		}
 	);
@@ -131,6 +132,11 @@ void Game::Present()
 }
 
 void Game::KeyUp(CoreWindow window, KeyEventArgs args)
+{
+	m_keyMap.Set(args.VirtualKey());
+}
+
+void Game::KeyDown(CoreWindow window, KeyEventArgs args)
 {
 	m_keyMap.Set(args.VirtualKey());
 }

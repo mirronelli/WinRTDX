@@ -19,7 +19,7 @@ namespace Dx::Levels
 		concurrency::task<void> Load();
 		void SetupModel();
 		void Render();
-		void Update(float delta);
+		void Update(float delta, KeyMap keyMap);
 	
 	private:
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;

@@ -118,7 +118,7 @@ void Dx::Levels::Level3::SetupModel()
 	RegisterBuffers();
 }
 
-void Dx::Levels::Level3::Update(float delta)
+void Dx::Levels::Level3::Update(float delta, KeyMap keyMap)
 {
 	m_elapsedTime += delta;
 	while (m_elapsedTime > m_effectDuration)

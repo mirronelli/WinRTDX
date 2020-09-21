@@ -68,21 +68,13 @@ namespace Dx::Levels
 			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_graphics, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
 			m_worldRotationSpeedY = 0.f;
-
 		}
 
-		void Render()
+		void Update(float delta, KeyMap keyMap)
 		{
-			float color[4]{ 0.3f, .0f, .1f, .2f };
-			m_graphics->StartFrame(color);
+			if (keyMap.IsSet(VirtualKey::Up))
+				m_camera.MoveForward(0.5);
 
-			for (auto d : m_drawables)
-				d->Draw();
-		}
-
-		void Update(float delta)
-		{
-			m_camera.MoveForward(0.5);
 			m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
 			m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
 			m_worldRotationZ = fmod(m_worldRotationZ + delta * m_worldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
@@ -103,6 +95,15 @@ namespace Dx::Levels
 
 			for (auto d : m_drawables)
 				d->Update(delta);
+		}
+
+		void Render()
+		{
+			float color[4]{ 0.3f, .0f, .1f, .2f };
+			m_graphics->StartFrame(color);
+
+			for (auto d : m_drawables)
+				d->Draw();
 		}
 
 	private:

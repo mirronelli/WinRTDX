@@ -27,7 +27,7 @@ namespace Dx::Levels
 		void SetupModel();
 		void Draw(float angle, float x, float y, float z);
 		void Render();
-		void Update(float delta);
+		void Update(float delta, KeyMap keyMap);
 
 	private:
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;

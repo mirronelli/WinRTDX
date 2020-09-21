@@ -79,7 +79,7 @@ void Dx::Levels::Level1::Render()
 	m_graphics->Context()->DrawIndexed(9, 0, 0);
 }
 
-void Dx::Levels::Level1::Update(float delta)
+void Dx::Levels::Level1::Update(float delta, KeyMap keyMap)
 {
 	m_elapsedTime += delta;
 	if (m_elapsedTime > m_effectDuration)

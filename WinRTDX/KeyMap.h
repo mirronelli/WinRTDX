@@ -9,29 +9,23 @@ namespace Dx
 	class KeyMap
 	{
 	public:
-
-		UINT State()
-		{
-			return m_state;
-		}
-
 		bool IsSet(VirtualKey key)
 		{
-			return (m_state & static_cast<UINT>(key)) != 0;
+			return m_keyStates[key];
 		}
 
 		void Reset()
 		{
-			m_state = 0;
+			m_keyStates.clear();
 		}
 
 		void Set(VirtualKey key)
 		{
-			m_state |= static_cast<UINT>(key);
+			m_keyStates[key] = true;
 		}
 
 	private:
-		UINT m_state = 0;
+		std::map<VirtualKey,bool>   m_keyStates;
 	};
 
 }

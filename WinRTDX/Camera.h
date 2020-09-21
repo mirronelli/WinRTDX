@@ -14,7 +14,7 @@ namespace Dx
 			m_position = XMVectorSet(0, 0, 0, 0);
 		}
 
-		Camera(XMVECTOR position, XMVECTOR lookingAt) : m_lookingAt(m_lookingAt), m_position(position) {};
+		Camera(XMVECTOR position, XMVECTOR lookingAt) : m_lookingAt(lookingAt), m_position(position) {};
 
 
 		void Rotate(float roll, float pitch, float yaw) 

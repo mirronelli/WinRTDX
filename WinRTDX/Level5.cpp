@@ -65,7 +65,7 @@ void Dx::Levels::Level5::SetupModel()
 	m_worldRotationSpeedY = 0.1f;
 }
 
-void Dx::Levels::Level5::Update(float delta)
+void Dx::Levels::Level5::Update(float delta, KeyMap keyMap)
 {
 	m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
 	m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);

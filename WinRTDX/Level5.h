@@ -20,7 +20,7 @@ namespace Dx::Levels
 		void SetupModel();
 		void DrawCube(float angle, float x, float y, float z);
 		void Render();
-		void Update(float delta);
+		void Update(float delta, KeyMap keyMap);
 
 	private:
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;
