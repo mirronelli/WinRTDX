@@ -113,9 +113,12 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeTextured.h" />
     <ClInclude Include="dds.h" />
+    <ClInclude Include="KeyMap.h" />
     <ClInclude Include="Level5.h" />
+    <ClInclude Include="Level6.h" />
     <ClInclude Include="PSConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Drawable.h" />

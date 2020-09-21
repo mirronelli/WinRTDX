@@ -6,6 +6,7 @@
 #include "Level3.h"
 #include "Level4.h"
 #include "Level5.h"
+#include "Level6.h"
 
 using namespace winrt::Windows::UI::Core;
 
@@ -40,6 +41,9 @@ void Game::LoadLevel(byte name)
 		case 5:
 			m_level = std::make_unique<Dx::Levels::Level5>(m_graphics);
 			break;
+		case 6:
+			m_level = std::make_unique<Dx::Levels::Level6>(m_graphics);
+			break;
 		default:
 			m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
 			break;
@@ -66,10 +70,27 @@ void Game::Run()
 		}
 
 		ProcessEvents();
+		ProcessKeyboard();
 		Tick();
 		Render();
 		Present();
+
+		m_keyMap.Reset();
 	}
+}
+
+void Game::ProcessKeyboard()
+{
+	if (m_keyMap.IsSet(VirtualKey::Space))
+	{
+		m_currentLevel++;
+		if (m_currentLevel > m_maxLevel)
+			m_currentLevel = 1;
+		m_stop = false;
+	}
+	
+	if (m_keyMap.IsSet(VirtualKey::P))
+		m_stop = !m_stop;
 }
 
 void Game::ProcessEvents()
@@ -77,7 +98,7 @@ void Game::ProcessEvents()
 	m_parentWindow.Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
 }
 
-void Game::Update(Dx::StepTimer const& timer)
+void Game::Update(Dx::StepTimer const& timer, Dx::KeyMap keyMap)
 {
 	float delta = float(timer.GetElapsedSeconds());
 
@@ -93,7 +114,7 @@ void Game::Tick()
 	m_timer.Tick([&]()
 		{
 			if(!m_stop)
-				Update(m_timer);
+				Update(m_timer, m_keyMap);
 		}
 	);
 	m_frame++;
@@ -111,17 +132,7 @@ void Game::Present()
 
 void Game::KeyUp(CoreWindow window, KeyEventArgs args)
 {
-	switch (args.VirtualKey()) {
-	case winrt::Windows::System::VirtualKey::Space:
-		m_currentLevel++;
-		if (m_currentLevel > m_maxLevel)
-			m_currentLevel = 1;
-		m_stop = false;
-		break;
-	case winrt::Windows::System::VirtualKey::P:
-		m_stop = !m_stop;
-		break;
-	}
+	m_keyMap.Set(args.VirtualKey());
 }
 
 void Game::Close()

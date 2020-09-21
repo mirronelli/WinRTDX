@@ -106,6 +106,15 @@
     <ClInclude Include="dds.h">
       <Filter>Dx</Filter>
     </ClInclude>
+    <ClInclude Include="Level6.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMap.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -166,6 +175,9 @@
     </Filter>
     <Filter Include="Dx\Shaders">
       <UniqueIdentifier>{9c300f4f-a2e5-40ba-b1bc-0721e33870ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{90debd93-5e08-40d5-9033-40bce7ce3c5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

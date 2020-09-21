@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "ILevel.h"
 #include "StepTimer.h"
+#include "KeyMap.h"
 
 class Game
 {
@@ -15,7 +16,8 @@ public:
 
 private:
 	void ProcessEvents();
-	void Update(Dx::StepTimer const& timer);
+	void ProcessKeyboard();
+	void Update(Dx::StepTimer const& timer, Dx::KeyMap keyMap);
 	void Tick();
 	void Render();
 	void Present();
@@ -29,8 +31,10 @@ private:
 	Dx::StepTimer											m_timer;
 	ULONG64													m_frame = 0;
 
-	byte														m_currentLevel = 5;
-	byte														m_maxLevel = 5;
+	byte														m_currentLevel = 6;
+	byte														m_maxLevel = 6;
 	bool														m_stop = false;
+
+	Dx::KeyMap												m_keyMap;
 };
 
