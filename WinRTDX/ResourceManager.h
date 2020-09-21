@@ -29,6 +29,9 @@ namespace Dx::Attachables {
 
 			CurrentVertexShader = 0;
 			VertexShaders.clear();
+
+			CurrentTexture = 0;
+			Textures.clear();
 		}
 
 		inline static uint16_t CurrentInputLayout = 0;
@@ -48,8 +51,11 @@ namespace Dx::Attachables {
 
 		inline static uint16_t CurrentPixelShader = 0;
 		inline static std::map < uint16_t, std::shared_ptr<void>>	PixelShaders;
-		
+
 		inline static uint16_t CurrentVertexShader = 0;
 		inline static std::map < uint16_t, std::shared_ptr<void>>	VertexShaders;
+
+		inline static uint16_t CurrentTexture = 0;
+		inline static std::map < uint16_t, std::shared_ptr<void>>	Textures;
 	};
 }

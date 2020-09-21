@@ -53,7 +53,7 @@ namespace Dx {
 			4, 7, 6
 		};
 
-		void Dx::Cube::RegisterResources() {
+		void RegisterResources() {
 			m_psConstants = {
 					DirectX::XMFLOAT4(1.f, 0.5f, 0.5f, 1.f),
 					DirectX::XMFLOAT4(0.5f, 1.f, 0.5f, 1.f),
@@ -64,17 +64,17 @@ namespace Dx {
 			};
 
 			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(2, false, m_graphics, Vertices);
-			m_indexBuffer =		IndexBuffer::Create							(3, false, m_graphics, Indices);
-			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(4, false, m_graphics, m_psConstants);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(4, false, m_graphics, m_vsConstants, 1);
-			m_inputLayout =		InputLayout::Create							(5, false, m_graphics, Ieds, m_vertexShader);
-			m_indicesCount =		Indices.size();
+			m_indexBuffer =		IndexBuffer::Create							(2, false, m_graphics, Indices);
+			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(2, false, m_graphics, m_psConstants);
+			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(2, false, m_graphics, m_vsConstants, 1);
+			m_inputLayout =		InputLayout::Create							(2, false, m_graphics, Ieds, m_vertexShader);
+			m_indicesCount =		(UINT)Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
 			m_vsConstants.matrix = matrix;			
-			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer) ->Update(m_vsConstants);
+			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer)->Update(m_vsConstants);
 		}
 
 	private:

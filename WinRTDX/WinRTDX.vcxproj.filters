@@ -24,6 +24,9 @@
     <ClCompile Include="Level4.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Level5.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -90,6 +93,19 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Dx\Attachables</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Dx\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeTextured.h">
+      <Filter>Dx\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Level5.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="dds.h">
+      <Filter>Dx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -111,6 +127,15 @@
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\karin.dds">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\karin2.dds">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\karin3.dds">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>
@@ -175,5 +200,14 @@
     <FxCompile Include="PixelShader4.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="VertexShader4Textured.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader4Textured.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WinRTDX.rc" />
   </ItemGroup>
 </Project>

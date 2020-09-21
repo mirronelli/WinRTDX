@@ -36,7 +36,7 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = &constantData;
 
-			HRESULT hr = m_device->CreateBuffer(&desc, &srd, m_buffer.put());
+			m_device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
 		void AttachPrivate(bool force)

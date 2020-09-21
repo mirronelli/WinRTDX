@@ -8,6 +8,7 @@
 #include "PixelShader.h"
 #include "PSConstantBuffer.h"
 #include "VSConstantBuffer.h"
+#include "Texture.h"
 
 using namespace Dx::Attachables;
 namespace Dx {
@@ -19,6 +20,8 @@ namespace Dx {
 			std::shared_ptr<Graphics> graphics,
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader,
+
+			std::shared_ptr<Texture> texture = nullptr,
 
 			float x = 0, float y = 0, float z = 0,
 			float speedX = 0, float speedY = 0, float speedZ = 0,
@@ -32,6 +35,8 @@ namespace Dx {
 			m_vertexShader(vertexShader),
 			m_pixelShader(pixelShader),
 
+			m_texture(texture),
+
 			m_worldX(x), m_worldY(y), m_worldZ(z),
 			m_speedX(speedX), m_speedY(speedY), m_speedZ(speedZ),
 			m_rotationX(rotationX), m_rotationY(rotationY), m_rotationZ(rotationZ),
@@ -39,7 +44,7 @@ namespace Dx {
 			m_scaleX(scaleX), m_scaleY(scaleY), m_scaleZ(scaleZ),
 
 			m_indicesCount(0),
-			m_transformToWorld(DirectX::XMMatrixIdentity())
+			m_worldTransform(DirectX::XMMatrixIdentity())
 		{};
 		virtual ~Drawable() {};
 
@@ -55,7 +60,7 @@ namespace Dx {
 			m_worldY += m_speedY * delta;
 			m_worldZ += m_speedZ * delta;
 
-			m_transformToWorld = 
+			m_worldTransform = 
 				DirectX::XMMatrixScaling(m_scaleX, m_scaleY, m_scaleX)
 
 				// rotate object
@@ -82,10 +87,19 @@ namespace Dx {
 
 			if (m_vsConstantBuffer != nullptr)
 				m_vsConstantBuffer->Attach(force);
+
+			if (m_texture != nullptr)
+				m_texture->Attach(force);
+
+			if (m_vertexShader != nullptr)
+				m_vertexShader->Attach(force);
+
+			if (m_pixelShader != nullptr)
+				m_pixelShader->Attach(force);
 		}
 
 		void Draw() {
-			UpdateConstants(m_transformToWorld);
+			UpdateConstants(m_worldTransform);
 			AttachResources(false);
 			m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			m_context->DrawIndexed(m_indicesCount, 0, 0);
@@ -109,6 +123,8 @@ namespace Dx {
 		std::shared_ptr<VertexShader>					m_vertexShader;
 		std::shared_ptr<InputLayout>					m_inputLayout;
 		std::shared_ptr<IndexBuffer>					m_indexBuffer;
+
+		std::shared_ptr<Texture>						m_texture;
 
 		std::shared_ptr<Attachable>					m_vertexBuffer;
 		std::shared_ptr<Attachable>					m_psConstantBuffer;
@@ -135,6 +151,7 @@ namespace Dx {
 		float		m_scaleX;
 		float		m_scaleY;
 		float		m_scaleZ;
-		DirectX::XMMATRIX m_transformToWorld{};
+
+		DirectX::XMMATRIX m_worldTransform{};
 	};
 }

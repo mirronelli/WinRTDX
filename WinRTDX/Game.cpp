@@ -5,6 +5,7 @@
 #include "Level2.h"
 #include "Level3.h"
 #include "Level4.h"
+#include "Level5.h"
 
 using namespace winrt::Windows::UI::Core;
 
@@ -24,18 +25,24 @@ void Game::LoadLevel(byte name)
 {
 	//name = 4;
 	switch (name) {
-	case 1:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
-		break;
-	case 2:
-		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
-		break;
-	case 3:
-		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
-		break;
-	case 4:
-		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics);
-		break;
+		case 1:
+			m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+			break;
+		case 2:
+			m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
+			break;
+		case 3:
+			m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
+			break;
+		case 4:
+			m_level = std::make_unique<Dx::Levels::Level4>(m_graphics);
+			break;
+		case 5:
+			m_level = std::make_unique<Dx::Levels::Level5>(m_graphics);
+			break;
+		default:
+			m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+			break;
 	}
 
 	concurrency::task<void> loading = m_level->Load();
@@ -85,7 +92,8 @@ void Game::Tick()
 {
 	m_timer.Tick([&]()
 		{
-			Update(m_timer);
+			if(!m_stop)
+				Update(m_timer);
 		}
 	);
 	m_frame++;
@@ -103,11 +111,16 @@ void Game::Present()
 
 void Game::KeyUp(CoreWindow window, KeyEventArgs args)
 {
-	if (args.VirtualKey() == winrt::Windows::System::VirtualKey::Space)
-	{
+	switch (args.VirtualKey()) {
+	case winrt::Windows::System::VirtualKey::Space:
 		m_currentLevel++;
 		if (m_currentLevel > m_maxLevel)
 			m_currentLevel = 1;
+		m_stop = false;
+		break;
+	case winrt::Windows::System::VirtualKey::P:
+		m_stop = !m_stop;
+		break;
 	}
 }
 

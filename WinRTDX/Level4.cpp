@@ -9,8 +9,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 	return concurrency::create_task([this]
 		{
 			Dx::Attachables::ResourceManager::ClearCache();
-			m_VertexShader = VertexShader::Load(0, false, m_graphics, L"VertexShader4.cso");
-			m_PixelShader = PixelShader::Load(1, false, m_graphics, L"PixelShader4.cso");
+			m_vertexShaderSimple = VertexShader::Load(1, false, m_graphics, L"VertexShader4.cso");
+			m_pixelShaderSimple = PixelShader::Load(1, false, m_graphics, L"PixelShader4.cso");
 		}
 	);
 }
@@ -19,16 +19,16 @@ void Dx::Levels::Level4::SetupModel()
 {
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(rd());
-	std::uniform_real_distribution<float> location(-140.0, 140.0);
-	std::uniform_real_distribution<float> movementSpeed(.0, .0);
+	std::uniform_real_distribution<float> location(-140.0f, 140.0f);
+	std::uniform_real_distribution<float> movementSpeed(.0f, .0f);
 	std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
-	std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI/10., DirectX::XM_PI/10.);
-	std::uniform_real_distribution<float> scale(0.2,4.0);
+	std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI/10.f, DirectX::XM_PI/10.f);
+	std::uniform_real_distribution<float> scale(0.2f,4.0f);
 
 	for (int i = 0; i <= 5000; i++)
 	{
 		m_drawables.push_back(std::make_unique<Cube>(
-			m_graphics, m_VertexShader, m_PixelShader,
+			m_graphics, m_vertexShaderSimple, m_pixelShaderSimple, nullptr,
 			location(generator), location(generator), location(generator),
 			movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
 			startAngle(generator), startAngle(generator), startAngle(generator),
@@ -42,13 +42,10 @@ void Dx::Levels::Level4::SetupModel()
 		d->RegisterResources();
 	}
 
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(6, false, m_graphics, m_worldViewTransform, 0, false);
-
-	m_VertexShader->Attach(true);
-	m_PixelShader->Attach(true);
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_graphics, m_worldViewTransform, 0, false);
 	m_worldViewTransformConstantBuffer->Attach(false);
 
-	m_worldRotationSpeedY = 0.01;
+	m_worldRotationSpeedY = 0.01f;
 }
 
 void Dx::Levels::Level4::Update(float delta)

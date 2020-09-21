@@ -59,6 +59,5 @@ namespace Dx::Attachables
 	private:
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11VertexShader>	m_compiledShader;
-		std::shared_ptr<Dx::Graphics>	m_graphics;
 	};
 }

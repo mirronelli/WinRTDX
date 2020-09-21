@@ -24,8 +24,8 @@ namespace Dx::Levels
 
 	private:
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;
-		std::shared_ptr<VertexShader>											m_VertexShader;
-		std::shared_ptr<PixelShader>											m_PixelShader;
+		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
+		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
 
 		float																			m_worldRotationX{ 0 };
 		float																			m_worldRotationY{ 0 };
