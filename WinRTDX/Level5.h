@@ -14,13 +14,12 @@ namespace Dx::Levels
 	class Level5 : public ILevel
 	{
 	public:
-		Level5(std::shared_ptr<Dx::Graphics> graphics) : ILevel(graphics) {};
-
+		using ILevel::ILevel;
 		concurrency::task<void> Load();
 		void SetupModel();
 		void DrawCube(float angle, float x, float y, float z);
 		void Render();
-		void Update(float delta, KeyMap keyMap);
+		void Update(float delta);
 
 	private:
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;

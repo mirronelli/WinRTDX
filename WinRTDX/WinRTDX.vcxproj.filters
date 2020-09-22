@@ -103,16 +103,19 @@
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="dds.h">
-      <Filter>Dx</Filter>
-    </ClInclude>
     <ClInclude Include="Level6.h">
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Dx</Filter>
     </ClInclude>
-    <ClInclude Include="KeyMap.h">
+    <ClInclude Include="Dds.h">
+      <Filter>Dx</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardInput.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseInput.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

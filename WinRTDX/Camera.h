@@ -19,7 +19,7 @@ namespace Dx
 
 		void Rotate(float roll, float pitch, float yaw) 
 		{
-			m_lookingAt = XMVector3Transform( m_lookingAt, XMMatrixRotationRollPitchYaw(pitch, yaw, roll));
+			m_lookingAt = XMVector3NormalizeEst( XMVector3Transform( m_lookingAt, XMMatrixRotationRollPitchYaw(pitch, yaw, roll)));
 		}
 
 		void MoveForward(float length)

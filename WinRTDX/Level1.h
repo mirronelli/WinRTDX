@@ -4,9 +4,9 @@
 
 namespace Dx::Levels
 {
-
 	class Level1 : public ILevel
 	{
+
 		struct Vertex
 		{
 			float x, y, z, w; // vertex position
@@ -14,12 +14,11 @@ namespace Dx::Levels
 		};
 
 	public:
-		Level1(std::shared_ptr<Dx::Graphics> graphics) : ILevel(graphics) {};
-
+		using ILevel::ILevel;
 		concurrency::task<void> Load();
 		void SetupModel();
 		void Render();
-		void Update(float delta, KeyMap keyMap);
+		void Update(float delta);
 	
 	private:
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;

@@ -11,16 +11,15 @@
 using namespace winrt::Windows::UI::Core;
 
 Game::Game(CoreWindow const& window) :
-	m_parentWindow(window)
+	m_window(window)
 {
 }
 
 void Game::Init()
 {
 	m_graphics = std::make_shared<Dx::Graphics>();
-	m_graphics->SetWindow(m_parentWindow);
-	m_parentWindow.KeyUp({ this, &Game::KeyUp });
-	m_parentWindow.KeyDown({ this, &Game::KeyDown });
+	m_graphics->SetWindow(m_window);
+	m_keyMap = std::make_shared<Dx::KeyboardInput>(m_window);
 }
 
 void Game::LoadLevel(byte name)
@@ -28,25 +27,25 @@ void Game::LoadLevel(byte name)
 	//name = 4;
 	switch (name) {
 	case 1:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyMap);
 		break;
 	case 2:
-		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics, m_keyMap);
 		break;
 	case 3:
-		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics, m_keyMap);
 		break;
 	case 4:
-		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics, m_keyMap);
 		break;
 	case 5:
-		m_level = std::make_unique<Dx::Levels::Level5>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level5>(m_graphics, m_keyMap);
 		break;
 	case 6:
-		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics, m_keyMap);
 		break;
 	default:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics);
+		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyMap);
 		break;
 	}
 
@@ -75,14 +74,12 @@ void Game::Run()
 		Tick();
 		Render();
 		Present();
-
-		m_keyMap.Reset();
 	}
 }
 
 void Game::ProcessKeyboard()
 {
-	if (m_keyMap.IsSet(VirtualKey::Space))
+	if (m_keyMap->IsSet(VirtualKey::Space, true))
 	{
 		m_currentLevel++;
 		if (m_currentLevel > m_maxLevel)
@@ -90,20 +87,22 @@ void Game::ProcessKeyboard()
 		m_stop = false;
 	}
 
-	if (m_keyMap.IsSet(VirtualKey::P))
+	if (m_keyMap->IsSet(VirtualKey::P, true))
+	{
 		m_stop = !m_stop;
+	}
 }
 
 void Game::ProcessEvents()
 {
-	m_parentWindow.Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
+	m_window.Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
 }
 
-void Game::Update(Dx::StepTimer const& timer, Dx::KeyMap keyMap)
+void Game::Update(Dx::StepTimer const& timer)
 {
 	float delta = float(timer.GetElapsedSeconds());
 
-	m_level->Update(delta, keyMap);
+	m_level->Update(delta);
 
 	std::wostringstream debug;
 	debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
@@ -115,7 +114,7 @@ void Game::Tick()
 	m_timer.Tick([&]()
 		{
 			if (!m_stop)
-				Update(m_timer, m_keyMap);
+				Update(m_timer);
 		}
 	);
 	m_frame++;
@@ -129,16 +128,6 @@ void Game::Render()
 void Game::Present()
 {
 	m_graphics->Present();
-}
-
-void Game::KeyUp(CoreWindow window, KeyEventArgs args)
-{
-	m_keyMap.Set(args.VirtualKey());
-}
-
-void Game::KeyDown(CoreWindow window, KeyEventArgs args)
-{
-	m_keyMap.Set(args.VirtualKey());
 }
 
 void Game::Close()

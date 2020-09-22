@@ -10,14 +10,14 @@ namespace Dx::Levels
 
 	class Level3 : public ILevel
 	{
+		using ILevel::ILevel;
+		
 		struct Vertex
 		{
 			float x, y, z, w; // vertex position
 		};
 
 	public:
-		Level3(std::shared_ptr<Dx::Graphics> graphics) : ILevel(graphics) {};
-
 		concurrency::task<void> Load();
 		void CreateVertices();
 		void CreateIndices();
@@ -26,7 +26,7 @@ namespace Dx::Levels
 		void SetupModel();
 		void DrawCube(float angle, float x, float y, float z);
 		void Render();
-		void Update(float delta, KeyMap keyMap);
+		void Update(float delta);
 
 	private:
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;

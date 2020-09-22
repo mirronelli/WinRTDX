@@ -45,16 +45,6 @@ void Dx::Levels::Level5::SetupModel()
 		);
 	}
 
-	//std::unique_ptr<CubeTextured> cubeTextued = std::make_unique<CubeTextured>(
-	//	m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, m_texture,
-	//	0.f, 0.f, 6.0f,
-	//	0.f, 0.f, 0.f,
-	//	-1.5f, 0.f, 0.0f,
-	//	0.f, 0.0f, 0.0f
-	//);
-
-	//m_drawables.push_back(std::move(cubeTextued));
-
 	for (auto d : m_drawables) {
 		d->RegisterResources();
 	}
@@ -65,7 +55,7 @@ void Dx::Levels::Level5::SetupModel()
 	m_worldRotationSpeedY = 0.1f;
 }
 
-void Dx::Levels::Level5::Update(float delta, KeyMap keyMap)
+void Dx::Levels::Level5::Update(float delta)
 {
 	m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
 	m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
@@ -82,7 +72,6 @@ void Dx::Levels::Level5::Update(float delta, KeyMap keyMap)
 		m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
 	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2, m_graphics->Width() / m_graphics->Height(), .1f, 250.0f);
-	//m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), .1f, 250.0f);
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 

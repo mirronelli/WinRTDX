@@ -2,7 +2,7 @@
 #include "Graphics.h"
 #include "ILevel.h"
 #include "StepTimer.h"
-#include "KeyMap.h"
+#include "KeyboardInput.h"
 
 class Game
 {
@@ -17,17 +17,14 @@ public:
 private:
 	void ProcessEvents();
 	void ProcessKeyboard();
-	void Update(Dx::StepTimer const& timer, Dx::KeyMap keyMap);
+	void Update(Dx::StepTimer const& timer);
 	void Tick();
 	void Render();
 	void Present();
 
-	void KeyUp(CoreWindow window, KeyEventArgs args);
-	void KeyDown(CoreWindow window, KeyEventArgs args);
-
 	std::shared_ptr<Dx::Graphics>						m_graphics;
 	std::unique_ptr<Dx::Levels::ILevel>				m_level{ nullptr };
-	CoreWindow												m_parentWindow{ nullptr };
+	CoreWindow												m_window{ nullptr };
 	bool														m_isClosing = false;
 	Dx::StepTimer											m_timer;
 	ULONG64													m_frame = 0;
@@ -36,6 +33,6 @@ private:
 	byte														m_maxLevel = 6;
 	bool														m_stop = false;
 
-	Dx::KeyMap												m_keyMap;
+	std::shared_ptr<Dx::KeyboardInput>						m_keyMap{ nullptr };
 };
 

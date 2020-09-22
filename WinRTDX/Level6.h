@@ -19,8 +19,7 @@ namespace Dx::Levels
 	class Level6 : public ILevel
 	{
 	public:
-		Level6(std::shared_ptr<Dx::Graphics> graphics) : ILevel(graphics) {};
-
+		using ILevel::ILevel;
 		concurrency::task<void> Load()
 		{
 			return concurrency::create_task([this]
@@ -70,10 +69,25 @@ namespace Dx::Levels
 			m_worldRotationSpeedY = 0.f;
 		}
 
-		void Update(float delta, KeyMap keyMap)
+		void ProcessInput()
 		{
-			if (keyMap.IsSet(VirtualKey::Up))
-				m_camera.MoveForward(0.5);
+			if (m_keyMap->IsSet(VirtualKey::Up))
+				m_camera.MoveForward(m_cameraMovementSpeed);
+
+			if (m_keyMap->IsSet(VirtualKey::Down))
+				m_camera.MoveForward(-m_cameraMovementSpeed);
+
+			if (m_keyMap->IsSet(VirtualKey::Left))
+				m_camera.Rotate(0,0,-m_cameraRotationSpeed);
+
+			if (m_keyMap->IsSet(VirtualKey::Right))
+				m_camera.Rotate(0,0,m_cameraRotationSpeed);
+
+		}
+		
+		void Update(float delta)
+		{
+			ProcessInput();
 
 			m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
 			m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
@@ -90,7 +104,7 @@ namespace Dx::Levels
 				m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
 			m_worldViewTransform *= m_camera.GetMatrix();
-			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2, m_graphics->Width() / m_graphics->Height(), .1f, 250.0f);
+			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
 			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 			for (auto d : m_drawables)
@@ -125,6 +139,9 @@ namespace Dx::Levels
 		DirectX::XMMATRIX															m_worldViewTransform{};
 		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
 		Camera																		m_camera;
+
+		float																			m_cameraMovementSpeed = 1;
+		float																			m_cameraRotationSpeed = .03f;
 	};
 }
 
