@@ -8,8 +8,6 @@
 #include "Level5.h"
 #include "Level6.h"
 
-using namespace winrt::Windows::UI::Core;
-
 Game::Game(CoreWindow const& window) :
 	m_window(window)
 {
@@ -19,7 +17,8 @@ void Game::Init()
 {
 	m_graphics = std::make_shared<Dx::Graphics>();
 	m_graphics->SetWindow(m_window);
-	m_keyMap = std::make_shared<Dx::KeyboardInput>(m_window);
+	m_keyboardInput = std::make_shared<Dx::KeyboardInput>(m_window);
+	m_mouseInput = std::make_shared<Dx::MouseInput>(m_window);
 }
 
 void Game::LoadLevel(byte name)
@@ -27,25 +26,25 @@ void Game::LoadLevel(byte name)
 	//name = 4;
 	switch (name) {
 	case 1:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	case 2:
-		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	case 3:
-		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	case 4:
-		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	case 5:
-		m_level = std::make_unique<Dx::Levels::Level5>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level5>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	case 6:
-		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	default:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyMap);
+		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	}
 
@@ -79,7 +78,7 @@ void Game::Run()
 
 void Game::ProcessKeyboard()
 {
-	if (m_keyMap->IsSet(VirtualKey::Space, true))
+	if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Space, true))
 	{
 		m_currentLevel++;
 		if (m_currentLevel > m_maxLevel)
@@ -87,7 +86,7 @@ void Game::ProcessKeyboard()
 		m_stop = false;
 	}
 
-	if (m_keyMap->IsSet(VirtualKey::P, true))
+	if (m_keyboardInput->IsSet(Windows::System::VirtualKey::P, true))
 	{
 		m_stop = !m_stop;
 	}

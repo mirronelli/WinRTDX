@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 #include "ILevel.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 
 namespace Dx::Levels
 {
@@ -23,8 +25,10 @@ namespace Dx::Levels
 	private:
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;
 		com_ptr<ID3D11Buffer>	m_indexBuffer;
-		IBuffer						m_compiledVertexShader{ nullptr };
-		IBuffer						m_compiledPixelShader{ nullptr };
+
+		std::shared_ptr<Dx::Attachables::VertexShader>		m_vertexShader;
+		std::shared_ptr<Dx::Attachables::PixelShader>		m_pixelShader;
+
 		float							m_red{ 0 }, m_green{ 0 }, m_blue{ 0 };
 		float							m_elapsedTime{ 0 };
 		float							m_effectDuration{ 10.0f };

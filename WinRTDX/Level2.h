@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 #include "ILevel.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 #include "winrt/Windows.Foundation.Numerics.h"
 
 using namespace winrt::Windows::Foundation::Numerics;
@@ -31,11 +33,12 @@ namespace Dx::Levels
 		void Update(float delta);
 
 	private:
+		std::shared_ptr<Dx::Attachables::VertexShader>		m_vertexShader;
+		std::shared_ptr<Dx::Attachables::PixelShader>		m_pixelShader;
+
 		com_ptr<ID3D11Buffer>	m_vertexBuffer;
 		com_ptr<ID3D11Buffer>	m_indexBuffer;
 		com_ptr<ID3D11Buffer>	m_constantBuffer;
-		IBuffer						m_compiledVertexShader{ nullptr };
-		IBuffer						m_compiledPixelShader{ nullptr };
 
 		float							m_elapsedTime{ 0 };
 		float							m_effectDuration{ 5.f };

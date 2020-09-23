@@ -15,7 +15,7 @@ namespace Dx::Attachables
 			m_context(graphics->Context()),
 			m_key(key)
 		{};
-		void Attach(bool force) { AttachPrivate(force); };
+		void Attach(bool force = false) { AttachPrivate(force); };
 
 	protected:
 		virtual void AttachPrivate(bool force) = 0;

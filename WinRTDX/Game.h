@@ -33,6 +33,7 @@ private:
 	byte														m_maxLevel = 6;
 	bool														m_stop = false;
 
-	std::shared_ptr<Dx::KeyboardInput>						m_keyMap{ nullptr };
+	std::shared_ptr<Dx::KeyboardInput>				m_keyboardInput{ nullptr };
+	std::shared_ptr<Dx::MouseInput>					m_mouseInput{ nullptr };
 };
 

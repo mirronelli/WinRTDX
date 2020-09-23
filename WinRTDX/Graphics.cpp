@@ -201,45 +201,6 @@ void Dx::Graphics::StartFrame(float color[4])
 	m_context->ClearDepthStencilView(m_depthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
 }
 
-void Dx::Graphics::SetVertexShader(com_ptr<ID3D11VertexShader> const& shader)
-{
-	m_context->VSSetShader(shader.get(), nullptr, 0);
-}
-
-void Dx::Graphics::SetPixelShader(com_ptr<ID3D11PixelShader> const& shader)
-{
-	m_context->PSSetShader(shader.get(), nullptr, 0);
-}
-
-com_ptr<ID3D11VertexShader> Dx::Graphics::CreateVertexShader(IBuffer buffer)
-{
-	uint8_t* data = buffer.data();
-
-	com_ptr<ID3D11VertexShader> shader;
-	m_device->CreateVertexShader(
-		data,
-		buffer.Length(),
-		nullptr,
-		shader.put()
-	);
-
-	return shader;
-}
-
-com_ptr<ID3D11PixelShader> Dx::Graphics::CreatePixelShader(IBuffer buffer)
-{
-	uint8_t* data = buffer.data();
-
-	com_ptr<ID3D11PixelShader> shader;
-	m_device->CreatePixelShader(
-		data,
-		buffer.Length(),
-		nullptr,
-		shader.put()
-	);
-	return shader;
-}
-
 float Dx::Graphics::Width()
 {
 	return m_width;

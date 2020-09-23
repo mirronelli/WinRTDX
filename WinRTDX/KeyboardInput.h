@@ -1,8 +1,5 @@
 #pragma once
 #include "pch.h"
-#include <winrt/Windows.System.h>
-
-using namespace winrt::Windows::System;
 
 namespace Dx
 {
@@ -15,7 +12,7 @@ namespace Dx
 			m_window.KeyDown({ this, &KeyboardInput::KeyDown });
 		}
 
-		bool IsSet(VirtualKey key, bool autoReset = false)
+		bool IsSet(Windows::System::VirtualKey key, bool autoReset = false)
 		{
 			bool result = m_keyStates[key];
 			if (result && autoReset)
@@ -24,7 +21,7 @@ namespace Dx
 			return result;
 		}
 
-		void Reset(VirtualKey key)
+		void Reset(Windows::System::VirtualKey key)
 		{
 			m_keyStates[key] = false;
 		}
@@ -40,7 +37,7 @@ namespace Dx
 			m_keyStates[args.VirtualKey()] = true;
 		}
 
-		CoreWindow						m_window;
-		std::map<VirtualKey,bool>	m_keyStates;
+		CoreWindow												m_window;
+		std::map<Windows::System::VirtualKey, bool>	m_keyStates;
 	};
 }

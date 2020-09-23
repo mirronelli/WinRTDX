@@ -23,12 +23,6 @@ namespace Dx
 		com_ptr<ID3D11DeviceContext4> Context();
 		CoreWindow Window();
 
-		void SetVertexShader(com_ptr<ID3D11VertexShader> const& shader);
-		void SetPixelShader(com_ptr<ID3D11PixelShader> const& shader);
-
-		com_ptr<ID3D11VertexShader> CreateVertexShader(IBuffer buffer);
-		com_ptr<ID3D11PixelShader> CreatePixelShader(IBuffer buffer);
-
 		float Width();
 		float Height();
 		float MouseX();

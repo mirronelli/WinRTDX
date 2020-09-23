@@ -4,119 +4,119 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Game.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Dx</Filter>
-    </ClCompile>
-    <ClCompile Include="IO.cpp">
-      <Filter>Dx</Filter>
+      <Filter>Dx\Game</Filter>
     </ClCompile>
     <ClCompile Include="Level1.cpp">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClCompile>
     <ClCompile Include="Level3.cpp">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClCompile>
     <ClCompile Include="Level2.cpp">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClCompile>
     <ClCompile Include="Level4.cpp">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClCompile>
     <ClCompile Include="Level5.cpp">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Dx\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>Dx\IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="DxTools.h">
-      <Filter>Dx</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Dx</Filter>
-    </ClInclude>
-    <ClInclude Include="IO.h">
-      <Filter>Dx</Filter>
+      <Filter>Dx\Game</Filter>
     </ClInclude>
     <ClInclude Include="Level1.h">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="ILevel.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="StepTimer.h">
-      <Filter>Dx</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Level3.h">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Level2.h">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Level4.h">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
-      <Filter>Dx\Shapes</Filter>
+      <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="Drawable.h">
-      <Filter>Dx\Shapes</Filter>
+      <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="InputLayout.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="Attachable.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="PixelShader.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="PSConstantBuffer.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="VSConstantBuffer.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Dx\Attachables</Filter>
+      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="CubeTextured.h">
-      <Filter>Dx\Shapes</Filter>
+      <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="Level5.h">
-      <Filter>Levels</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Level6.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Dx</Filter>
-    </ClInclude>
-    <ClInclude Include="Dds.h">
-      <Filter>Dx</Filter>
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardInput.h">
-      <Filter>Game</Filter>
+      <Filter>Dx\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Dx\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Dx\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Dx\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Dds.h">
+      <Filter>Dx\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DxTools.h">
+      <Filter>Dx\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>Dx\IO</Filter>
     </ClInclude>
     <ClInclude Include="MouseInput.h">
-      <Filter>Game</Filter>
+      <Filter>Dx\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,26 +161,26 @@
     <Filter Include="Dx">
       <UniqueIdentifier>{5bfb178c-49f4-4511-b340-4235e9351304}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
+    <Filter Include="Dx\Game">
       <UniqueIdentifier>{83a338da-8688-4b40-978c-fabec5eefa68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{9ad4c64f-d2e2-402c-92b9-1186889c9ac8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels">
+    <Filter Include="Dx\Game\Levels">
       <UniqueIdentifier>{4fa04f32-faae-4c44-bb29-99f2f0c58d94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dx\Shapes">
-      <UniqueIdentifier>{b9ecc9a9-2bb3-4d0e-921b-4795a6f9d0c8}</UniqueIdentifier>
+    <Filter Include="Dx\Graphics">
+      <UniqueIdentifier>{8a46e321-98d3-4520-b7d9-04d7a98d3ee0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dx\Attachables">
+    <Filter Include="Dx\IO">
+      <UniqueIdentifier>{ce28814c-b75d-4564-9653-2b0f85ee2a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dx\Graphics\Attachables">
       <UniqueIdentifier>{8aea8585-4468-4573-81fe-dae55b3b553e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dx\Shaders">
-      <UniqueIdentifier>{9c300f4f-a2e5-40ba-b1bc-0721e33870ee}</UniqueIdentifier>
+    <Filter Include="Dx\Graphics\Shaders">
+      <UniqueIdentifier>{9ad4c64f-d2e2-402c-92b9-1186889c9ac8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{90debd93-5e08-40d5-9033-40bce7ce3c5b}</UniqueIdentifier>
+    <Filter Include="Dx\Graphics\Drawables">
+      <UniqueIdentifier>{b9ecc9a9-2bb3-4d0e-921b-4795a6f9d0c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -188,38 +188,35 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader3.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader3.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader2.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader2.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader4.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader4.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader4Textured.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader4Textured.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

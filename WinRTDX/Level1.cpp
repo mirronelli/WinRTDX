@@ -2,15 +2,14 @@
 #include "Level1.h"
 #include "IO.h"
 
+using namespace Dx::Attachables;
+
 concurrency::task<void> Dx::Levels::Level1::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_compiledVertexShader = IO::ReadFile(L"VertexShader.cso");
-			m_graphics->SetVertexShader(m_graphics->CreateVertexShader(m_compiledVertexShader));
-
-			m_compiledPixelShader = IO::ReadFile(L"PixelShader.cso");
-			m_graphics->SetPixelShader(m_graphics->CreatePixelShader(m_compiledPixelShader));
+			m_vertexShader = VertexShader::Load(1, true, m_graphics, L"VertexShader.cso");
+			m_pixelShader = PixelShader::Load(1, true, m_graphics, L"PixelShader.cso");
 		}
 	);
 }
@@ -36,8 +35,8 @@ void Dx::Levels::Level1::SetupModel()
 	m_graphics->Device()->CreateInputLayout(
 		ieds,
 		ARRAYSIZE(ieds),
-		m_compiledVertexShader.data(),
-		m_compiledVertexShader.Length(),
+		m_vertexShader->Data(),
+		m_vertexShader->Length(),
 		inputLayout.put()
 	);
 	m_graphics->Context()->IASetInputLayout(inputLayout.get());
@@ -63,6 +62,8 @@ void Dx::Levels::Level1::SetupModel()
 	indexBufferDesc.StructureByteStride = sizeof(unsigned short);
 	D3D11_SUBRESOURCE_DATA srdIndices = { indices, 0, 0 };
 	m_graphics->Device()->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
+	m_vertexShader->Attach(true);
+	m_pixelShader->Attach(true);
 }
 
 void Dx::Levels::Level1::Render()

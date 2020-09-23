@@ -71,7 +71,7 @@ void Dx::Levels::Level5::Update(float delta)
 	if (m_worldRotationY != 0)
 		m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
-	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2, m_graphics->Width() / m_graphics->Height(), .1f, 250.0f);
+	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 250.0f);
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 

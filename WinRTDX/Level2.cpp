@@ -3,16 +3,14 @@
 #include "IO.h"
 #include <DirectXMath.h>
 
+using namespace Dx::Attachables;
 
 concurrency::task<void> Dx::Levels::Level2::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_compiledVertexShader = IO::ReadFile(L"VertexShader2.cso");
-			m_graphics->SetVertexShader(m_graphics->CreateVertexShader(m_compiledVertexShader));
-
-			m_compiledPixelShader = IO::ReadFile(L"PixelShader2.cso");
-			m_graphics->SetPixelShader(m_graphics->CreatePixelShader(m_compiledPixelShader));
+			m_vertexShader = VertexShader::Load(1, true, m_graphics, L"VertexShader2.cso");
+			m_pixelShader = PixelShader::Load(1, true, m_graphics, L"PixelShader2.cso");
 		}
 	);
 }
@@ -28,8 +26,8 @@ void Dx::Levels::Level2::CreateVertices()
 	m_device->CreateInputLayout(
 		ieds,
 		ARRAYSIZE(ieds),
-		m_compiledVertexShader.data(),
-		m_compiledVertexShader.Length(),
+		m_vertexShader->Data(),
+		m_vertexShader->Length(),
 		inputLayout.put()
 	);
 	m_context->IASetInputLayout(inputLayout.get());
@@ -49,6 +47,8 @@ void Dx::Levels::Level2::CreateVertices()
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
 
 	m_device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
+	m_vertexShader->Attach(true);
+	m_pixelShader->Attach(true);
 }
 
 void Dx::Levels::Level2::CreateIndices()

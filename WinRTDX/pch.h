@@ -12,6 +12,7 @@
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Windows.System.h>
+#include "winrt/Windows.Devices.Input.h"
 
 #include <dxgi1_6.h>
 #include <d3d11_3.h>

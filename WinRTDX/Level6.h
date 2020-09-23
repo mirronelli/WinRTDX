@@ -71,18 +71,26 @@ namespace Dx::Levels
 
 		void ProcessInput()
 		{
-			if (m_keyMap->IsSet(VirtualKey::Up))
+			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
 				m_camera.MoveForward(m_cameraMovementSpeed);
 
-			if (m_keyMap->IsSet(VirtualKey::Down))
+			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
 				m_camera.MoveForward(-m_cameraMovementSpeed);
 
-			if (m_keyMap->IsSet(VirtualKey::Left))
-				m_camera.Rotate(0,0,-m_cameraRotationSpeed);
+			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
+				m_camera.Strafe(-m_cameraMovementSpeed);
 
-			if (m_keyMap->IsSet(VirtualKey::Right))
-				m_camera.Rotate(0,0,m_cameraRotationSpeed);
+			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
+				m_camera.Strafe(m_cameraMovementSpeed);
 
+			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
+				m_mouseInput->RelativeTrackingEnter();
+
+			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
+				m_mouseInput->RelativeTrackingExit();
+
+			//m_camera.Rotate(0, 0.01, 0);
+			m_camera.Rotate(0, -m_mouseInput->RelativeDeltaY() * m_mouseSensitivity, m_mouseInput->RelativeDeltaX() * m_mouseSensitivity);
 		}
 		
 		void Update(float delta)
@@ -104,7 +112,10 @@ namespace Dx::Levels
 				m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
 			m_worldViewTransform *= m_camera.GetMatrix();
-			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
+			//m_worldViewTransform *= DirectX::XMMatrixOrthographicLH(m_graphics->Width()/10, m_graphics->Height()/10, .1f, 1000.0f);
+			//m_worldViewTransform *= DirectX::XMMatrixPerspectiveLH(160, 90, 10.f, 100.0f);
+			//m_worldViewTransform *= DirectX::XMMatrixOrthographicLH(m_graphics->Width(), m_graphics->Height(), .1f, 1000.0f);
+			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
 			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 			for (auto d : m_drawables)
@@ -142,6 +153,7 @@ namespace Dx::Levels
 
 		float																			m_cameraMovementSpeed = 1;
 		float																			m_cameraRotationSpeed = .03f;
+		float																			m_mouseSensitivity	 = .0006f;
 	};
 }
 
