@@ -30,16 +30,16 @@ void Dx::Graphics::CreateDeviceResources()
 
 	winrt::com_ptr<ID3D11Device> device;
 	winrt::com_ptr<ID3D11DeviceContext> context;
-	winrt::com_ptr<IDXGIAdapter4> adapter;
-	winrt::com_ptr<IDXGIFactory7> dxgiFactory;
+	//winrt::com_ptr<IDXGIAdapter4> adapter;
+	//winrt::com_ptr<IDXGIFactory7> dxgiFactory;
 
 
-	CreateDXGIFactory1(__uuidof(IDXGIFactory7), dxgiFactory.put_void());
-	adapter = Dx::Tools::GetPreferredAdapter(dxgiFactory);
+	//CreateDXGIFactory1(__uuidof(IDXGIFactory7), dxgiFactory.put_void());
+	//adapter = Dx::Tools::GetPreferredAdapter(dxgiFactory);
 
 	D3D11CreateDevice(
-		adapter.get(),									// Specify nullptr to use the default adapter.
-		D3D_DRIVER_TYPE_UNKNOWN,					// Create a device using the hardware graphics driver.
+		nullptr,									// Specify nullptr to use the default adapter.
+		D3D_DRIVER_TYPE_HARDWARE,					// Create a device using the hardware graphics driver.
 		0,													// Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
 		creationFlags,									// Set debug and Direct2D compatibility flags.
 		requestedFeatureLevels,						// List of feature levels this app can support.
@@ -50,11 +50,18 @@ void Dx::Graphics::CreateDeviceResources()
 		context.put()									// Returns the device immediate context.
 	);
 
-	Dx::Tools::DisplayAdapterDetails(adapter);
-
 	m_device = device.as<ID3D11Device3>();
 	m_context = context.as<ID3D11DeviceContext4>();
-	m_factory = dxgiFactory.as<IDXGIFactory7>();
+
+	com_ptr<IDXGIDevice3> dxgiDevice;
+	dxgiDevice = m_device.as<IDXGIDevice3>();
+
+	com_ptr<IDXGIAdapter> dxgiAdapter;
+	dxgiDevice->GetAdapter(dxgiAdapter.put());
+
+	dxgiAdapter->GetParent(IID_PPV_ARGS(&m_factory));
+
+	Dx::Tools::DisplayAdapterDetails(dxgiAdapter);
 }
 
 void Dx::Graphics::CreateWindowSizeDependentResources()

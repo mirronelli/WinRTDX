@@ -34,7 +34,7 @@ namespace Dx::Tools
 		return adapter;
 	}
 
-	void DisplayAdapterDetails(winrt::com_ptr<IDXGIAdapter4> adapter)
+	void DisplayAdapterDetails(winrt::com_ptr<IDXGIAdapter> adapter)
 	{
 		DXGI_ADAPTER_DESC adapterDesc;
 		adapter->GetDesc(&adapterDesc);
