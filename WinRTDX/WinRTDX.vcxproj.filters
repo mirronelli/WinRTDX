@@ -118,6 +118,9 @@
     <ClInclude Include="MouseInput.h">
       <Filter>Dx\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Level7.h">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -212,10 +215,16 @@
     <FxCompile Include="PixelShader4.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader4Textured.hlsl">
+    <FxCompile Include="VertexShader7.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader4Textured.hlsl">
+    <FxCompile Include="PixelShader7.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader5_6.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader5_6.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -25,7 +25,7 @@ namespace Dx
 		{};
 
 
-		void Rotate(float roll, float pitch, float yaw) 
+		void Rotate(float pitch, float yaw) 
 		{
 			if (yaw != 0)
 				m_lookingAt = XMVector3Normalize( XMVector3Transform( m_lookingAt, XMMatrixRotationNormal(m_headDirection, yaw)));
@@ -56,8 +56,6 @@ namespace Dx
 			);
 		}
 	private:
-
-
 		XMVECTOR		m_lookingAt;
 		XMVECTOR		m_lookingAtNormal;
 		XMVECTOR		m_headDirection;

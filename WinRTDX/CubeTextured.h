@@ -38,28 +38,28 @@ namespace Dx {
 																																		   
 			{ XMFLOAT3(  1.0f,	 1.0f, -1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  0.5f, 0.0f )},  // 4
 			{ XMFLOAT3(  1.0f,	 1.0f,  1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  1.0f,  .0f )},  // 5
-			{ XMFLOAT3(  1.0f,	-1.0f,  1.0f ), XMFLOAT3(  1.0f,  0.0f,  1.0f ), XMFLOAT2(  1.0f,  .5f )},  // 6
+			{ XMFLOAT3(  1.0f,	-1.0f,  1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  1.0f,  .5f )},  // 6
 			{ XMFLOAT3(  1.0f,	-1.0f, -1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  0.5f,  .5f )},  // 7
 																																		    
-			{ XMFLOAT3( -1.0f,	 1.0f, -1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  1.0f, 0.0f )},  // 8
-			{ XMFLOAT3( -1.0f,	 1.0f,  1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  0.5f,  .0f )},  // 9
-			{ XMFLOAT3( -1.0f,	-1.0f,  1.0f ), XMFLOAT3(  1.0f,  0.0f,  1.0f ), XMFLOAT2(  0.5f,  .5f )},  // 10
-			{ XMFLOAT3( -1.0f,	-1.0f, -1.0f ), XMFLOAT3(  1.0f,  0.0f,  0.0f ), XMFLOAT2(  1.0f,  .5f )},  // 11
+			{ XMFLOAT3( -1.0f,	 1.0f, -1.0f ), XMFLOAT3( -1.0f,  0.0f,  0.0f ), XMFLOAT2(  1.0f, 0.0f )},  // 8
+			{ XMFLOAT3( -1.0f,	 1.0f,  1.0f ), XMFLOAT3( -1.0f,  0.0f,  0.0f ), XMFLOAT2(  0.5f,  .0f )},  // 9
+			{ XMFLOAT3( -1.0f,	-1.0f,  1.0f ), XMFLOAT3( -1.0f,  0.0f,  0.0f ), XMFLOAT2(  0.5f,  .5f )},  // 10
+			{ XMFLOAT3( -1.0f,	-1.0f, -1.0f ), XMFLOAT3( -1.0f,  0.0f,  0.0f ), XMFLOAT2(  1.0f,  .5f )},  // 11
 
-			{ XMFLOAT3( -1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.0f, 0.0f )},  // 12
-			{ XMFLOAT3(  1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f,  .0f )},  // 13
-			{ XMFLOAT3(  1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f,  .5f )},  // 14
-			{ XMFLOAT3( -1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.0f,  .5f )},  // 15
+			{ XMFLOAT3( -1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f,  1.0f ), XMFLOAT2(  0.0f, 0.0f )},  // 12
+			{ XMFLOAT3(  1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f,  1.0f ), XMFLOAT2(  0.5f,  .0f )},  // 13
+			{ XMFLOAT3(  1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f,  1.0f ), XMFLOAT2(  0.5f,  .5f )},  // 14
+			{ XMFLOAT3( -1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f,  1.0f ), XMFLOAT2(  0.0f,  .5f )},  // 15
 
-			{ XMFLOAT3( -1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f, 0.5f )},  // 16
-			{ XMFLOAT3(  1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  1.0f, 0.5f )},  // 17
-			{ XMFLOAT3( -1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f, 1.0f )},  // 18
-			{ XMFLOAT3(  1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  1.0f, 1.0f )},  // 19
+			{ XMFLOAT3( -1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  1.0f,  0.0f ), XMFLOAT2(  0.5f, 0.5f )},  // 16
+			{ XMFLOAT3(  1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  1.0f,  0.0f ), XMFLOAT2(  1.0f, 0.5f )},  // 17
+			{ XMFLOAT3( -1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  1.0f,  0.0f ), XMFLOAT2(  0.5f, 1.0f )},  // 18
+			{ XMFLOAT3(  1.0f,	 1.0f,  1.0f ), XMFLOAT3(  0.0f,  1.0f,  0.0f ), XMFLOAT2(  1.0f, 1.0f )},  // 19
 
-			{ XMFLOAT3( -1.0f,	-1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.0f, 0.5f )},  // 20
-			{ XMFLOAT3(  1.0f,	-1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f, 0.5f )},  // 21
-			{ XMFLOAT3( -1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.0f, 1.0f )},  // 22
-			{ XMFLOAT3(  1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f, 1.0f )},  // 23
+			{ XMFLOAT3( -1.0f,	-1.0f, -1.0f ), XMFLOAT3(  0.0f, -1.0f,  0.0f ), XMFLOAT2(  0.0f, 0.5f )},  // 20
+			{ XMFLOAT3(  1.0f,	-1.0f, -1.0f ), XMFLOAT3(  0.0f, -1.0f,  0.0f ), XMFLOAT2(  0.5f, 0.5f )},  // 21
+			{ XMFLOAT3( -1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f, -1.0f,  0.0f ), XMFLOAT2(  0.0f, 1.0f )},  // 22
+			{ XMFLOAT3(  1.0f,	-1.0f,  1.0f ), XMFLOAT3(  0.0f, -1.0f,  0.0f ), XMFLOAT2(  0.5f, 1.0f )},  // 23
 
 		};
 
@@ -73,23 +73,14 @@ namespace Dx {
 			10, 9, 8,  // left
 			11, 10, 8,
 
-			14, 13, 12,
+			14, 13, 12, // back
 			15, 14, 12,
 
-			17, 16, 18,
+			17, 16, 18, // top
 			17, 18, 19,
 
-			22, 20, 21,
+			22, 20, 21, // bottom
 			23, 22, 21
-			//5, 6, 2,
-			//0, 7, 4,  // left
-			//0, 3, 7,
-			//0,	5, 1,  // top
-			//0, 4, 5,
-			//3, 2, 7,  // bottom
-			//2, 6, 7,
-			//4, 6, 5, // back
-			//4, 7, 6
 		};
 
 		void RegisterResources() {

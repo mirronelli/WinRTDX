@@ -16,7 +16,7 @@ using namespace Dx::Attachables;
 namespace Dx::Levels
 {
 
-	class Level6 : public ILevel
+	class Level7 : public ILevel
 	{
 	public:
 		using ILevel::ILevel;
@@ -25,8 +25,8 @@ namespace Dx::Levels
 			return concurrency::create_task([this]
 				{
 					Dx::Attachables::ResourceManager::ClearCache();
-					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader5_6.cso");
-					m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader5_6.cso");
+					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7.cso");
+					m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader7.cso");
 
 					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
 				}
@@ -63,7 +63,6 @@ namespace Dx::Levels
 
 			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_graphics, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
-			m_worldRotationSpeedY = 0.f;
 		}
 
 		void ProcessInput()
@@ -86,36 +85,19 @@ namespace Dx::Levels
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
 				m_mouseInput->RelativeTrackingExit();
 
-			//m_camera.Rotate(0, 0.01, 0);
 			m_camera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity,
+				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity, 
 				m_mouseInput->RelativeDeltaX() * m_mouseSensitivity
 			);
 		}
-		
+
 		void Update(float delta)
 		{
 			ProcessInput();
 
-			m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
-			m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
-			m_worldRotationZ = fmod(m_worldRotationZ + delta * m_worldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
-
-			m_worldViewTransform = DirectX::XMMatrixIdentity();
-			if (m_worldRotationZ != 0)
-				m_worldViewTransform *= DirectX::XMMatrixRotationZ(m_worldRotationZ);
-
-			if (m_worldRotationX != 0)
-				m_worldViewTransform *= DirectX::XMMatrixRotationX(m_worldRotationX);
-
-			if (m_worldRotationY != 0)
-				m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
-
-			m_worldViewTransform *= m_camera.GetMatrix();
-			//m_worldViewTransform *= DirectX::XMMatrixOrthographicLH(m_graphics->Width()/10, m_graphics->Height()/10, .1f, 1000.0f);
-			//m_worldViewTransform *= DirectX::XMMatrixPerspectiveLH(160, 90, 10.f, 100.0f);
-			//m_worldViewTransform *= DirectX::XMMatrixOrthographicLH(m_graphics->Width(), m_graphics->Height(), .1f, 1000.0f);
-			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
+			m_worldViewTransform = 
+				m_camera.GetMatrix()
+				* DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
 			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 			for (auto d : m_drawables)
@@ -139,21 +121,12 @@ namespace Dx::Levels
 		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
 		std::shared_ptr<Texture>												m_texture;
 
-		float																			m_worldRotationX{ 0 };
-		float																			m_worldRotationY{ 0 };
-		float																			m_worldRotationZ{ 0 };
-
-		float																			m_worldRotationSpeedX{ 0 };
-		float																			m_worldRotationSpeedY{ 0 };
-		float																			m_worldRotationSpeedZ{ 0 };
-
 		DirectX::XMMATRIX															m_worldViewTransform{};
 		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
 		Camera																		m_camera;
 
 		float																			m_cameraMovementSpeed = 1;
-		float																			m_cameraRotationSpeed = .03f;
-		float																			m_mouseSensitivity	 = .0006f;
+		float																			m_mouseSensitivity = .0006f;
 	};
 }
 

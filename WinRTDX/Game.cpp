@@ -7,6 +7,7 @@
 #include "Level4.h"
 #include "Level5.h"
 #include "Level6.h"
+#include "Level7.h"
 
 Game::Game(CoreWindow const& window) :
 	m_window(window)
@@ -42,6 +43,9 @@ void Game::LoadLevel(byte name)
 		break;
 	case 6:
 		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics, m_keyboardInput, m_mouseInput);
+		break;
+	case 7:
+		m_level = std::make_unique<Dx::Levels::Level7>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	default:
 		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyboardInput, m_mouseInput);
@@ -103,9 +107,9 @@ void Game::Update(Dx::StepTimer const& timer)
 
 	m_level->Update(delta);
 
-	std::wostringstream debug;
-	debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
-	OutputDebugString(debug.str().c_str());
+	//std::wostringstream debug;
+	//debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
+	//OutputDebugString(debug.str().c_str());
 }
 
 void Game::Tick()

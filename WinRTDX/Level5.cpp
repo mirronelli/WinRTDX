@@ -10,11 +10,8 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 	return concurrency::create_task([this]
 		{
 			Dx::Attachables::ResourceManager::ClearCache();
-			m_vertexShaderSimple = VertexShader::Load(1, false, m_graphics, L"VertexShader4.cso");
-			m_pixelShaderSimple = PixelShader::Load(1, false, m_graphics, L"PixelShader4.cso");
-
-			m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader4Textured.cso");
-			m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader4Textured.cso");
+			m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader5_6.cso");
+			m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader5_6.cso");
 
 			m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
 		}
