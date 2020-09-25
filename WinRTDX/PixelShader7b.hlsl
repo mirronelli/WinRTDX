@@ -23,10 +23,13 @@ float4 main(VsOutput input) : SV_TARGET
 {
     const float3 vectorToLight = lightPosition - input.worldPosition;
     const float distanceToLight = length(vectorToLight);
-    const float3 vectorToLightNormalized = vectorToLight / distanceToLight;
+    const float3 normalizedNormal = normalize(input.normal);
+    const float3 normalizedvectorToLight = normalize(vectorToLight);
+    
+    const float angleCoefficient = max(0.0f, dot(normalizedvectorToLight, normalizedNormal));
     
     const float attenuation = 1.0f / (attenuationConst + attenuationLinearity * distanceToLight + attenuationQuad * distanceToLight * distanceToLight);
-    const float3 diffusedColor = lightColor * diffueseIntensity * attenuation * max(0.0f, dot(vectorToLightNormalized, input.normal / length(input.normal)));
+    const float3 diffusedColor = lightColor * diffueseIntensity * attenuation * angleCoefficient;
     
     const float3 materialColor = input.color;
     return float4(materialColor * saturate(diffusedColor + ambientLight), 1.0f);

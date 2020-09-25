@@ -45,7 +45,7 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> location(-240.0f, 240.0f);
 			std::uniform_real_distribution<float> movementSpeed(.0f, .0f);
 			std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
-			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 10.f, DirectX::XM_PI / 10.f);
+			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 130.f, DirectX::XM_PI / 130.f);
 			std::uniform_real_distribution<float> scale(3.f, 3.0f);
 
 			for (int i = 0; i <= 1000; i++)
