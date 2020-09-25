@@ -59,7 +59,10 @@ void Dx::Graphics::CreateDeviceResources()
 	com_ptr<IDXGIAdapter> dxgiAdapter;
 	dxgiDevice->GetAdapter(dxgiAdapter.put());
 
-	dxgiAdapter->GetParent(IID_PPV_ARGS(&m_factory));
+	com_ptr<IDXGIFactory3> factory;
+	dxgiAdapter->GetParent(IID_PPV_ARGS(&factory));
+
+	m_factory = factory.as<IDXGIFactory7>();
 
 	Dx::Tools::DisplayAdapterDetails(dxgiAdapter);
 }

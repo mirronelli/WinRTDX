@@ -121,6 +121,9 @@
     <ClInclude Include="Level7.h">
       <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
+    <ClInclude Include="CubeColored.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -225,6 +228,12 @@
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader5_6.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader7b.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader7b.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

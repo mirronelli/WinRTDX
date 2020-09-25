@@ -3,7 +3,7 @@ SamplerState inSampler;
 
 struct VsOutput
 {
-    float2 textureCoordinates : TEXCOORD;
+    float3 color : COLOR;
     float4 position : SV_Position;
     float3 worldPosition : POSITION;
     float3 normal : NORMAL;
@@ -11,7 +11,7 @@ struct VsOutput
 
 static const float3 lightPosition = { 0.0f, 0.0f, 0.0f };
 static const float3 lightColor = { 1.0f, 0.5f, 1.0f };
-static const float3 ambientLight = { 0.06f, 0.06f, 0.06f };
+static const float3 ambientLight = { 0.08f, 0.08f, 0.08f };
 
 static const float diffueseIntensity = 1.0f;
 
@@ -28,6 +28,6 @@ float4 main(VsOutput input) : SV_TARGET
     const float attenuation = 1.0f / (attenuationConst + attenuationLinearity * distanceToLight + attenuationQuad * distanceToLight * distanceToLight);
     const float3 diffusedColor = lightColor * diffueseIntensity * attenuation * max(0.0f, dot(vectorToLightNormalized, input.normal / length(input.normal)));
     
-    const float3 materialColor = inTexture.Sample(inSampler, input.textureCoordinates);
-    return float4 (materialColor * saturate(diffusedColor + ambientLight), 1.0f);
+    const float3 materialColor = input.color;
+    return float4(materialColor * saturate(diffusedColor + ambientLight), 1.0f);
 }

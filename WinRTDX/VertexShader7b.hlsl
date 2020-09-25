@@ -2,12 +2,12 @@ struct Input
 {
     float3 position : POSITION;
     float3 normal : NORMAL;
-    float2 textureCoordinates : TEXCOORD;
+    float3 color : COLOR;
 };
 
 struct VsOutput
 {
-    float2 textureCoordinates : TEXCOORD;
+    float3 color : COLOR;
     float4 position : SV_Position;
     float3 worldPosition : POSITION;
     float3 normal : NORMAL;
@@ -32,7 +32,7 @@ VsOutput main(Input input)
     output.worldPosition = mul(float4(input.position, 1.0f), worldTransform);
     output.position = mul(float4(output.worldPosition, 1.0f), viewPerspectiveTransform);
     output.normal = mul(input.normal, (float3x3) worldTransform);
-    output.textureCoordinates = input.textureCoordinates;
+    output.color = input.color;
 	
     return output;
 }

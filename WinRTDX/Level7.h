@@ -5,6 +5,7 @@
 #include <random>
 
 #include "Drawable.h"
+#include "CubeColored.h"
 #include "CubeTextured.h"
 #include "ILevel.h"
 #include "IO.h"
@@ -25,8 +26,12 @@ namespace Dx::Levels
 			return concurrency::create_task([this]
 				{
 					Dx::Attachables::ResourceManager::ClearCache();
+
 					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7.cso");
+					m_vertexShaderTextured_b = VertexShader::Load(3, false, m_graphics, L"VertexShader7b.cso");
+
 					m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader7.cso");
+					m_pixelShaderTextured_b = PixelShader::Load(3, false, m_graphics, L"PixelShader7b.cso");
 
 					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
 				}
@@ -43,10 +48,24 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 10.f, DirectX::XM_PI / 10.f);
 			std::uniform_real_distribution<float> scale(3.f, 3.0f);
 
-			for (int i = 0; i <= 5000; i++)
+			for (int i = 0; i <= 1000; i++)
 			{
 				m_drawables.push_back(std::make_unique<CubeTextured>(
 					m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, m_texture,
+
+					location(generator), location(generator), location(generator),
+					movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
+					startAngle(generator), startAngle(generator), startAngle(generator),
+					rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator),
+					scale(generator), scale(generator), scale(generator)
+					)
+				);
+			}
+
+			for (int i = 0; i <= 500; i++)
+			{
+				m_drawables.push_back(std::make_unique<CubeColored>(
+					m_graphics, m_vertexShaderTextured_b, m_pixelShaderTextured_b, m_texture,
 
 					location(generator), location(generator), location(generator),
 					movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
@@ -106,7 +125,7 @@ namespace Dx::Levels
 
 		void Render()
 		{
-			float color[4]{ 0.3f, .0f, .1f, .2f };
+			float color[4]{ 0.0f, .0f, .02f, .0f };
 			m_graphics->StartFrame(color);
 
 			for (auto d : m_drawables)
@@ -118,7 +137,9 @@ namespace Dx::Levels
 		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
 		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
 		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
+		std::shared_ptr<VertexShader>											m_vertexShaderTextured_b;
 		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
+		std::shared_ptr<PixelShader>											m_pixelShaderTextured_b;
 		std::shared_ptr<Texture>												m_texture;
 
 		DirectX::XMMATRIX															m_worldViewTransform{};

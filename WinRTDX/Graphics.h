@@ -37,7 +37,7 @@ namespace Dx
 		// Direct3D objects.
 		com_ptr<ID3D11Device3>						m_device;
 		com_ptr<ID3D11DeviceContext4>				m_context;
-		com_ptr<IDXGIFactory3>						m_factory;
+		com_ptr<IDXGIFactory7>						m_factory;
 		com_ptr<IDXGISwapChain4>					m_swapChain;
 		com_ptr<ID3D11RenderTargetView>			m_renderTargetView;
 		com_ptr<ID3D11DepthStencilView>			m_depthStencilView;
