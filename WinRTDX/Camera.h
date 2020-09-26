@@ -24,6 +24,10 @@ namespace Dx
 			m_lookingAtNormal(XMVector3Normalize(XMVector3Cross(m_lookingAt, m_headDirection)))
 		{};
 
+		DirectX::XMVECTOR Position()
+		{
+			return m_position;
+		}
 
 		void Rotate(float pitch, float yaw) 
 		{

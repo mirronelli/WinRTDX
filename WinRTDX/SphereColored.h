@@ -25,6 +25,8 @@ namespace Dx {
 		void Prepare()
 		{
 			GenerateVerticesAndIndices();
+			m_sharedConstants.reflectionPower = 16;
+			m_sharedConstants.reflectiveness = 0.5;
 			m_prepared = true;
 		}
 
@@ -38,8 +40,14 @@ namespace Dx {
 		};
 
 		typedef struct {
+		} PSConstants;
+
+		typedef struct {
 			DirectX::XMMATRIX matrix;
-		} VSConstants;
+			float	reflectiveness;
+			float reflectionPower;
+			float2	padding;
+		} SharedConstants;
 
 		inline static std::vector<D3D11_INPUT_ELEMENT_DESC> Ieds{
 			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -53,17 +61,19 @@ namespace Dx {
 
 		void RegisterResources() {
 			assert(m_prepared);
-			m_vertexBuffer =		VertexBuffer<Vertex>::				Create(m_resourceCacheID, false, m_graphics, Vertices);
-			m_indexBuffer =		IndexBuffer::							Create(m_resourceCacheID, false, m_graphics, Indices);
-			m_vsConstantBuffer = VSConstantBuffer<VSConstants>::	Create(m_resourceCacheID, false, m_graphics, m_vsConstants, 1);
-			m_inputLayout =		InputLayout::							Create(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
+			m_vertexBuffer =		VertexBuffer<Vertex>::					Create(m_resourceCacheID, false, m_graphics, Vertices);
+			m_indexBuffer =		IndexBuffer::								Create(m_resourceCacheID, false, m_graphics, Indices);
+			m_vsConstantBuffer = VSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_graphics, m_sharedConstants, 2);
+			m_psConstantBuffer = PSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_graphics, m_sharedConstants, 2);
+			m_inputLayout =		InputLayout::								Create(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
 			m_indicesCount =		(int)Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
-			m_vsConstants.matrix = matrix;
-			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer)->Update(m_vsConstants);
+			m_sharedConstants.matrix = matrix;
+			std::static_pointer_cast<VSConstantBuffer<SharedConstants >> (m_vsConstantBuffer)->Update(m_sharedConstants);
+			std::static_pointer_cast<PSConstantBuffer<SharedConstants >> (m_psConstantBuffer)->Update(m_sharedConstants);
 		}
 
 	private:
@@ -167,7 +177,7 @@ namespace Dx {
 			}
 		}
 
-		VSConstants	m_vsConstants = {};
+		SharedConstants	m_sharedConstants = {};
 		int	m_steps;
 		XMFLOAT3 m_color = { 1,1,1 };
 		XMFLOAT3 m_colorMin;

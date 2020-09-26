@@ -5,7 +5,18 @@ SamplerState inSampler;
 
 cbuffer light : register(b0)
 {
-    Light lightBuffer;
+    LightBuffer lightBuffer;
+};
+
+cbuffer level : register(b1)
+{
+    LevelBuffer level;
+};
+
+// once per drawable
+cbuffer drawable : register(b2)
+{
+    DrawableBuffer drawable;
 };
 
 float4 main(VsColorOutput input) : SV_TARGET
@@ -20,7 +31,10 @@ float4 main(VsColorOutput input) : SV_TARGET
         lightBuffer.diffueseIntensity,
         lightBuffer.attenuationQuadratic,
         lightBuffer.attenuationLinear,
-        lightBuffer.attenuationConstant
+        lightBuffer.attenuationConstant,
+        drawable.reflectiveness,
+        drawable.reflectivePower,
+        level.cameraPosition
     );
         
     return float4(materialColor * light, 1.0f);

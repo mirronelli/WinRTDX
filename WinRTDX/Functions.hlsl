@@ -7,10 +7,14 @@ export float3 mLightIntensity(
     float diffusionIntensity,
     float attenuationQuadratic,
     float attenuationLinear,
-    float attenuationConstant
+    float attenuationConstant,
+    float reflectiveness,
+    float reflectivePower,
+    float3 cameraPosition
 )
 {
     float3 vectorToLight = pointLightPosition - pixelWorldPosition;
+    float3 vectorToCamera = cameraPosition - pixelWorldPosition;
     float distanceToLight = length(vectorToLight);
     
     float3 normalizedNormal = normalize(pixelNormal);
@@ -20,7 +24,10 @@ export float3 mLightIntensity(
     float attenuation = 1.0f / (attenuationConstant + attenuationLinear*distanceToLight + attenuationQuadratic * distanceToLight * distanceToLight);
     float3 diffusedLight = pointLight * diffusionIntensity * attenuation * angleCoefficient;
     
-    return saturate(diffusedLight + ambientLight);
+    float3 reflectionVector = 2.0 * normalizedNormal * dot(normalizedvectorToLight, normalizedNormal) - normalizedvectorToLight;
+    float3 specularLight = pow(saturate(dot(reflectionVector, normalize(vectorToCamera))), reflectivePower) * reflectiveness;
+
+    return saturate(diffusedLight + ambientLight + specularLight);
 }
 
 struct VsColorInput
@@ -53,7 +60,7 @@ struct VsTextureInput
     float2 textureCoordinates : TEXCOORD;
 };
 
-struct Light
+struct LightBuffer
 {
     float4 lightPosition;
     float4 lightColor;
@@ -62,4 +69,17 @@ struct Light
     float attenuationQuadratic;
     float attenuationLinear;
     float attenuationConstant;
+};
+
+struct DrawableBuffer
+{
+    row_major matrix worldTransform;
+    float reflectiveness;
+    float reflectivePower;
+};
+
+struct LevelBuffer
+{
+    row_major matrix viewPerspectiveTransform;
+    float3 cameraPosition;
 };

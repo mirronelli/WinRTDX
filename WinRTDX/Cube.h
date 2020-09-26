@@ -66,7 +66,7 @@ namespace Dx {
 			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(m_resourceCacheID, false, m_graphics, Vertices);
 			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, m_graphics, Indices);
 			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(m_resourceCacheID, false, m_graphics, m_psConstants);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_graphics, m_vsConstants, 1);
+			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_graphics, m_vsConstants, 2);
 			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
 			m_indicesCount =		(UINT)Indices.size();
 		}

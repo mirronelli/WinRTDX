@@ -3,9 +3,22 @@
 Texture2D inTexture;
 SamplerState inSampler;
 
+// once per level
 cbuffer light : register(b0)
 {
-    Light lightBuffer;
+    LightBuffer lightBuffer;
+};
+
+// once per frame
+cbuffer levelData : register(b1)
+{
+    LevelBuffer level;
+};
+
+// once per drawable
+cbuffer drawable : register(b2)
+{
+    DrawableBuffer drawable;
 };
 
 float4 main(VsTextureOutput input) : SV_TARGET
@@ -20,7 +33,10 @@ float4 main(VsTextureOutput input) : SV_TARGET
         lightBuffer.diffueseIntensity,
         lightBuffer.attenuationQuadratic,
         lightBuffer.attenuationLinear,
-        lightBuffer.attenuationConstant
+        lightBuffer.attenuationConstant,
+        drawable.reflectiveness,
+        drawable.reflectivePower,
+        level.cameraPosition
     );
         
     return float4(materialColor * light, 1.0f);
