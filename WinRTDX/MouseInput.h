@@ -79,8 +79,8 @@ namespace Dx
 		CoreWindow										m_window;
 		Windows::Devices::Input::MouseDevice	m_mouse;
 		bool												m_inRelativeTracking = false;
-		float												m_pointerX;
-		float												m_pointerY;
+		float												m_pointerX = 0;
+		float												m_pointerY = 0;
 		float												m_deltaX = 0;
 		float												m_deltaY = 0;
 	};

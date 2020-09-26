@@ -107,9 +107,9 @@ void Game::Update(Dx::StepTimer const& timer)
 
 	m_level->Update(delta);
 
-	//std::wostringstream debug;
-	//debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
-	//OutputDebugString(debug.str().c_str());
+	std::wostringstream debug;
+	debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
+	OutputDebugString(debug.str().c_str());
 }
 
 void Game::Tick()

@@ -29,7 +29,7 @@ VsOutput main(Input input)
 	
     VsOutput output;
     
-    output.worldPosition = mul(float4(input.position, 1.0f), worldTransform);
+    output.worldPosition = (float3) mul(float4(input.position, 1.0f), worldTransform);
     output.position = mul(float4(output.worldPosition, 1.0f), viewPerspectiveTransform);
     output.normal = mul(input.normal, (float3x3) worldTransform);
     output.color = input.color;

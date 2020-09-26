@@ -30,23 +30,38 @@ void Dx::Levels::Level5::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		m_drawables.push_back(std::make_unique<CubeTextured>(
-			m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, m_texture,
+		auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1);
 
-			location(generator),				location(generator),				location(generator),
-			movementSpeed(generator),		movementSpeed(generator),		movementSpeed(generator),
-			startAngle(generator),			startAngle(generator),			startAngle(generator),
-			rotationSpeed(generator),		rotationSpeed(generator),		rotationSpeed(generator),
-			scale(generator),					scale(generator),					scale(generator)
-			)
-		);
+		cube->WorldX(location(generator));
+		cube->WorldY(location(generator));
+		cube->WorldZ(location(generator));
+
+		cube->SpeedX(movementSpeed(generator));
+		cube->SpeedY(movementSpeed(generator));
+		cube->SpeedZ(movementSpeed(generator));
+
+		cube->RotationX(startAngle(generator));
+		cube->RotationY(startAngle(generator));
+		cube->RotationZ(startAngle(generator));
+
+		cube->RotationSpeedX(rotationSpeed(generator));
+		cube->RotationSpeedY(rotationSpeed(generator));
+		cube->RotationSpeedZ(rotationSpeed(generator));
+
+		cube->ScaleX(scale(generator));
+		cube->ScaleY(scale(generator));
+		cube->ScaleZ(scale(generator));
+
+		cube->Texture(m_texture);
+
+		m_drawables.push_back(std::move(cube)); 
 	}
 
 	for (auto d : m_drawables) {
 		d->RegisterResources();
 	}
 
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_graphics, m_worldViewTransform, 0, false);
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(2u, false, m_graphics, m_worldViewTransform, 0, false);
 	m_worldViewTransformConstantBuffer->Attach(false);
 
 	m_worldRotationSpeedY = 0.1f;

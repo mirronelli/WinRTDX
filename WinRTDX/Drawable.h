@@ -19,35 +19,17 @@ namespace Dx {
 		Drawable(
 			std::shared_ptr<Graphics> graphics,
 			std::shared_ptr<VertexShader> vertexShader,
-			std::shared_ptr<PixelShader> pixelShader,
-
-			std::shared_ptr<Texture> texture = nullptr,
-
-			float x = 0, float y = 0, float z = 0,
-			float speedX = 0, float speedY = 0, float speedZ = 0,
-			float rotationX = 0, float rotationY = 0, float rotationZ = 0,
-			float rotationSpeedX = 0, float rotationSpeedY = 0, float rotationSpeedZ = 0,
-			float scaleX = 1, float scaleY = 1, float scaleZ = 1
+			std::shared_ptr<PixelShader> pixelShader, 
+			uint16_t resourceCacheID
 		) :
 			m_graphics(graphics), 
 			m_device(graphics->Device()), 
 			m_context(graphics->Context()),
 			m_vertexShader(vertexShader),
 			m_pixelShader(pixelShader),
-
-			m_texture(texture),
-
-			m_worldX(x), m_worldY(y), m_worldZ(z),
-			m_speedX(speedX), m_speedY(speedY), m_speedZ(speedZ),
-			m_rotationX(rotationX), m_rotationY(rotationY), m_rotationZ(rotationZ),
-			m_rotationSpeedX(rotationSpeedX), m_rotationSpeedY(rotationSpeedY), m_rotationSpeedZ(rotationSpeedZ),
-			m_scaleX(scaleX), m_scaleY(scaleY), m_scaleZ(scaleZ),
-
-			m_indicesCount(0),
-			m_worldTransform(DirectX::XMMatrixIdentity())
+			m_resourceCacheID(resourceCacheID)
 		{};
 		virtual ~Drawable() {};
-
 		virtual void RegisterResources() = 0;
 		virtual void UpdateConstants(DirectX::CXMMATRIX) = 0;
 
@@ -105,53 +87,66 @@ namespace Dx {
 			m_context->DrawIndexed(m_indicesCount, 0, 0);
 		};
 
-		void DrawAt(float delta, float x, float y, float z) {
-			m_worldX = x;
-			m_worldY = y;
-			m_worldZ = z;
+		void Texture(std::shared_ptr<Attachables::Texture> value) { m_texture = value; }
+		
+		void WorldX(float value) { m_worldX = value; }
+		void WorldY(float value) { m_worldY = value; }
+		void WorldZ(float value) { m_worldZ = value; }
 
-			Update(delta);
-			Draw();
-		}
+		void SpeedX(float value) { m_speedX = value; }
+		void SpeedY(float value) { m_speedY = value; }
+		void SpeedZ(float value) { m_speedZ = value; }
+		
+		void RotationSpeedX(float value) { m_rotationSpeedX = value; }
+		void RotationSpeedY(float value) { m_rotationSpeedY = value; }
+		void RotationSpeedZ(float value) { m_rotationSpeedZ = value; }
+		
+		void RotationX(float value) { m_rotationX = value; }
+		void RotationY(float value) { m_rotationY = value; }
+		void RotationZ(float value) { m_rotationZ = value; }
+		
+		void ScaleX(float value) { m_scaleX = value; }
+		void ScaleY(float value) { m_scaleY = value; }
+		void ScaleZ(float value) { m_scaleZ = value; }
 
 	protected:
 		std::shared_ptr<Graphics>						m_graphics;
 		com_ptr<ID3D11Device3>							m_device;
 		com_ptr<ID3D11DeviceContext4>					m_context;
 
+		uint16_t												m_resourceCacheID;
 		std::shared_ptr<PixelShader>					m_pixelShader;
 		std::shared_ptr<VertexShader>					m_vertexShader;
-		std::shared_ptr<InputLayout>					m_inputLayout;
-		std::shared_ptr<IndexBuffer>					m_indexBuffer;
-
-		std::shared_ptr<Texture>						m_texture;
-
 		std::shared_ptr<Attachable>					m_vertexBuffer;
+		std::shared_ptr<IndexBuffer>					m_indexBuffer;
+		std::shared_ptr<InputLayout>					m_inputLayout;
+
+		std::shared_ptr<Attachables::Texture>		m_texture;
+
 		std::shared_ptr<Attachable>					m_psConstantBuffer;
 		std::shared_ptr<Attachable>					m_vsConstantBuffer;
 
-		UINT													m_indicesCount;
-		// state
-		float		m_worldX;
-		float		m_worldY;
-		float		m_worldZ;
+		UINT m_indicesCount = 0;
+		DirectX::XMMATRIX m_worldTransform;
 
-		float		m_speedX;
-		float		m_speedY;
-		float		m_speedZ;
+		float	m_worldX	= 0; 
+		float	m_worldY = 0;
+		float	m_worldZ = 0;
 
-		float		m_rotationSpeedX;
-		float		m_rotationSpeedY;
-		float		m_rotationSpeedZ;
+		float	m_speedX	= 0;
+		float	m_speedY	= 0;
+		float	m_speedZ	= 0;
 
-		float		m_rotationX;
-		float		m_rotationY;
-		float		m_rotationZ;
+		float	m_rotationSpeedX = 0;
+		float	m_rotationSpeedY = 0;
+		float	m_rotationSpeedZ = 0;
 
-		float		m_scaleX;
-		float		m_scaleY;
-		float		m_scaleZ;
+		float	m_rotationX	= 0;
+		float	m_rotationY	= 0;
+		float	m_rotationZ	= 0;
 
-		DirectX::XMMATRIX m_worldTransform{};
+		float	m_scaleX	= 1;
+		float	m_scaleY	= 1;
+		float	m_scaleZ	= 1;
 	};
 }

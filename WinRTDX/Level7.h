@@ -6,10 +6,12 @@
 
 #include "Drawable.h"
 #include "CubeColored.h"
+#include "SphereColored.h"
 #include "CubeTextured.h"
 #include "ILevel.h"
 #include "IO.h"
 #include "Camera.h"
+#include <DirectXMath.h>
 
 using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
@@ -30,8 +32,9 @@ namespace Dx::Levels
 					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7.cso");
 					m_vertexShaderTextured_b = VertexShader::Load(3, false, m_graphics, L"VertexShader7b.cso");
 
-					m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader7.cso");
+					m_pixelShaderTextured	= PixelShader::Load(2, false, m_graphics, L"PixelShader7.cso");
 					m_pixelShaderTextured_b = PixelShader::Load(3, false, m_graphics, L"PixelShader7b.cso");
+					m_pixelShaderTextured_c = PixelShader::Load(4, false, m_graphics, L"PixelShader7c.cso");
 
 					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
 				}
@@ -45,42 +48,126 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> location(-240.0f, 240.0f);
 			std::uniform_real_distribution<float> movementSpeed(.0f, .0f);
 			std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
-			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 130.f, DirectX::XM_PI / 130.f);
-			std::uniform_real_distribution<float> scale(3.f, 3.0f);
+			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 50.f, DirectX::XM_PI / 50.f);
+			std::uniform_real_distribution<float> scale(1.f, 6.0f);
+			std::uniform_real_distribution<float> color(0.f, 1.0f);
 
-			for (int i = 0; i <= 1000; i++)
+
+			for (int i = 0; i <= 100; i++)
 			{
-				m_drawables.push_back(std::make_unique<CubeTextured>(
-					m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, m_texture,
+				float radius = scale(generator);
+				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
 
-					location(generator), location(generator), location(generator),
-					movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
-					startAngle(generator), startAngle(generator), startAngle(generator),
-					rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator),
-					scale(generator), scale(generator), scale(generator)
-					)
-				);
+				cube->WorldX(location(generator));
+				cube->WorldY(location(generator));
+				cube->WorldZ(location(generator));
+
+				cube->SpeedX(movementSpeed(generator));
+				cube->SpeedY(movementSpeed(generator));
+				cube->SpeedZ(movementSpeed(generator));
+
+				cube->RotationX(startAngle(generator));
+				cube->RotationY(startAngle(generator));
+				cube->RotationZ(startAngle(generator));
+
+				cube->RotationSpeedX(rotationSpeed(generator));
+				cube->RotationSpeedY(rotationSpeed(generator));
+				cube->RotationSpeedZ(rotationSpeed(generator));
+
+				cube->ScaleX(radius);
+				cube->ScaleY(radius);
+				cube->ScaleZ(radius);
+
+				cube->Texture(m_texture);
+
+				m_drawables.push_back(std::move(cube));
 			}
 
-			for (int i = 0; i <= 500; i++)
+			for (int i = 0; i <= 100; i++)
 			{
-				m_drawables.push_back(std::make_unique<CubeColored>(
-					m_graphics, m_vertexShaderTextured_b, m_pixelShaderTextured_b, m_texture,
+				float radius = scale(generator);
+				auto cube = std::make_unique<CubeColored>(m_graphics, m_vertexShaderTextured_b, m_pixelShaderTextured_b, 2u);
 
-					location(generator), location(generator), location(generator),
-					movementSpeed(generator), movementSpeed(generator), movementSpeed(generator),
-					startAngle(generator), startAngle(generator), startAngle(generator),
-					rotationSpeed(generator), rotationSpeed(generator), rotationSpeed(generator),
-					scale(generator), scale(generator), scale(generator)
-					)
-				);
+				cube->WorldX(location(generator));
+				cube->WorldY(location(generator));
+				cube->WorldZ(location(generator));
+
+				cube->SpeedX(movementSpeed(generator));
+				cube->SpeedY(movementSpeed(generator));
+				cube->SpeedZ(movementSpeed(generator));
+
+				cube->RotationX(startAngle(generator));
+				cube->RotationY(startAngle(generator));
+				cube->RotationZ(startAngle(generator));
+
+				cube->RotationSpeedX(rotationSpeed(generator));
+				cube->RotationSpeedY(rotationSpeed(generator));
+				cube->RotationSpeedZ(rotationSpeed(generator));
+
+				cube->ScaleX(radius);
+				cube->ScaleY(radius);
+				cube->ScaleZ(radius);
+
+				cube->Texture(m_texture);
+
+				m_drawables.push_back(std::move(cube));
 			}
+
+			for (int i = 0; i <= 100; i++)
+			{
+				float radius = scale(generator);
+				auto sphere = std::make_unique<SphereColored>(
+					m_graphics, 
+					m_vertexShaderTextured_b, 
+					m_pixelShaderTextured_b, 
+					i + 1000u, 
+					24, 
+					XMFLOAT3(color(generator), color(generator), color(generator))
+				);
+
+				sphere->WorldX(location(generator));
+				sphere->WorldY(location(generator));
+				sphere->WorldZ(location(generator));
+
+				sphere->SpeedX(movementSpeed(generator));
+				sphere->SpeedY(movementSpeed(generator));
+				sphere->SpeedZ(movementSpeed(generator));
+
+				sphere->RotationX(startAngle(generator));
+				sphere->RotationY(startAngle(generator));
+				sphere->RotationZ(startAngle(generator));
+
+				sphere->RotationSpeedX(rotationSpeed(generator));
+				sphere->RotationSpeedY(rotationSpeed(generator));
+				sphere->RotationSpeedZ(rotationSpeed(generator));
+
+				sphere->ScaleX(radius);
+				sphere->ScaleY(radius);
+				sphere->ScaleZ(radius);
+
+				m_drawables.push_back(std::move(sphere));
+			}
+			
+			auto theSun = std::make_unique<SphereColored>(
+				m_graphics, 
+				m_vertexShaderTextured_b, 
+				m_pixelShaderTextured_c, 
+				3u, 
+				24, 
+				XMFLOAT3(1, .66f, 0)
+			);
+			theSun->ScaleX(10);
+			theSun->ScaleY(10);
+			theSun->ScaleZ(10);
+			theSun->WorldZ(0);
+
+			m_drawables.push_back(std::move(theSun));
 
 			for (auto d : m_drawables) {
 				d->RegisterResources();
 			}
 
-			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_graphics, m_worldViewTransform, 0, false);
+			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(4u, false, m_graphics, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
 		}
 
@@ -140,11 +227,12 @@ namespace Dx::Levels
 		std::shared_ptr<VertexShader>											m_vertexShaderTextured_b;
 		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
 		std::shared_ptr<PixelShader>											m_pixelShaderTextured_b;
+		std::shared_ptr<PixelShader>											m_pixelShaderTextured_c;
 		std::shared_ptr<Texture>												m_texture;
 
 		DirectX::XMMATRIX															m_worldViewTransform{};
 		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
-		Camera																		m_camera;
+		Camera																		m_camera = Camera(DirectX::XMVectorSet(0,0,-120,0), XMVectorSet(0,0,1,0), XMVectorSet(0,1,0,0));
 
 		float																			m_cameraMovementSpeed = 1;
 		float																			m_mouseSensitivity = .0006f;

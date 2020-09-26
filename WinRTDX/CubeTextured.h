@@ -84,10 +84,10 @@ namespace Dx {
 		};
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(3, false, m_graphics, Vertices);
-			m_indexBuffer =		IndexBuffer::Create							(3, false, m_graphics, Indices);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(3, false, m_graphics, m_vsConstants, 1);
-			m_inputLayout =		InputLayout::Create							(3, false, m_graphics, Ieds, m_vertexShader);
+			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(m_resourceCacheID, false, m_graphics, Vertices);
+			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, m_graphics, Indices);
+			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_graphics, m_vsConstants, 1);
+			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 
@@ -99,8 +99,5 @@ namespace Dx {
 
 	private:
 		VSConstants							m_vsConstants = {};
-		std::shared_ptr<Texture>		m_texture;
-		UINT									m_textuerWidth;
-		UINT									m_textureHeight;
 	};
 }
