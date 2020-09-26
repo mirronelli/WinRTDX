@@ -153,7 +153,7 @@ namespace Dx::Levels
 				m_vertexShaderTextured_b, 
 				m_pixelShaderTextured_c, 
 				3u, 
-				24
+				40
 			);
 
 			theSun->ScaleX(10);
@@ -171,6 +171,15 @@ namespace Dx::Levels
 
 			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(4u, false, m_graphics, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
+
+			m_light.lightPosition		= { 0, 0, 0, 0 };
+			m_light.lightColor			= { 1.0f, 0.5f, 0.9, 0 };
+			m_light.ambientLight			= { 0.08f, 0.08f, 0.08f, 0 };
+			m_light.diffuseIntensity	= 1.0f;
+			m_light.attenuationQuad		= 0.00005f;
+
+			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_graphics, m_light, 0, false);
+			m_lightConstantBuffer->Attach(false);
 
 			m_mouseInput->RelativeTrackingEnter();
 		}
@@ -224,6 +233,17 @@ namespace Dx::Levels
 		}
 
 	private:
+		struct PSConstants {
+			float4	lightPosition;
+			float4	lightColor;
+			float4	ambientLight;
+			
+			float		diffuseIntensity;
+			float		attenuationQuad;
+			float		pad4;
+			float		pad5;
+		} ;
+
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;
 		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
 		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
@@ -236,6 +256,9 @@ namespace Dx::Levels
 
 		DirectX::XMMATRIX															m_worldViewTransform{};
 		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
+		PSConstants																	m_light;
+		std::shared_ptr<PSConstantBuffer<PSConstants>>					m_lightConstantBuffer;
+
 		Camera																		m_camera = Camera(DirectX::XMVectorSet(0,0,-120,0), XMVectorSet(0,0,1,0), XMVectorSet(0,1,0,0));
 
 		float																			m_cameraMovementSpeed = 1;
