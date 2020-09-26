@@ -16,15 +16,20 @@ namespace Dx {
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader,
 			int resourceCacheID,
-			int steps,
-			XMFLOAT3 color
+			int steps
 		) :
 			Drawable(graphics, vertexShader, pixelShader, resourceCacheID),
-			m_steps(steps),
-			m_color(color)
+			m_steps(steps)
+		{}
+
+		void Prepare()
 		{
 			GenerateVerticesAndIndices();
+			m_prepared = true;
 		}
+
+		void Color(XMFLOAT3 value) { m_color = value; m_useRandomColor = false; }
+		void ColorRanges(XMFLOAT3 minValue, XMFLOAT3 maxValue) { m_colorMin = minValue; m_colorMax = maxValue; m_useRandomColor = true; }
 
 		struct Vertex {
 			DirectX::XMFLOAT3	position;
@@ -47,6 +52,7 @@ namespace Dx {
 		
 
 		void RegisterResources() {
+			assert(m_prepared);
 			m_vertexBuffer =		VertexBuffer<Vertex>::				Create(m_resourceCacheID, false, m_graphics, Vertices);
 			m_indexBuffer =		IndexBuffer::							Create(m_resourceCacheID, false, m_graphics, Indices);
 			m_vsConstantBuffer = VSConstantBuffer<VSConstants>::	Create(m_resourceCacheID, false, m_graphics, m_vsConstants, 1);
@@ -63,6 +69,13 @@ namespace Dx {
 	private:
 		void GenerateVerticesAndIndices()
 		{
+			std::random_device rd;  //Will be used to obtain a seed for the random number engine
+			std::mt19937 generator(rd());
+
+			std::uniform_real_distribution<float> randomRed (m_colorMin.x, m_colorMax.x) ;
+			std::uniform_real_distribution<float> randomGreen (m_colorMin.y, m_colorMax.y);
+			std::uniform_real_distribution<float> randomBlue (m_colorMin.z, m_colorMax.z);
+			
 			float step = DirectX::XM_PI / m_steps;
 			int meridians = m_steps * 2;
 
@@ -73,7 +86,13 @@ namespace Dx {
 			int counter = 1;
 
 			// north pole
-			Vertices.push_back({ XMFLOAT3( 0, 1, 0 ), XMFLOAT3(0, 1, 0), m_color });
+			Vertices.push_back(
+				{ 
+					XMFLOAT3( 0, 1, 0 ), 
+					XMFLOAT3(0, 1, 0), 
+					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color 
+				}
+			);
 
 			// rotate vector to each parallel
 			for (int i = 1; i < m_steps; i++)
@@ -83,7 +102,13 @@ namespace Dx {
 				{	
 					XMFLOAT3 vertex;
 					XMStoreFloat3(&vertex, XMVector3Rotate(vector, XMQuaternionRotationRollPitchYaw(i * step, j * step, 0)));
-					Vertices.push_back({ vertex, vertex, m_color });
+					Vertices.push_back(
+						{ 
+							vertex, 
+							vertex, 
+							m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color 
+						}
+					);
 
 					// generate triangles of inner vertices within strips
 					if (counter > northPole && counter % meridians != 0 && counter < southPole - 1 - meridians)
@@ -100,7 +125,13 @@ namespace Dx {
 				}
 			}
 			// south pole
-			Vertices.push_back({ XMFLOAT3( 0, -1, 0 ), XMFLOAT3(0, -1, 0), m_color });
+			Vertices.push_back(
+				{ 
+					XMFLOAT3( 0, -1, 0 ), 
+					XMFLOAT3(0, -1, 0), 
+					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color 
+				} 
+			);
 
 			// join poles with strips
 			for (int i = 1; i < meridians; i++)
@@ -138,6 +169,9 @@ namespace Dx {
 
 		VSConstants	m_vsConstants = {};
 		int	m_steps;
-		XMFLOAT3 m_color;
+		XMFLOAT3 m_color = { 1,1,1 };
+		XMFLOAT3 m_colorMin;
+		XMFLOAT3 m_colorMax;
+		bool m_useRandomColor = false;
 	};
 }

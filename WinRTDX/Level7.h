@@ -52,7 +52,6 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
 
-
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
@@ -108,8 +107,6 @@ namespace Dx::Levels
 				cube->ScaleY(radius);
 				cube->ScaleZ(radius);
 
-				cube->Texture(m_texture);
-
 				m_drawables.push_back(std::move(cube));
 			}
 
@@ -121,8 +118,7 @@ namespace Dx::Levels
 					m_vertexShaderTextured_b, 
 					m_pixelShaderTextured_b, 
 					i + 1000u, 
-					24, 
-					XMFLOAT3(color(generator), color(generator), color(generator))
+					24
 				);
 
 				sphere->WorldX(location(generator));
@@ -145,6 +141,10 @@ namespace Dx::Levels
 				sphere->ScaleY(radius);
 				sphere->ScaleZ(radius);
 
+				sphere->Color(XMFLOAT3(color(generator), color(generator), color(generator)));
+
+				sphere->Prepare();
+
 				m_drawables.push_back(std::move(sphere));
 			}
 			
@@ -153,13 +153,15 @@ namespace Dx::Levels
 				m_vertexShaderTextured_b, 
 				m_pixelShaderTextured_c, 
 				3u, 
-				24, 
-				XMFLOAT3(1, .66f, 0)
+				24
 			);
+
 			theSun->ScaleX(10);
 			theSun->ScaleY(10);
 			theSun->ScaleZ(10);
 			theSun->WorldZ(0);
+			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
+			theSun->Prepare();
 
 			m_drawables.push_back(std::move(theSun));
 

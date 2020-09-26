@@ -30,6 +30,7 @@ namespace Dx {
 			m_resourceCacheID(resourceCacheID)
 		{};
 		virtual ~Drawable() {};
+		virtual void Prepare() { m_prepared = true; };
 		virtual void RegisterResources() = 0;
 		virtual void UpdateConstants(DirectX::CXMMATRIX) = 0;
 
@@ -148,5 +149,7 @@ namespace Dx {
 		float	m_scaleX	= 1;
 		float	m_scaleY	= 1;
 		float	m_scaleZ	= 1;
+
+		bool m_prepared = false;
 	};
 }

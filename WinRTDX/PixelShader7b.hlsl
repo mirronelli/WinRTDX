@@ -17,7 +17,7 @@ static const float diffueseIntensity = 1.0f;
 
 static const float attenuationConst = 0.0f;
 static const float attenuationLinearity = 0.0;
-static const float attenuationQuad = 0.0001;
+static const float attenuationQuad = 0.00005;
 
 float4 main(VsOutput input) : SV_TARGET
 {
