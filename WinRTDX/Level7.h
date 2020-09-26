@@ -27,8 +27,6 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					Dx::Attachables::ResourceManager::ClearCache();
-
 					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7Textured.cso");
 					m_vertexShaderColored = VertexShader::Load(3, false, m_graphics, L"VertexShader7Colored.cso");
 

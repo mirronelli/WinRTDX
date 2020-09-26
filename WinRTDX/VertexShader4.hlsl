@@ -1,4 +1,4 @@
-cbuffer modelData : register(b1)
+cbuffer modelData : register(b2)
 {
 	row_major matrix modelToWorld;
 };

@@ -24,6 +24,7 @@ void Game::Init()
 
 void Game::LoadLevel(byte name)
 {
+	ResourceManager::ClearCache();
 	//name = 4;
 	switch (name) {
 	case 1:
