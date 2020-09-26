@@ -29,12 +29,12 @@ namespace Dx::Levels
 				{
 					Dx::Attachables::ResourceManager::ClearCache();
 
-					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7.cso");
-					m_vertexShaderTextured_b = VertexShader::Load(3, false, m_graphics, L"VertexShader7b.cso");
+					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7Textured.cso");
+					m_vertexShaderColored = VertexShader::Load(3, false, m_graphics, L"VertexShader7Colored.cso");
 
-					m_pixelShaderTextured	= PixelShader::Load(2, false, m_graphics, L"PixelShader7.cso");
-					m_pixelShaderTextured_b = PixelShader::Load(3, false, m_graphics, L"PixelShader7b.cso");
-					m_pixelShaderTextured_c = PixelShader::Load(4, false, m_graphics, L"PixelShader7c.cso");
+					m_pixelShaderTextured	= PixelShader::Load(2, false, m_graphics, L"PixelShader7Textured.cso");
+					m_pixelShaderColored = PixelShader::Load(3, false, m_graphics, L"PixelShader7Colored.cso");
+					m_pixelShaderStatic = PixelShader::Load(4, false, m_graphics, L"PixelShader7Static.cso");
 
 					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
 				}
@@ -52,7 +52,7 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
 
-			for (int i = 0; i <= 100; i++)
+			for (int i = 0; i <= 1000; i++)
 			{
 				float radius = scale(generator);
 				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
@@ -82,10 +82,10 @@ namespace Dx::Levels
 				m_drawables.push_back(std::move(cube));
 			}
 
-			for (int i = 0; i <= 100; i++)
+			for (int i = 0; i <= 1000; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeColored>(m_graphics, m_vertexShaderTextured_b, m_pixelShaderTextured_b, 2u);
+				auto cube = std::make_unique<CubeColored>(m_graphics, m_vertexShaderColored, m_pixelShaderColored, 2u);
 
 				cube->WorldX(location(generator));
 				cube->WorldY(location(generator));
@@ -110,13 +110,13 @@ namespace Dx::Levels
 				m_drawables.push_back(std::move(cube));
 			}
 
-			for (int i = 0; i <= 100; i++)
+			for (int i = 0; i <= 1000; i++)
 			{
 				float radius = scale(generator);
 				auto sphere = std::make_unique<SphereColored>(
 					m_graphics, 
-					m_vertexShaderTextured_b, 
-					m_pixelShaderTextured_b, 
+					m_vertexShaderColored, 
+					m_pixelShaderColored, 
 					i + 1000u, 
 					24
 				);
@@ -150,8 +150,8 @@ namespace Dx::Levels
 			
 			auto theSun = std::make_unique<SphereColored>(
 				m_graphics, 
-				m_vertexShaderTextured_b, 
-				m_pixelShaderTextured_c, 
+				m_vertexShaderColored, 
+				m_pixelShaderStatic, 
 				3u, 
 				40
 			);
@@ -245,13 +245,13 @@ namespace Dx::Levels
 		} ;
 
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;
-		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
-		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
+
 		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
-		std::shared_ptr<VertexShader>											m_vertexShaderTextured_b;
+		std::shared_ptr<VertexShader>											m_vertexShaderColored;
 		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
-		std::shared_ptr<PixelShader>											m_pixelShaderTextured_b;
-		std::shared_ptr<PixelShader>											m_pixelShaderTextured_c;
+		std::shared_ptr<PixelShader>											m_pixelShaderColored;
+		std::shared_ptr<PixelShader>											m_pixelShaderStatic;
+
 		std::shared_ptr<Texture>												m_texture;
 
 		DirectX::XMMATRIX															m_worldViewTransform{};

@@ -221,25 +221,28 @@
     <FxCompile Include="PixelShader4.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader7.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader7.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader5_6.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader5_6.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader7b.hlsl">
+    <FxCompile Include="Functions.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader7b.hlsl">
+    <FxCompile Include="VertexShader7Textured.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader7c.hlsl">
+    <FxCompile Include="VertexShader7Colored.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader7Textured.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader7Colored.hlsl">
+      <Filter>Dx\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader7Static.hlsl">
       <Filter>Dx\Graphics\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

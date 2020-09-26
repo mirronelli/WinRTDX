@@ -1,17 +1,4 @@
-struct Input
-{
-    float3 position : POSITION;
-    float3 normal : NORMAL;
-    float3 color : COLOR;
-};
-
-struct VsOutput
-{
-    float3 color : COLOR;
-    float4 position : SV_Position;
-    float3 worldPosition : POSITION;
-    float3 normal : NORMAL;
-};
+#include "Functions.hlsl"
 
 cbuffer modelData : register(b1)
 {
@@ -23,11 +10,9 @@ cbuffer levelData : register(b0)
     row_major matrix viewPerspectiveTransform;
 };
 
-VsOutput main(Input input)
+VsColorOutput main(VsColorInput input)
 {
-    //float4x4 finalTransform = mul(worldTransform, viewPerspectiveTransform);
-	
-    VsOutput output;
+    VsColorOutput output;
     
     output.worldPosition = (float3) mul(float4(input.position, 1.0f), worldTransform);
     output.position = mul(float4(output.worldPosition, 1.0f), viewPerspectiveTransform);
