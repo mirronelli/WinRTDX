@@ -172,11 +172,13 @@ namespace Dx::Levels
 			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(4u, false, m_graphics, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
 
-			m_light.lightPosition		= { 0, 0, 0, 0 };
-			m_light.lightColor			= { 1.0f, 0.5f, 0.9, 0 };
-			m_light.ambientLight			= { 0.08f, 0.08f, 0.08f, 0 };
-			m_light.diffuseIntensity	= 1.0f;
-			m_light.attenuationQuad		= 0.00005f;
+			m_light.lightPosition				= { 0, 0, 0, 0 };
+			m_light.lightColor					= { 1.0f, 0.5f, 0.9, 0 };
+			m_light.ambientLight					= { 0.00f, 0.00f, 0.00f, 0 };
+			m_light.diffuseIntensity			= 1.0f;
+			m_light.attenuationQuadratic		= 0.0001f;
+			m_light.attenuationLinear			= 0.0f;
+			m_light.attenuationConstant		= 0.f;
 
 			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_graphics, m_light, 0, false);
 			m_lightConstantBuffer->Attach(false);
@@ -239,9 +241,9 @@ namespace Dx::Levels
 			float4	ambientLight;
 			
 			float		diffuseIntensity;
-			float		attenuationQuad;
-			float		pad4;
-			float		pad5;
+			float		attenuationQuadratic;
+			float		attenuationLinear;
+			float		attenuationConstant;
 		} ;
 
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;

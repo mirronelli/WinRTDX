@@ -17,8 +17,10 @@ float4 main(VsColorOutput input) : SV_TARGET
         (float3) lightBuffer.lightPosition,
         input.worldPosition,
         input.normal,
-        lightBuffer.attenuationQuad,
-        lightBuffer.diffueseIntensity
+        lightBuffer.diffueseIntensity,
+        lightBuffer.attenuationQuadratic,
+        lightBuffer.attenuationLinear,
+        lightBuffer.attenuationConstant
     );
         
     return float4(materialColor * light, 1.0f);

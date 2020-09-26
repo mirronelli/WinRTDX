@@ -1,4 +1,14 @@
-export float3 mLightIntensity(float3 ambientLight, float3 pointLight, float3 pointLightPosition, float3 pixelWorldPosition, float3 pixelNormal, float attenuationQuad, float diffusionIntensity)
+export float3 mLightIntensity(
+    float3 ambientLight, 
+    float3 pointLight, 
+    float3 pointLightPosition, 
+    float3 pixelWorldPosition, 
+    float3 pixelNormal, 
+    float diffusionIntensity,
+    float attenuationQuadratic,
+    float attenuationLinear,
+    float attenuationConstant
+)
 {
     float3 vectorToLight = pointLightPosition - pixelWorldPosition;
     float distanceToLight = length(vectorToLight);
@@ -7,7 +17,7 @@ export float3 mLightIntensity(float3 ambientLight, float3 pointLight, float3 poi
     float3 normalizedvectorToLight = normalize(vectorToLight);  
     float angleCoefficient = max(0.0f, dot(normalizedvectorToLight, normalizedNormal));
     
-    float attenuation = 1.0f / (attenuationQuad * distanceToLight * distanceToLight);
+    float attenuation = 1.0f / (attenuationConstant + attenuationLinear*distanceToLight + attenuationQuadratic * distanceToLight * distanceToLight);
     float3 diffusedLight = pointLight * diffusionIntensity * attenuation * angleCoefficient;
     
     return saturate(diffusedLight + ambientLight);
@@ -49,5 +59,7 @@ struct Light
     float4 lightColor;
     float4 ambientLight;
     float diffueseIntensity;
-    float attenuationQuad;
+    float attenuationQuadratic;
+    float attenuationLinear;
+    float attenuationConstant;
 };
