@@ -20,7 +20,7 @@ namespace Dx {
 			std::shared_ptr<Graphics> graphics,
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader, 
-			uint16_t resourceCacheID
+			int resourceCacheID
 		) :
 			m_graphics(graphics), 
 			m_device(graphics->Device()), 
@@ -114,7 +114,7 @@ namespace Dx {
 		com_ptr<ID3D11Device3>							m_device;
 		com_ptr<ID3D11DeviceContext4>					m_context;
 
-		uint16_t												m_resourceCacheID;
+		int													m_resourceCacheID;
 		std::shared_ptr<PixelShader>					m_pixelShader;
 		std::shared_ptr<VertexShader>					m_vertexShader;
 		std::shared_ptr<Attachable>					m_vertexBuffer;

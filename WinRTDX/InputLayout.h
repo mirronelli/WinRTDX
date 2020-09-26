@@ -10,7 +10,7 @@ namespace Dx::Attachables
 	class InputLayout : public Attachable
 	{
 	public:
-		static std::shared_ptr<InputLayout> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
+		static std::shared_ptr<InputLayout> Create(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
 		{
 			std::shared_ptr<InputLayout> instance = std::static_pointer_cast<InputLayout>(ResourceManager::InputLayouts[key]);
 
@@ -23,7 +23,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		InputLayout(uint16_t key, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
+		InputLayout(int key, std::shared_ptr<Graphics> graphics, std::vector<D3D11_INPUT_ELEMENT_DESC> const& ieds, std::shared_ptr<VertexShader> vertexShader)
 			: Attachable(key, graphics)
 		{
 			m_graphics->Device()->CreateInputLayout(

@@ -169,6 +169,8 @@ namespace Dx::Levels
 
 			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(4u, false, m_graphics, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
+
+			m_mouseInput->RelativeTrackingEnter();
 		}
 
 		void ProcessInput()

@@ -13,7 +13,7 @@ namespace Dx::Attachables
 
 
 	public:
-		static std::shared_ptr<Texture> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName, UINT slot=0)
+		static std::shared_ptr<Texture> Load(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName, UINT slot=0)
 		{
 			std::shared_ptr<Texture> instance = std::static_pointer_cast<Texture>(ResourceManager::Textures[key]);
 
@@ -26,7 +26,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		Texture(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename, UINT slot)
+		Texture(int key, std::shared_ptr<Graphics> graphics, std::wstring filename, UINT slot)
 			: Attachable(key, graphics),
 			m_slot(slot)
 		{

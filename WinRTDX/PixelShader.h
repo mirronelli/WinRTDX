@@ -9,7 +9,7 @@ namespace Dx::Attachables
 	class PixelShader : public Attachable
 	{
 	public:
-		static std::shared_ptr<PixelShader> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring filename)
+		static std::shared_ptr<PixelShader> Load(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring filename)
 		{
 			std::shared_ptr<PixelShader> instance = std::static_pointer_cast<PixelShader>(ResourceManager::PixelShaders[key]);
 
@@ -22,7 +22,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		PixelShader(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename)
+		PixelShader(int key, std::shared_ptr<Graphics> graphics, std::wstring filename)
 			: Attachable(key, graphics)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);

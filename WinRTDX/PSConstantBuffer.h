@@ -9,7 +9,7 @@ namespace Dx::Attachables
 	class PSConstantBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<PSConstantBuffer<T>> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot = 0, bool fastMode = true)
+		static std::shared_ptr<PSConstantBuffer<T>> Create(int key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot = 0, bool fastMode = true)
 		{
 			std::shared_ptr<PSConstantBuffer<T>> instance = std::static_pointer_cast<PSConstantBuffer<T>>(ResourceManager::PSConstantBuffers[key]);
 
@@ -22,7 +22,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		PSConstantBuffer(uint16_t key, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot, bool fastMode)
+		PSConstantBuffer(int key, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot, bool fastMode)
 			: Attachable(key, graphics),
 			m_slot(slot),
 			m_fastMode(fastMode)

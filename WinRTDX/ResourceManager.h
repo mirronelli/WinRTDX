@@ -34,28 +34,28 @@ namespace Dx::Attachables {
 			Textures.clear();
 		}
 
-		inline static uint16_t CurrentInputLayout = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	InputLayouts;
+		inline static int CurrentInputLayout = 0;
+		inline static std::map < int, std::shared_ptr<void>>	InputLayouts;
 
-		inline static uint16_t CurrentVertexBuffer = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	VertexBuffers;
+		inline static int CurrentVertexBuffer = 0;
+		inline static std::map < int, std::shared_ptr<void>>	VertexBuffers;
 
-		inline static uint16_t CurrentIndexBuffer = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	IndexBuffers;
+		inline static int CurrentIndexBuffer = 0;
+		inline static std::map < int, std::shared_ptr<void>>	IndexBuffers;
 
-		inline static uint16_t CurrentPSConstantBuffer = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	PSConstantBuffers;
+		inline static int CurrentPSConstantBuffer = 0;
+		inline static std::map < int, std::shared_ptr<void>>	PSConstantBuffers;
 
-		inline static uint16_t CurrentVSConstantBuffer = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	VSConstantBuffers;
+		inline static int CurrentVSConstantBuffer = 0;
+		inline static std::map < int, std::shared_ptr<void>>	VSConstantBuffers;
 
-		inline static uint16_t CurrentPixelShader = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	PixelShaders;
+		inline static int CurrentPixelShader = 0;
+		inline static std::map < int, std::shared_ptr<void>>	PixelShaders;
 
-		inline static uint16_t CurrentVertexShader = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	VertexShaders;
+		inline static int CurrentVertexShader = 0;
+		inline static std::map < int, std::shared_ptr<void>>	VertexShaders;
 
-		inline static uint16_t CurrentTexture = 0;
-		inline static std::map < uint16_t, std::shared_ptr<void>>	Textures;
+		inline static int CurrentTexture = 0;
+		inline static std::map < int, std::shared_ptr<void>>	Textures;
 	};
 }

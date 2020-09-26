@@ -12,7 +12,7 @@ namespace Dx::Attachables
 	class VertexBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<VertexBuffer<T>> Create(uint16_t const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices, UINT slot = 0)
+		static std::shared_ptr<VertexBuffer<T>> Create(int const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices, UINT slot = 0)
 		{
 			std::shared_ptr<VertexBuffer<T>> instance = std::static_pointer_cast<VertexBuffer<T>>(ResourceManager::VertexBuffers[key]);
 
@@ -25,7 +25,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		VertexBuffer(uint16_t key, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices, UINT slot)
+		VertexBuffer(int key, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices, UINT slot)
 			: Attachable(key, graphics),
 			m_slot(slot)
 		{

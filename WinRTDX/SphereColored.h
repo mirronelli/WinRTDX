@@ -15,16 +15,15 @@ namespace Dx {
 			std::shared_ptr<Graphics> graphics,
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader,
-			uint16_t resourceCacheID,
-			uint16_t steps,
+			int resourceCacheID,
+			int steps,
 			XMFLOAT3 color
 		) :
 			Drawable(graphics, vertexShader, pixelShader, resourceCacheID),
 			m_steps(steps),
 			m_color(color)
 		{
-			GenerateVertices();
-			GenerateIndices();
+			GenerateVerticesAndIndices();
 		}
 
 		struct Vertex {
@@ -52,7 +51,7 @@ namespace Dx {
 			m_indexBuffer =		IndexBuffer::							Create(m_resourceCacheID, false, m_graphics, Indices);
 			m_vsConstantBuffer = VSConstantBuffer<VSConstants>::	Create(m_resourceCacheID, false, m_graphics, m_vsConstants, 1);
 			m_inputLayout =		InputLayout::							Create(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
-			m_indicesCount =		(UINT)Indices.size();
+			m_indicesCount =		(int)Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
@@ -62,90 +61,83 @@ namespace Dx {
 		}
 
 	private:
-		void GenerateVertices()
+		void GenerateVerticesAndIndices()
 		{
 			float step = DirectX::XM_PI / m_steps;
+			int meridians = m_steps * 2;
+
+			int northPole = 0;
+			int southPole = meridians * (m_steps - 1) + 1;
 			XMVECTOR vector = XMVectorSet(0, 1, 0, 0);
+
+			int counter = 1;
 
 			// north pole
 			Vertices.push_back({ XMFLOAT3( 0, 1, 0 ), XMFLOAT3(0, 1, 0), m_color });
 
+			// rotate vector to each parallel
 			for (int i = 1; i < m_steps; i++)
 			{
-				for (int j = 0; j < m_steps * 2; j++)
+				// rotate vector to each meridian of the parallel
+				for (int j = 0; j < meridians; j++)
 				{	
 					XMFLOAT3 vertex;
 					XMStoreFloat3(&vertex, XMVector3Rotate(vector, XMQuaternionRotationRollPitchYaw(i * step, j * step, 0)));
 					Vertices.push_back({ vertex, vertex, m_color });
+
+					// generate triangles of inner vertices within strips
+					if (counter > northPole && counter % meridians != 0 && counter < southPole - 1 - meridians)
+					{
+						Indices.push_back(counter);
+						Indices.push_back(counter + meridians);
+						Indices.push_back(counter + 1);
+
+						Indices.push_back(counter + 1);
+						Indices.push_back(counter + meridians);
+						Indices.push_back(counter + meridians + 1);
+					}
+					counter++;
 				}
 			}
-
 			// south pole
 			Vertices.push_back({ XMFLOAT3( 0, -1, 0 ), XMFLOAT3(0, -1, 0), m_color });
-		}
 
-		void GenerateIndices()
-		{
-			int meridians = m_steps * 2;
-			int verticesCount = Vertices.size();
-
-			// north pole to start and end in first line
-			Indices.push_back(0);
-			Indices.push_back(meridians);
-			Indices.push_back(1);
-
-			// north pole to each in first line
-			for (int i = 1; i < m_steps * 2; i++)
+			// join poles with strips
+			for (int i = 1; i < meridians; i++)
 			{
-				Indices.push_back(0);
+				Indices.push_back(northPole);  // north pole
+				Indices.push_back(northPole + i);
+				Indices.push_back(northPole + i + 1);
+
+				Indices.push_back(southPole);  // south pole
+				Indices.push_back(southPole - i);
+				Indices.push_back(southPole - i - 1);
+			}
+
+			// join poles with both strip ends
+			Indices.push_back(northPole);
+			Indices.push_back(northPole + meridians);
+			Indices.push_back(northPole + 1);
+
+			Indices.push_back(southPole);
+			Indices.push_back(southPole - meridians);
+			Indices.push_back(southPole -1);
+
+			//join strip ends
+			for (int i = northPole + 1; i < southPole - 1 - meridians; i += meridians)
+			{
 				Indices.push_back(i);
-				Indices.push_back(i+1);
+				Indices.push_back(i + meridians - 1);
+				Indices.push_back(i + meridians);
+
+				Indices.push_back(i + meridians - 1);
+				Indices.push_back(i + meridians - 1 + meridians);
+				Indices.push_back(i + meridians);
 			}
-
-			//strips
-			for (int strip = 0; strip < m_steps - 2; strip++)
-			{
-				int stripStart = strip * meridians;
-				
-				//strip from start to finis
-				for (int i = 1; i < m_steps * 2; i++)
-				{
-					Indices.push_back(stripStart + i);
-					Indices.push_back(stripStart + i + meridians);
-					Indices.push_back(stripStart + i + 1);
-
-					Indices.push_back(stripStart + i + 1);
-					Indices.push_back(stripStart + i + meridians);
-					Indices.push_back(stripStart + i + meridians + 1);
-				}
-
-				//strip from end to start
-				Indices.push_back(stripStart + 1);
-				Indices.push_back(stripStart + 1 + 2*meridians - 1);
-				Indices.push_back(stripStart + 1 + meridians);
-
-				Indices.push_back(stripStart + 1);
-				Indices.push_back(stripStart + 1 + meridians - 1);
-				Indices.push_back(stripStart + 1 + 2*meridians - 1);
-			}
-
-			// south pole to start and end in last line
-			Indices.push_back(verticesCount - 1);
-			Indices.push_back(verticesCount - 1 - meridians);
-			Indices.push_back(verticesCount - 1 -1);
-
-			// south pole to each in last line
-			for (int i = 0; i < meridians; i++)
-			{
-				Indices.push_back(verticesCount -1);
-				Indices.push_back(verticesCount - i - 2);
-				Indices.push_back(verticesCount - i - 3);
-			}
-
 		}
 
 		VSConstants	m_vsConstants = {};
-		uint16_t	m_steps;
+		int	m_steps;
 		XMFLOAT3 m_color;
 	};
 }

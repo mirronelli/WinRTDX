@@ -9,7 +9,7 @@ namespace Dx::Attachables
 	class IndexBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<IndexBuffer> Create(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+		static std::shared_ptr<IndexBuffer> Create(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
 		{
 			std::shared_ptr<IndexBuffer> instance = std::static_pointer_cast<IndexBuffer>( ResourceManager::IndexBuffers[key]);
 
@@ -22,7 +22,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		IndexBuffer(uint16_t const& key, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+		IndexBuffer(UINT const& key, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
 			: Attachable(key, graphics)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };

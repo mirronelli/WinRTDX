@@ -10,7 +10,7 @@ namespace Dx::Attachables
 	class VertexShader : public Attachable
 	{
 	public:
-		static std::shared_ptr<VertexShader> Load(uint16_t key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName)
+		static std::shared_ptr<VertexShader> Load(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName)
 		{
 			std::shared_ptr<VertexShader> instance = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[key]);
 
@@ -23,7 +23,7 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		VertexShader(uint16_t key, std::shared_ptr<Graphics> graphics, std::wstring filename)
+		VertexShader(int key, std::shared_ptr<Graphics> graphics, std::wstring filename)
 			: Attachable(key, graphics)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
