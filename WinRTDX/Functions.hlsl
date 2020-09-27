@@ -78,7 +78,7 @@ struct DrawableBuffer
     float reflectivePower;
 };
 
-struct LevelBuffer
+struct LevelBuffer  // TODO: rename to frame buffer since this is used per frame
 {
     row_major matrix viewPerspectiveTransform;
     float3 cameraPosition;

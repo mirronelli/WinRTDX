@@ -127,6 +127,15 @@
     <ClInclude Include="SphereColored.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Level8.h">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Structures.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -248,5 +257,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinRTDX.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Assets\suzanne.objj">
+      <Filter>Assets</Filter>
+    </Object>
   </ItemGroup>
 </Project>

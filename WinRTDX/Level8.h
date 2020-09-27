@@ -3,15 +3,16 @@
 #include "winrt/Windows.Foundation.Numerics.h"
 
 #include <random>
+#include <DirectXMath.h>
 
 #include "Drawable.h"
 #include "CubeColored.h"
 #include "SphereColored.h"
 #include "CubeTextured.h"
+#include "Mesh.h"
 #include "ILevel.h"
 #include "IO.h"
 #include "Camera.h"
-#include <DirectXMath.h>
 
 using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
@@ -19,7 +20,7 @@ using namespace Dx::Attachables;
 namespace Dx::Levels
 {
 
-	class Level7 : public ILevel
+	class Level8 : public ILevel
 	{
 	public:
 		using ILevel::ILevel;
@@ -27,10 +28,10 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7Textured.cso");
+					//m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7Textured.cso");
 					m_vertexShaderColored = VertexShader::Load(3, false, m_graphics, L"VertexShader7Colored.cso");
 
-					m_pixelShaderTextured	= PixelShader::Load(2, false, m_graphics, L"PixelShader7Textured.cso");
+					//m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader7Textured.cso");
 					m_pixelShaderColored = PixelShader::Load(3, false, m_graphics, L"PixelShader7Colored.cso");
 					m_pixelShaderStatic = PixelShader::Load(4, false, m_graphics, L"PixelShader7Static.cso");
 
@@ -49,13 +50,13 @@ namespace Dx::Levels
 			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(4u, false, m_graphics, m_sharedConstants, 1, false);
 			m_sharedConstantPSBuffer->Attach(false);
 
-			m_light.lightPosition				= { 0, 0, 0, 0 };
-			m_light.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
-			m_light.ambientLight					= { 0.1f, 0.1f, 0.1f, 0.0f };
-			m_light.diffuseIntensity			= 1.0f;
-			m_light.attenuationQuadratic		= 0.00001f;
-			m_light.attenuationLinear			= 0.01f;
-			m_light.attenuationConstant		= 0.f;
+			m_light.lightPosition = { 0, 0, 0, 0 };
+			m_light.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
+			m_light.ambientLight = { 0.2f, 0.2f, 0.2f, 0.2f };
+			m_light.diffuseIntensity = 1.0f;
+			m_light.attenuationQuadratic = 0.00001f;
+			m_light.attenuationLinear = 0.01f;
+			m_light.attenuationConstant = 0.f;
 
 			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_graphics, m_light, 0, false);
 			m_lightConstantBuffer->Attach(false);
@@ -64,7 +65,7 @@ namespace Dx::Levels
 		}
 
 		void GenerateDrawables()
-		{
+		{	
 			std::random_device rd;  //Will be used to obtain a seed for the random number engine
 			std::mt19937 generator(rd());
 			std::uniform_real_distribution<float> location(-240.0f, 240.0f);
@@ -73,64 +74,6 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 50.f, DirectX::XM_PI / 50.f);
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
-
-			for (int i = 0; i <= 100; i++)
-			{
-				float radius = scale(generator);
-				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
-
-				cube->WorldX(location(generator));
-				cube->WorldY(location(generator));
-				cube->WorldZ(location(generator));
-
-				cube->SpeedX(movementSpeed(generator));
-				cube->SpeedY(movementSpeed(generator));
-				cube->SpeedZ(movementSpeed(generator));
-
-				cube->RotationX(startAngle(generator));
-				cube->RotationY(startAngle(generator));
-				cube->RotationZ(startAngle(generator));
-
-				cube->RotationSpeedX(rotationSpeed(generator));
-				cube->RotationSpeedY(rotationSpeed(generator));
-				cube->RotationSpeedZ(rotationSpeed(generator));
-
-				cube->ScaleX(radius);
-				cube->ScaleY(radius);
-				cube->ScaleZ(radius);
-
-				cube->Texture(m_texture);
-
-				m_drawables.push_back(std::move(cube));
-			}
-
-			for (int i = 0; i <= 100; i++)
-			{
-				float radius = scale(generator);
-				auto cube = std::make_unique<CubeColored>(m_graphics, m_vertexShaderColored, m_pixelShaderColored, 2u);
-
-				cube->WorldX(location(generator));
-				cube->WorldY(location(generator));
-				cube->WorldZ(location(generator));
-
-				cube->SpeedX(movementSpeed(generator));
-				cube->SpeedY(movementSpeed(generator));
-				cube->SpeedZ(movementSpeed(generator));
-
-				cube->RotationX(startAngle(generator));
-				cube->RotationY(startAngle(generator));
-				cube->RotationZ(startAngle(generator));
-
-				cube->RotationSpeedX(rotationSpeed(generator));
-				cube->RotationSpeedY(rotationSpeed(generator));
-				cube->RotationSpeedZ(rotationSpeed(generator));
-
-				cube->ScaleX(radius);
-				cube->ScaleY(radius);
-				cube->ScaleZ(radius);
-
-				m_drawables.push_back(std::move(cube));
-			}
 
 			for (int i = 0; i <= 100; i++)
 			{
@@ -169,6 +112,20 @@ namespace Dx::Levels
 
 				m_drawables.push_back(std::move(sphere));
 			}
+			std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
+				m_graphics,
+				m_vertexShaderColored,
+				m_pixelShaderColored,
+				2u
+			);
+			mesh->Prepare();
+			mesh->WorldX(-180);
+			mesh->Scale(30);
+			//mesh->RotationSpeedX(.03f);
+			mesh->RotationSpeedY(.03f);
+			//mesh->RotationSpeedZ(.1f);
+
+			m_drawables.push_back(std::move(mesh));
 
 			auto theSun = std::make_unique<SphereColored>(
 				m_graphics,
@@ -178,9 +135,7 @@ namespace Dx::Levels
 				40
 				);
 
-			theSun->ScaleX(10);
-			theSun->ScaleY(10);
-			theSun->ScaleZ(10);
+			theSun->Scale(10);
 			theSun->WorldZ(0);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Prepare();
@@ -213,7 +168,7 @@ namespace Dx::Levels
 				m_mouseInput->RelativeTrackingExit();
 
 			m_camera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity, 
+				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity,
 				m_mouseInput->RelativeDeltaX() * m_mouseSensitivity
 			);
 		}
@@ -222,10 +177,10 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
-			m_sharedConstants.worldViewTransform = 
+			m_sharedConstants.worldViewTransform =
 				m_camera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
-			
+
 			m_sharedConstants.cameraPosition = m_camera.Position();
 
 			m_sharedConstantVSBuffer->Update(m_sharedConstants);
@@ -255,12 +210,12 @@ namespace Dx::Levels
 			float4	lightPosition;
 			float4	lightColor;
 			float4	ambientLight;
-			
+
 			float		diffuseIntensity;
 			float		attenuationQuadratic;
 			float		attenuationLinear;
 			float		attenuationConstant;
-		} ;
+		};
 
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;
 
@@ -279,7 +234,7 @@ namespace Dx::Levels
 		PSConstants																	m_light;
 		std::shared_ptr<PSConstantBuffer<PSConstants>>					m_lightConstantBuffer;
 
-		Camera																		m_camera = Camera(DirectX::XMVectorSet(0,0,-120,0), XMVectorSet(0,0,1,0), XMVectorSet(0,1,0,0));
+		Camera																		m_camera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
 
 		float																			m_cameraMovementSpeed = 1;
 		float																			m_mouseSensitivity = .0006f;

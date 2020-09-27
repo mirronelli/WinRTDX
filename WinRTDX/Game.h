@@ -29,8 +29,8 @@ private:
 	Dx::StepTimer											m_timer;
 	ULONG64													m_frame = 0;
 
-	byte														m_currentLevel = 7;
-	byte														m_maxLevel = 7;
+	byte														m_maxLevel = 8;
+	byte														m_currentLevel = m_maxLevel;
 	bool														m_stop = false;
 
 	std::shared_ptr<Dx::KeyboardInput>				m_keyboardInput{ nullptr };

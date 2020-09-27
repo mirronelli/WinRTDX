@@ -88,6 +88,7 @@ namespace Dx {
 			m_context->DrawIndexed(m_indicesCount, 0, 0);
 		};
 
+#pragma region Property Setters
 		void Texture(std::shared_ptr<Attachables::Texture> value) { m_texture = value; }
 		
 		void WorldX(float value) { m_worldX = value; }
@@ -109,6 +110,8 @@ namespace Dx {
 		void ScaleX(float value) { m_scaleX = value; }
 		void ScaleY(float value) { m_scaleY = value; }
 		void ScaleZ(float value) { m_scaleZ = value; }
+		void Scale(float value) { m_scaleX = value; m_scaleY = value, m_scaleZ = value; }
+#pragma endregion
 
 	protected:
 		std::shared_ptr<Graphics>						m_graphics;
