@@ -4,8 +4,8 @@
 #include "PixelShader.h"
 
 using namespace Dx::Attachables;
-namespace Dx {
-
+namespace Dx::Drawables
+{
 	class Cube : public Drawable
 	{
 		using Drawable::Drawable;

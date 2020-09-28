@@ -52,7 +52,7 @@ namespace Dx::Levels
 
 			m_light.lightPosition = { 0, 0, 0, 0 };
 			m_light.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
-			m_light.ambientLight = { 0.2f, 0.2f, 0.2f, 0.2f };
+			m_light.ambientLight = { 0.1f, 0.01f, 0.01f, 0.2f };
 			m_light.diffuseIntensity = 1.0f;
 			m_light.attenuationQuadratic = 0.00001f;
 			m_light.attenuationLinear = 0.01f;
@@ -75,7 +75,7 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
 
-			for (int i = 0; i <= 100; i++)
+			for (int i = 0; i < 100; i++)
 			{
 				float radius = scale(generator);
 				auto sphere = std::make_unique<SphereColored>(
@@ -102,9 +102,7 @@ namespace Dx::Levels
 				sphere->RotationSpeedY(rotationSpeed(generator));
 				sphere->RotationSpeedZ(rotationSpeed(generator));
 
-				sphere->ScaleX(radius);
-				sphere->ScaleY(radius);
-				sphere->ScaleZ(radius);
+				sphere->Scale(radius);
 
 				sphere->Color(XMFLOAT3(color(generator), color(generator), color(generator)));
 
@@ -112,20 +110,39 @@ namespace Dx::Levels
 
 				m_drawables.push_back(std::move(sphere));
 			}
-			std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
-				m_graphics,
-				m_vertexShaderColored,
-				m_pixelShaderColored,
-				2u
-			);
-			mesh->Prepare();
-			mesh->WorldX(-180);
-			mesh->Scale(30);
-			//mesh->RotationSpeedX(.03f);
-			mesh->RotationSpeedY(.03f);
-			//mesh->RotationSpeedZ(.1f);
 
-			m_drawables.push_back(std::move(mesh));
+			for (int i = 0; i < 2000; i++)
+			{
+				std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
+					m_graphics,
+					m_vertexShaderColored,
+					m_pixelShaderColored,
+					2u
+				);
+
+				mesh->WorldX(location(generator));
+				mesh->WorldY(location(generator));
+				mesh->WorldZ(location(generator));
+
+				mesh->SpeedX(movementSpeed(generator));
+				mesh->SpeedY(movementSpeed(generator));
+				mesh->SpeedZ(movementSpeed(generator));
+
+				mesh->RotationX(startAngle(generator));
+				mesh->RotationY(startAngle(generator));
+				mesh->RotationZ(startAngle(generator));
+
+				mesh->RotationSpeedX(rotationSpeed(generator));
+				mesh->RotationSpeedY(rotationSpeed(generator));
+				mesh->RotationSpeedZ(rotationSpeed(generator));
+
+				mesh->FileName("Assets\\suzanne.obj");
+				mesh->Scale(10);
+				mesh->Prepare();
+
+				m_drawables.push_back(std::move(mesh));
+
+			}
 
 			auto theSun = std::make_unique<SphereColored>(
 				m_graphics,

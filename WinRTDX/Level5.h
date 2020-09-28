@@ -7,6 +7,7 @@
 
 using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
+using namespace Dx::Drawables;
 
 namespace Dx::Levels
 {

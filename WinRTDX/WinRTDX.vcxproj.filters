@@ -259,8 +259,11 @@
     <ResourceCompile Include="WinRTDX.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="Assets\suzanne.objj">
+    <Media Include="Assets\suzanne.obj">
       <Filter>Assets</Filter>
-    </Object>
+    </Media>
+    <Media Include="Assets\nanosuit.obj">
+      <Filter>Assets</Filter>
+    </Media>
   </ItemGroup>
 </Project>

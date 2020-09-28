@@ -7,7 +7,8 @@
 using namespace Dx::Attachables;
 using namespace DirectX;
 
-namespace Dx {
+namespace Dx::Drawables
+{
 
 	class CubeTextured : public Drawable
 	{

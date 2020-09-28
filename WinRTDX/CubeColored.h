@@ -4,9 +4,10 @@
 #include "PixelShader.h"
 #include <DirectXMath.h>
 
-using namespace Dx::Attachables;
 using namespace DirectX;
-namespace Dx {
+using namespace Dx::Attachables;
+namespace Dx::Drawables
+{
 
 	class CubeColored : public Drawable
 	{

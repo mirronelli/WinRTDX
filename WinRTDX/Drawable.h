@@ -11,7 +11,14 @@
 #include "Texture.h"
 
 using namespace Dx::Attachables;
-namespace Dx {
+namespace Dx::Drawables {
+	enum class DrawableTypes
+	{
+		SphereColored = 1,
+		CubeColored = 2,
+		CubeTextured = 3,
+		Mesh = 4,
+	};
 
 	class Drawable
 	{
@@ -27,7 +34,8 @@ namespace Dx {
 			m_context(graphics->Context()),
 			m_vertexShader(vertexShader),
 			m_pixelShader(pixelShader),
-			m_resourceCacheID(resourceCacheID)
+			m_resourceCacheID(resourceCacheID),
+			m_worldTransform()
 		{};
 		virtual ~Drawable() {};
 		virtual void Prepare() { m_prepared = true; };
@@ -131,7 +139,7 @@ namespace Dx {
 		std::shared_ptr<Attachable>					m_vsConstantBuffer;
 
 		UINT m_indicesCount = 0;
-		DirectX::XMMATRIX m_worldTransform;
+		DirectX::XMMATRIX									m_worldTransform;
 
 		float	m_worldX	= 0; 
 		float	m_worldY = 0;
