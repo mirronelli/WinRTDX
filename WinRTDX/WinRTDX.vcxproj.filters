@@ -200,59 +200,89 @@
     <Filter Include="Dx\Graphics\Drawables">
       <UniqueIdentifier>{b9ecc9a9-2bb3-4d0e-921b-4795a6f9d0c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dx\Graphics\Shaders\8">
+      <UniqueIdentifier>{a9538e4f-8e8e-4cd2-a2dd-c503a2c523e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dx\Graphics\Shaders\7">
+      <UniqueIdentifier>{53d8178a-fb0a-4d9e-8b4c-bed2b6ab990e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dx\Graphics\Shaders\5_6">
+      <UniqueIdentifier>{f7137658-d11f-4e82-96ec-98a7ccdd1294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dx\Graphics\Shaders\older">
+      <UniqueIdentifier>{754534bb-e6ed-416e-9de2-0e28da0c98ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
     <None Include="packages.config" />
+    <None Include="8_Structures.hlsli">
+      <Filter>Dx\Graphics\Shaders\8</Filter>
+    </None>
+    <None Include="8_Functions.hlsli">
+      <Filter>Dx\Graphics\Shaders\8</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader3.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader3.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader2.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader2.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader4.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader4.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader5_6.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader5_6.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Functions.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader7Textured.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders\7</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader7Colored.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader7Textured.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders\7</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader7Colored.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders\7</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader7Static.hlsl">
-      <Filter>Dx\Graphics\Shaders</Filter>
+      <Filter>Dx\Graphics\Shaders\7</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader7Textured.hlsl">
+      <Filter>Dx\Graphics\Shaders\7</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader5_6.hlsl">
+      <Filter>Dx\Graphics\Shaders\5_6</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader5_6.hlsl">
+      <Filter>Dx\Graphics\Shaders\5_6</Filter>
+    </FxCompile>
+    <FxCompile Include="Functions.hlsl">
+      <Filter>Dx\Graphics\Shaders\7</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader2.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader3.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader4.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader2.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader3.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader4.hlsl">
+      <Filter>Dx\Graphics\Shaders\older</Filter>
+    </FxCompile>
+    <FxCompile Include="8_PixelWithColor.hlsl">
+      <Filter>Dx\Graphics\Shaders\8</Filter>
+    </FxCompile>
+    <FxCompile Include="8_PixelWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\8</Filter>
+    </FxCompile>
+    <FxCompile Include="8_VertexWithColor.hlsl">
+      <Filter>Dx\Graphics\Shaders\8</Filter>
+    </FxCompile>
+    <FxCompile Include="8_VertexWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\8</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

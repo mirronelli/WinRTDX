@@ -28,6 +28,11 @@ namespace Dx::Drawables
 				{ "COLOR",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
+	std::vector<D3D11_INPUT_ELEMENT_DESC> IedsWithNormal{
+				{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
 	struct LightBuffer
 	{
 		DirectX::XMFLOAT4 lightPosition;
@@ -45,10 +50,17 @@ namespace Dx::Drawables
 		float3 cameraPosition;
 	};
 
-	struct WorldTransformWithSpecular{
+	struct WorldTransform
+	{
 		DirectX::XMMATRIX worldTransform;
+	};
+
+	struct ColorSpecular
+	{
+		XMFLOAT4 color;
 		float	reflectiveness;
 		float reflectionPower;
-		float2	padding;
+		float padding1;
+		float padding2;
 	};
 }

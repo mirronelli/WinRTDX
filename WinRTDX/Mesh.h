@@ -19,6 +19,10 @@ namespace Dx
 
 		void FileName(std::string fileName) { m_meshFileName = fileName; }
 
+		void Color(XMFLOAT4 color) { m_color = color; }
+
+		void Specular(XMFLOAT2 specular) { m_specular = specular; }
+
 		void Prepare()
 		{
 			if ((m_meshData = m_loadedMeshes[m_meshFileName]) == nullptr)
@@ -27,8 +31,9 @@ namespace Dx
 				m_loadedMeshes[m_meshFileName] = m_meshData;
 			}
 
-			m_perInstanceConstants.reflectiveness = 3.5f;
-			m_perInstanceConstants.reflectionPower = 32;
+			m_pixelPerInstanceConstants.color = m_color;
+			m_pixelPerInstanceConstants.reflectiveness = m_specular.x;
+			m_pixelPerInstanceConstants.reflectionPower = m_specular.y;
 
 			m_prepared = true;
 		}
@@ -55,7 +60,7 @@ namespace Dx
 					aiVector3D& normal = mesh->mNormals[i];
 
 					m_meshData->Vertices.push_back(
-						{ XMFLOAT3{ vertex.x, vertex.y, vertex.z }, XMFLOAT3{ normal.x, normal.y, normal.z }, XMFLOAT3{ .5, .50, .5f} }
+						{ XMFLOAT3{ vertex.x, vertex.y, vertex.z }, XMFLOAT3{ normal.x, normal.y, normal.z } }
 					);
 				}
 
@@ -75,32 +80,36 @@ namespace Dx
 
 		void RegisterResources() 
 		{
-			m_vertexBuffer = VertexBuffer<VertexWithNormalColor>						::Create(m_resourceCacheID, false, m_graphics, m_meshData->Vertices);
+			m_vertexBuffer = VertexBuffer<VertexWithNormal>								::Create(m_resourceCacheID, false, m_graphics, m_meshData->Vertices);
 			m_indexBuffer = IndexBuffer														::Create(m_resourceCacheID, false, m_graphics, m_meshData->Indices);
-			m_vsConstantBuffer = VSConstantBuffer<WorldTransformWithSpecular>		::Create(m_resourceCacheID, false, m_graphics, m_perInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_psConstantBuffer = PSConstantBuffer<WorldTransformWithSpecular>		::Create(m_resourceCacheID, false, m_graphics, m_perInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_inputLayout = InputLayout														::Create(m_resourceCacheID, false, m_graphics, IedsWithNormalColor, m_vertexShader);
+			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>						::Create(m_resourceCacheID, false, m_graphics, m_vertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_psConstantBuffer = PSConstantBuffer<ColorSpecular>						::Create(m_resourceCacheID, false, m_graphics, m_pixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_inputLayout = InputLayout														::Create(m_resourceCacheID, false, m_graphics, IedsWithNormal, m_vertexShader);
 			m_indicesCount = (UINT)m_meshData->Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX worldTransform)
 		{
-			m_perInstanceConstants.worldTransform = worldTransform;
-			std::static_pointer_cast<VSConstantBuffer<WorldTransformWithSpecular >> (m_vsConstantBuffer)->Update(m_perInstanceConstants);
-			std::static_pointer_cast<PSConstantBuffer<WorldTransformWithSpecular >> (m_psConstantBuffer)->Update(m_perInstanceConstants);
+			m_vertexPerInstanceConstants.worldTransform = worldTransform;
+
+			std::static_pointer_cast<VSConstantBuffer<WorldTransform>>		(m_vsConstantBuffer)->Update(m_vertexPerInstanceConstants);
+			std::static_pointer_cast<PSConstantBuffer<ColorSpecular>>		(m_psConstantBuffer)->Update(m_pixelPerInstanceConstants);
 		}
 
 	private:
 		
 		struct MeshData {
-			std::vector<VertexWithNormalColor>		Vertices;
+			std::vector<VertexWithNormal>				Vertices;
 			std::vector<UINT>								Indices;
 		};
 
 		static inline std::map<std::string, std::shared_ptr<MeshData>>	m_loadedMeshes;
-		std::shared_ptr<MeshData>											m_meshData;
+		std::shared_ptr<MeshData>													m_meshData;
 
-		WorldTransformWithSpecular											m_perInstanceConstants;
-		std::string																m_meshFileName;
+		ColorSpecular																	m_pixelPerInstanceConstants;
+		WorldTransform																	m_vertexPerInstanceConstants;
+		std::string																		m_meshFileName;
+		XMFLOAT4																			m_color;
+		XMFLOAT2																			m_specular;
 	};
 }

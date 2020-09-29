@@ -26,16 +26,13 @@ namespace Dx::Levels
 		using ILevel::ILevel;
 		concurrency::task<void> Load()
 		{
-			return concurrency::create_task([this]
+			return concurrency::create_task(
+				[this]()
 				{
-					//m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7Textured.cso");
-					m_vertexShaderColored = VertexShader::Load(3, false, m_graphics, L"VertexShader7Colored.cso");
-
-					//m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader7Textured.cso");
-					m_pixelShaderColored = PixelShader::Load(3, false, m_graphics, L"PixelShader7Colored.cso");
-					m_pixelShaderStatic = PixelShader::Load(4, false, m_graphics, L"PixelShader7Static.cso");
-
-					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
+					m_vertexShaderWithNormal = VertexShader::Load(1, false, m_graphics, L"8_VertexWithNormal.cso");
+					m_vertexShaderWithColor = VertexShader::Load(2, false, m_graphics, L"8_VertexWithColor.cso");
+					m_pixelShaderWithNormal = PixelShader::Load(3, false, m_graphics, L"8_PixelWithNormal.cso");
+					m_pixelShaderWithColor = PixelShader::Load(4, false, m_graphics, L"8_PixelWithColor.cso");
 				}
 			);
 		}
@@ -44,23 +41,21 @@ namespace Dx::Levels
 		{
 			GenerateDrawables();
 
-			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(4u, false, m_graphics, m_sharedConstants, 1, false);
-			m_sharedConstantVSBuffer->Attach(false);
+			m_pixelPerLevelConstants.lightPosition				= { 0, 0, 0, 0 };
+			m_pixelPerLevelConstants.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
+			m_pixelPerLevelConstants.ambientLight				= { 0.1f, 0.01f, 0.01f, 0.2f };
+			m_pixelPerLevelConstants.diffuseIntensity			= 1.0f;
+			m_pixelPerLevelConstants.attenuationQuadratic	= 0.00001f;
+			m_pixelPerLevelConstants.attenuationLinear		= 0.01f;
+			m_pixelPerLevelConstants.attenuationConstant		= 0.f;
 
-			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(4u, false, m_graphics, m_sharedConstants, 1, false);
-			m_sharedConstantPSBuffer->Attach(false);
+			m_pixelPerLevelConstantsBuffer	= PSConstantBuffer<PixelPerLevelConstants>::	Create(1u, false, m_graphics, m_pixelPerLevelConstants, 0, false);
+			m_pixelPerFrameConstantsBuffer	= PSConstantBuffer<PixelPerFrameConstants>::	Create(2u, false, m_graphics, m_pixelPerFrameConstants, 1u, true);
+			m_vertexPerFrameConstantsBuffer	= VSConstantBuffer<VertexPerFrameConstants>::Create(3u, false, m_graphics, m_vertexPerFrameConstants, 1u, true);
 
-			m_light.lightPosition = { 0, 0, 0, 0 };
-			m_light.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
-			m_light.ambientLight = { 0.1f, 0.01f, 0.01f, 0.2f };
-			m_light.diffuseIntensity = 1.0f;
-			m_light.attenuationQuadratic = 0.00001f;
-			m_light.attenuationLinear = 0.01f;
-			m_light.attenuationConstant = 0.f;
-
-			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_graphics, m_light, 0, false);
-			m_lightConstantBuffer->Attach(false);
-
+			m_pixelPerLevelConstantsBuffer->Attach(false);
+			m_pixelPerFrameConstantsBuffer->Attach(false);
+			m_vertexPerFrameConstantsBuffer->Attach(false);
 			m_mouseInput->RelativeTrackingEnter();
 		}
 
@@ -74,50 +69,16 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 50.f, DirectX::XM_PI / 50.f);
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
+			std::uniform_real_distribution<float> refelctiveness(0.f, 1.0f);
+			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
 
 			for (int i = 0; i < 100; i++)
 			{
-				float radius = scale(generator);
-				auto sphere = std::make_unique<SphereColored>(
-					m_graphics,
-					m_vertexShaderColored,
-					m_pixelShaderColored,
-					i + 1000u,
-					24
-					);
-
-				sphere->WorldX(location(generator));
-				sphere->WorldY(location(generator));
-				sphere->WorldZ(location(generator));
-
-				sphere->SpeedX(movementSpeed(generator));
-				sphere->SpeedY(movementSpeed(generator));
-				sphere->SpeedZ(movementSpeed(generator));
-
-				sphere->RotationX(startAngle(generator));
-				sphere->RotationY(startAngle(generator));
-				sphere->RotationZ(startAngle(generator));
-
-				sphere->RotationSpeedX(rotationSpeed(generator));
-				sphere->RotationSpeedY(rotationSpeed(generator));
-				sphere->RotationSpeedZ(rotationSpeed(generator));
-
-				sphere->Scale(radius);
-
-				sphere->Color(XMFLOAT3(color(generator), color(generator), color(generator)));
-
-				sphere->Prepare();
-
-				m_drawables.push_back(std::move(sphere));
-			}
-
-			for (int i = 0; i < 2000; i++)
-			{
 				std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
 					m_graphics,
-					m_vertexShaderColored,
-					m_pixelShaderColored,
-					2u
+					m_vertexShaderWithNormal,
+					m_pixelShaderWithNormal,
+					5u
 				);
 
 				mesh->WorldX(location(generator));
@@ -136,8 +97,10 @@ namespace Dx::Levels
 				mesh->RotationSpeedY(rotationSpeed(generator));
 				mesh->RotationSpeedZ(rotationSpeed(generator));
 
+				mesh->Color({ color(generator), color(generator), color(generator), 1 });
+				mesh->Specular({ refelctiveness(generator), specularPower(generator) });
 				mesh->FileName("Assets\\suzanne.obj");
-				mesh->Scale(10);
+				mesh->Scale(20);
 				mesh->Prepare();
 
 				m_drawables.push_back(std::move(mesh));
@@ -146,9 +109,9 @@ namespace Dx::Levels
 
 			auto theSun = std::make_unique<SphereColored>(
 				m_graphics,
-				m_vertexShaderColored,
-				m_pixelShaderStatic,
-				3u,
+				m_vertexShaderWithColor,
+				m_pixelShaderWithColor,
+				200u,
 				40
 				);
 
@@ -194,14 +157,14 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
-			m_sharedConstants.worldViewTransform =
+			m_vertexPerFrameConstants.worldViewTransform =
 				m_camera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
 
-			m_sharedConstants.cameraPosition = m_camera.Position();
+			m_pixelPerFrameConstants.cameraPosition = m_camera.Position();
 
-			m_sharedConstantVSBuffer->Update(m_sharedConstants);
-			m_sharedConstantPSBuffer->Update(m_sharedConstants);
+			m_vertexPerFrameConstantsBuffer->Update(m_vertexPerFrameConstants);
+			m_pixelPerFrameConstantsBuffer->Update(m_pixelPerFrameConstants);
 
 			for (auto d : m_drawables)
 				d->Update(delta);
@@ -217,13 +180,17 @@ namespace Dx::Levels
 		}
 
 	private:
-		struct SharedConstants
+		struct VertexPerFrameConstants
 		{
 			DirectX::XMMATRIX worldViewTransform;
+		};
+
+		struct PixelPerFrameConstants
+		{
 			DirectX::XMVECTOR	cameraPosition;
 		};
 
-		struct PSConstants {
+		struct PixelPerLevelConstants {
 			float4	lightPosition;
 			float4	lightColor;
 			float4	ambientLight;
@@ -236,23 +203,21 @@ namespace Dx::Levels
 
 		std::vector<std::shared_ptr<Drawable>>								m_drawables;
 
-		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
-		std::shared_ptr<VertexShader>											m_vertexShaderColored;
-		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
-		std::shared_ptr<PixelShader>											m_pixelShaderColored;
-		std::shared_ptr<PixelShader>											m_pixelShaderStatic;
+		std::shared_ptr<VertexShader>											m_vertexShaderWithColor;
+		std::shared_ptr<VertexShader>											m_vertexShaderWithNormal;
+		std::shared_ptr<PixelShader>											m_pixelShaderWithColor;
+		std::shared_ptr<PixelShader>											m_pixelShaderWithNormal;
 
-		std::shared_ptr<Texture>												m_texture;
+		PixelPerFrameConstants													m_pixelPerFrameConstants;
+		std::shared_ptr<PSConstantBuffer<PixelPerFrameConstants>>	m_pixelPerFrameConstantsBuffer;
 
-		SharedConstants															m_sharedConstants;
-		std::shared_ptr<PSConstantBuffer<SharedConstants>>				m_sharedConstantPSBuffer;
-		std::shared_ptr<VSConstantBuffer<SharedConstants>>				m_sharedConstantVSBuffer;
+		VertexPerFrameConstants													m_vertexPerFrameConstants;
+		std::shared_ptr<VSConstantBuffer<VertexPerFrameConstants>>	m_vertexPerFrameConstantsBuffer;
 
-		PSConstants																	m_light;
-		std::shared_ptr<PSConstantBuffer<PSConstants>>					m_lightConstantBuffer;
+		PixelPerLevelConstants													m_pixelPerLevelConstants;
+		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	m_pixelPerLevelConstantsBuffer;
 
 		Camera																		m_camera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
-
 		float																			m_cameraMovementSpeed = 1;
 		float																			m_mouseSensitivity = .0006f;
 	};
