@@ -19,17 +19,14 @@ namespace Dx
 		void StartFrame(float color[4]);
 		void Present();
 
-		//com_ptr<ID3D11Device3> Device();
-		//com_ptr<ID3D11DeviceContext4> Context();
+		com_ptr<ID3D11Device3> Device();
+		com_ptr<ID3D11DeviceContext4> Context();
 		CoreWindow Window();
 
 		float Width();
 		float Height();
 		float MouseX();
 		float MouseY();
-
-		static com_ptr<ID3D11Device3>				Device;
-		static com_ptr<ID3D11DeviceContext4>	Context;
 
 	private:
 		void CreateDeviceResources();
@@ -38,8 +35,8 @@ namespace Dx
 
 
 		// Direct3D objects.
-		com_ptr<ID3D11Device3>						mDevice;
-		com_ptr<ID3D11DeviceContext4>				mContext;
+		com_ptr<ID3D11Device3>						m_device;
+		com_ptr<ID3D11DeviceContext4>				m_context;
 		com_ptr<IDXGIFactory7>						m_factory;
 		com_ptr<IDXGISwapChain4>					m_swapChain;
 		com_ptr<ID3D11RenderTargetView>			m_renderTargetView;
