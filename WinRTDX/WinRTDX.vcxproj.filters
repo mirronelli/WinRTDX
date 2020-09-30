@@ -27,6 +27,10 @@
     <ClCompile Include="IO.cpp">
       <Filter>Dx\IO</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectInSpace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -136,6 +140,10 @@
     <ClInclude Include="Structures.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectInSpace.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

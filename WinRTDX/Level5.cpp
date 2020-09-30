@@ -31,9 +31,9 @@ void Dx::Levels::Level5::SetupModel()
 	{
 		auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1);
 
-		cube->WorldX(location(generator));
-		cube->WorldY(location(generator));
-		cube->WorldZ(location(generator));
+		cube->X(location(generator));
+		cube->Y(location(generator));
+		cube->Z(location(generator));
 
 		cube->SpeedX(movementSpeed(generator));
 		cube->SpeedY(movementSpeed(generator));
@@ -87,7 +87,7 @@ void Dx::Levels::Level5::Update(float delta)
 
 
 	for (auto d : m_drawables)
-		d->Update(delta);
+		d->Update(delta, XMMatrixIdentity());
 }
 
 void Dx::Levels::Level5::Render()

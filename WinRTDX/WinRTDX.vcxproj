@@ -128,6 +128,7 @@
     <ClInclude Include="Level8.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MouseInput.h" />
+    <ClInclude Include="ObjectInSpace.h" />
     <ClInclude Include="PSConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Drawable.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SphereColored.h" />
     <ClInclude Include="Structures.h" />
     <ClInclude Include="Texture.h" />
@@ -182,9 +184,11 @@
     <ClCompile Include="Level3.cpp" />
     <ClCompile Include="Level4.cpp" />
     <ClCompile Include="Level5.cpp" />
+    <ClCompile Include="ObjectInSpace.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="8_Functions.hlsli">

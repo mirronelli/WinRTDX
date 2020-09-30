@@ -46,9 +46,9 @@ namespace Dx::Levels
 			{
 				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
 
-				cube->WorldX(location(generator));
-				cube->WorldY(location(generator));
-				cube->WorldZ(location(generator));
+				cube->X(location(generator));
+				cube->Y(location(generator));
+				cube->Z(location(generator));
 
 				cube->SpeedX(movementSpeed(generator));
 				cube->SpeedY(movementSpeed(generator));
@@ -133,7 +133,7 @@ namespace Dx::Levels
 			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 			for (auto d : m_drawables)
-				d->Update(delta);
+				d->Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()

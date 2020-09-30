@@ -79,9 +79,9 @@ namespace Dx::Levels
 				float radius = scale(generator);
 				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
 
-				cube->WorldX(location(generator));
-				cube->WorldY(location(generator));
-				cube->WorldZ(location(generator));
+				cube->X(location(generator));
+				cube->Y(location(generator));
+				cube->Z(location(generator));
 
 				cube->SpeedX(movementSpeed(generator));
 				cube->SpeedY(movementSpeed(generator));
@@ -109,9 +109,9 @@ namespace Dx::Levels
 				float radius = scale(generator);
 				auto cube = std::make_unique<CubeColored>(m_graphics, m_vertexShaderColored, m_pixelShaderColored, 2u);
 
-				cube->WorldX(location(generator));
-				cube->WorldY(location(generator));
-				cube->WorldZ(location(generator));
+				cube->X(location(generator));
+				cube->Y(location(generator));
+				cube->Z(location(generator));
 
 				cube->SpeedX(movementSpeed(generator));
 				cube->SpeedY(movementSpeed(generator));
@@ -143,9 +143,9 @@ namespace Dx::Levels
 					24
 					);
 
-				sphere->WorldX(location(generator));
-				sphere->WorldY(location(generator));
-				sphere->WorldZ(location(generator));
+				sphere->X(location(generator));
+				sphere->Y(location(generator));
+				sphere->Z(location(generator));
 
 				sphere->SpeedX(movementSpeed(generator));
 				sphere->SpeedY(movementSpeed(generator));
@@ -181,7 +181,6 @@ namespace Dx::Levels
 			theSun->ScaleX(10);
 			theSun->ScaleY(10);
 			theSun->ScaleZ(10);
-			theSun->WorldZ(0);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Prepare();
 
@@ -232,7 +231,7 @@ namespace Dx::Levels
 			m_sharedConstantPSBuffer->Update(m_sharedConstants);
 
 			for (auto d : m_drawables)
-				d->Update(delta);
+				d->Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()

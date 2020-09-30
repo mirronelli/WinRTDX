@@ -81,9 +81,9 @@ namespace Dx::Levels
 					5u
 				);
 
-				mesh->WorldX(location(generator));
-				mesh->WorldY(location(generator));
-				mesh->WorldZ(location(generator));
+				mesh->X(location(generator));
+				mesh->Y(location(generator));
+				mesh->Z(location(generator));
 
 				mesh->SpeedX(movementSpeed(generator));
 				mesh->SpeedY(movementSpeed(generator));
@@ -116,7 +116,6 @@ namespace Dx::Levels
 				);
 
 			theSun->Scale(10);
-			theSun->WorldZ(0);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Prepare();
 
@@ -167,7 +166,7 @@ namespace Dx::Levels
 			m_pixelPerFrameConstantsBuffer->Update(m_pixelPerFrameConstants);
 
 			for (auto d : m_drawables)
-				d->Update(delta);
+				d->Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()

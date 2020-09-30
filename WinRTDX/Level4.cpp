@@ -28,9 +28,9 @@ void Dx::Levels::Level4::SetupModel()
 	{
 		auto cube = std::make_unique<Cube>(m_graphics, m_vertexShaderSimple, m_pixelShaderSimple, 1);
 
-		cube->WorldX(location(generator));
-		cube->WorldY(location(generator));
-		cube->WorldZ(location(generator));
+		cube->X(location(generator));
+		cube->Y(location(generator));
+		cube->Z(location(generator));
 
 		cube->SpeedX(movementSpeed(generator));
 		cube->SpeedY(movementSpeed(generator));
@@ -82,7 +82,7 @@ void Dx::Levels::Level4::Update(float delta)
 
 
 	for (auto d : m_drawables)
-		d->Update(delta);
+		d->Update(delta, DirectX::XMMatrixIdentity());
 }
 
 void Dx::Levels::Level4::Render()
