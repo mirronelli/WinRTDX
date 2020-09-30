@@ -27,14 +27,10 @@ namespace Dx::Drawables
 	{
 	public:
 		Drawable(
-			std::shared_ptr<Graphics> graphics,
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader,
 			int resourceCacheID
 		) :
-			m_graphics(graphics),
-			m_device(graphics->Device()),
-			m_context(graphics->Context()),
 			m_vertexShader(vertexShader),
 			m_pixelShader(pixelShader),
 			m_resourceCacheID(resourceCacheID)
@@ -72,10 +68,12 @@ namespace Dx::Drawables
 		}
 
 		void Draw() {
+			assert(mInitialized);
+
 			UpdateConstants(mTransform);
 			AttachResources(false);
-			m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			m_context->DrawIndexed(m_indicesCount, 0, 0);
+			Graphics::Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			Graphics::Context->DrawIndexed(m_indicesCount, 0, 0);
 		};
 
 #pragma region Property Setters
@@ -83,10 +81,6 @@ namespace Dx::Drawables
 #pragma endregion
 
 	protected:
-		std::shared_ptr<Graphics>						m_graphics;
-		com_ptr<ID3D11Device3>							m_device;
-		com_ptr<ID3D11DeviceContext4>					m_context;
-
 		int													m_resourceCacheID;
 		std::shared_ptr<PixelShader>					m_pixelShader;
 		std::shared_ptr<VertexShader>					m_vertexShader;

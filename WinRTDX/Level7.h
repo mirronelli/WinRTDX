@@ -27,14 +27,14 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader7Textured.cso");
-					m_vertexShaderColored = VertexShader::Load(3, false, m_graphics, L"VertexShader7Colored.cso");
+					m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader7Textured.cso");
+					m_vertexShaderColored = VertexShader::Load(3, false, L"VertexShader7Colored.cso");
 
-					m_pixelShaderTextured	= PixelShader::Load(2, false, m_graphics, L"PixelShader7Textured.cso");
-					m_pixelShaderColored = PixelShader::Load(3, false, m_graphics, L"PixelShader7Colored.cso");
-					m_pixelShaderStatic = PixelShader::Load(4, false, m_graphics, L"PixelShader7Static.cso");
+					m_pixelShaderTextured	= PixelShader::Load(2, false, L"PixelShader7Textured.cso");
+					m_pixelShaderColored = PixelShader::Load(3, false, L"PixelShader7Colored.cso");
+					m_pixelShaderStatic = PixelShader::Load(4, false, L"PixelShader7Static.cso");
 
-					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
+					m_texture = Texture::Load(1, false, L"Assets\\karin3.dds", 0);
 				}
 			);
 		}
@@ -43,10 +43,10 @@ namespace Dx::Levels
 		{
 			GenerateDrawables();
 
-			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(4u, false, m_graphics, m_sharedConstants, 1, false);
+			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(4u, false, m_sharedConstants, 1, false);
 			m_sharedConstantVSBuffer->Attach(false);
 
-			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(4u, false, m_graphics, m_sharedConstants, 1, false);
+			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(4u, false, m_sharedConstants, 1, false);
 			m_sharedConstantPSBuffer->Attach(false);
 
 			m_light.lightPosition				= { 0, 0, 0, 0 };
@@ -57,7 +57,7 @@ namespace Dx::Levels
 			m_light.attenuationLinear			= 0.01f;
 			m_light.attenuationConstant		= 0.f;
 
-			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_graphics, m_light, 0, false);
+			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_light, 0, false);
 			m_lightConstantBuffer->Attach(false);
 
 			m_mouseInput->RelativeTrackingEnter();
@@ -77,7 +77,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
+				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured, 1u);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -100,6 +100,7 @@ namespace Dx::Levels
 				cube->ScaleZ(radius);
 
 				cube->Texture(m_texture);
+				cube->Init();
 
 				m_drawables.push_back(std::move(cube));
 			}
@@ -107,7 +108,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeColored>(m_graphics, m_vertexShaderColored, m_pixelShaderColored, 2u);
+				auto cube = std::make_unique<CubeColored>(m_vertexShaderColored, m_pixelShaderColored, 2u);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -128,6 +129,7 @@ namespace Dx::Levels
 				cube->ScaleX(radius);
 				cube->ScaleY(radius);
 				cube->ScaleZ(radius);
+				cube->Init();
 
 				m_drawables.push_back(std::move(cube));
 			}
@@ -136,7 +138,6 @@ namespace Dx::Levels
 			{
 				float radius = scale(generator);
 				auto sphere = std::make_unique<SphereColored>(
-					m_graphics,
 					m_vertexShaderColored,
 					m_pixelShaderColored,
 					i + 1000u,
@@ -171,7 +172,6 @@ namespace Dx::Levels
 			}
 
 			auto theSun = std::make_unique<SphereColored>(
-				m_graphics,
 				m_vertexShaderColored,
 				m_pixelShaderStatic,
 				3u,
@@ -223,7 +223,7 @@ namespace Dx::Levels
 
 			m_sharedConstants.worldViewTransform = 
 				m_camera.GetMatrix()
-				* DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
+				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
 			
 			m_sharedConstants.cameraPosition = m_camera.Position();
 
@@ -237,7 +237,7 @@ namespace Dx::Levels
 		void Render()
 		{
 			float color[4]{ 0.0f, .0f, .02f, .0f };
-			m_graphics->StartFrame(color);
+			Graphics::Instance->StartFrame(color);
 
 			for (auto d : m_drawables)
 				d->Draw();

@@ -9,7 +9,7 @@
 #include "Level6.h"
 #include "Level7.h"
 #include "Level8.h"
-#include "Level8.h"
+#include "Level9.h"
 
 Game::Game(CoreWindow const& window) :
 	m_window(window)
@@ -18,8 +18,8 @@ Game::Game(CoreWindow const& window) :
 
 void Game::Init()
 {
-	m_graphics = std::make_shared<Dx::Graphics>();
-	m_graphics->SetWindow(m_window);
+	Dx::Graphics::CreateInstance();
+	Dx::Graphics::Instance->SetWindow(m_window);
 	m_keyboardInput = std::make_shared<Dx::KeyboardInput>(m_window);
 	m_mouseInput = std::make_shared<Dx::MouseInput>(m_window);
 }
@@ -30,34 +30,34 @@ void Game::LoadLevel(byte name)
 	//name = 4;
 	switch (name) {
 	case 1:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level1>(m_keyboardInput, m_mouseInput);
 		break;
 	case 2:
-		m_level = std::make_unique<Dx::Levels::Level2>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level2>(m_keyboardInput, m_mouseInput);
 		break;
 	case 3:
-		m_level = std::make_unique<Dx::Levels::Level3>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level3>(m_keyboardInput, m_mouseInput);
 		break;
 	case 4:
-		m_level = std::make_unique<Dx::Levels::Level4>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level4>(m_keyboardInput, m_mouseInput);
 		break;
 	case 5:
-		m_level = std::make_unique<Dx::Levels::Level5>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level5>(m_keyboardInput, m_mouseInput);
 		break;
 	case 6:
-		m_level = std::make_unique<Dx::Levels::Level6>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level6>(m_keyboardInput, m_mouseInput);
 		break;
 	case 7:
-		m_level = std::make_unique<Dx::Levels::Level7>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level7>(m_keyboardInput, m_mouseInput);
 		break;
 	case 8:
-		m_level = std::make_unique<Dx::Levels::Level8>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level8>(m_keyboardInput, m_mouseInput);
 		break;
 	case 9:
-		m_level = std::make_unique<Dx::Levels::Level8>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level9>(m_keyboardInput, m_mouseInput);
 		break;
 	default:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_graphics, m_keyboardInput, m_mouseInput);
+		m_level = std::make_unique<Dx::Levels::Level1>(m_keyboardInput, m_mouseInput);
 		break;
 	}
 
@@ -139,7 +139,7 @@ void Game::Render()
 
 void Game::Present()
 {
-	m_graphics->Present();
+	Dx::Graphics::Instance->Present();
 }
 
 void Game::Close()
@@ -149,5 +149,5 @@ void Game::Close()
 
 void Game::Resize()
 {
-	m_graphics->Resize();
+	Dx::Graphics::Instance->Resize();
 }

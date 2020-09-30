@@ -25,6 +25,7 @@ namespace Dx
 
 		void Init()
 		{
+
 			if ((m_meshData = m_loadedMeshes[m_meshFileName]) == nullptr)
 			{
 				LoadFromFile();
@@ -35,7 +36,7 @@ namespace Dx
 			m_pixelPerInstanceConstants.reflectiveness = m_specular.x;
 			m_pixelPerInstanceConstants.reflectionPower = m_specular.y;
 
-			mInitialized = true;
+			Drawable::Init();
 		}
 
 	protected:
@@ -80,11 +81,11 @@ namespace Dx
 
 		void RegisterResources() 
 		{
-			m_vertexBuffer = VertexBuffer<VertexWithNormal>								::Create(m_resourceCacheID, false, m_graphics, m_meshData->Vertices);
-			m_indexBuffer = IndexBuffer														::Create(m_resourceCacheID, false, m_graphics, m_meshData->Indices);
-			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>						::Create(m_resourceCacheID, false, m_graphics, m_vertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_psConstantBuffer = PSConstantBuffer<ColorSpecular>						::Create(m_resourceCacheID, false, m_graphics, m_pixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_inputLayout = InputLayout														::Create(m_resourceCacheID, false, m_graphics, IedsWithNormal, m_vertexShader);
+			m_vertexBuffer = VertexBuffer<VertexWithNormal>								::Create(m_resourceCacheID, false, m_meshData->Vertices);
+			m_indexBuffer = IndexBuffer														::Create(m_resourceCacheID, false, m_meshData->Indices);
+			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>						::Create(m_resourceCacheID, false, m_vertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_psConstantBuffer = PSConstantBuffer<ColorSpecular>						::Create(m_resourceCacheID, false, m_pixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_inputLayout = InputLayout														::Create(m_resourceCacheID, false, IedsWithNormal, m_vertexShader);
 			m_indicesCount = (UINT)m_meshData->Indices.size();
 		}
 

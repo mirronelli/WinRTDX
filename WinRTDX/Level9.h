@@ -30,10 +30,10 @@ namespace Dx::Levels
 			return concurrency::create_task(
 				[this]()
 				{
-					mVertexShaderWithNormal = VertexShader::Load(1, false, m_graphics, L"8_VertexWithNormal.cso");
-					mVertexShaderWithColor = VertexShader::Load(2, false, m_graphics, L"8_VertexWithColor.cso");
-					mPixelShaderWithNormal = PixelShader::Load(3, false, m_graphics, L"8_PixelWithNormal.cso");
-					mPixelShaderWithColor = PixelShader::Load(4, false, m_graphics, L"8_PixelWithColor.cso");
+					mVertexShaderWithNormal = VertexShader::Load(1, false, L"8_VertexWithNormal.cso");
+					mVertexShaderWithColor = VertexShader::Load(2, false, L"8_VertexWithColor.cso");
+					mPixelShaderWithNormal = PixelShader::Load(3, false, L"8_PixelWithNormal.cso");
+					mPixelShaderWithColor = PixelShader::Load(4, false, L"8_PixelWithColor.cso");
 				}
 			);
 		}
@@ -50,9 +50,9 @@ namespace Dx::Levels
 			mPixelPerLevelConstants.attenuationLinear = 0.01f;
 			mPixelPerLevelConstants.attenuationConstant = 0.f;
 
-			mPixelPerLevelConstantsBuffer = PSConstantBuffer<PixelPerLevelConstants>::Create(1u, false, m_graphics, mPixelPerLevelConstants, 0, false);
-			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(2u, false, m_graphics, mPixelPerFrameConstants, 1u, true);
-			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(3u, false, m_graphics, mVertexPerFrameConstants, 1u, true);
+			mPixelPerLevelConstantsBuffer = PSConstantBuffer<PixelPerLevelConstants>::Create(1u, false, mPixelPerLevelConstants, 0, false);
+			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(2u, false, mPixelPerFrameConstants, 1u, true);
+			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(3u, false, mVertexPerFrameConstants, 1u, true);
 
 			mPixelPerLevelConstantsBuffer->Attach(false);
 			mPixelPerFrameConstantsBuffer->Attach(false);
@@ -73,10 +73,9 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> refelctiveness(0.f, 1.0f);
 			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
 
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 3000; i++)
 			{
 				std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
-					m_graphics,
 					mVertexShaderWithNormal,
 					mPixelShaderWithNormal,
 					5u
@@ -109,7 +108,6 @@ namespace Dx::Levels
 			}
 
 			auto theSun = std::make_unique<SphereColored>(
-				m_graphics,
 				mVertexShaderWithColor,
 				mPixelShaderWithColor,
 				200u,
@@ -155,24 +153,22 @@ namespace Dx::Levels
 
 			mVertexPerFrameConstants.worldViewTransform =
 				mCamera.GetMatrix()
-				* DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
+				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
 
 			mPixelPerFrameConstants.cameraPosition = mCamera.Position();
 
 			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
 			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
 
-			for (auto d : m_drawables)
-				d->Update(delta, XMMatrixIdentity());
+			mRootScene.Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()
 		{
 			float color[4]{ 0.0f, .0f, .02f, .0f };
-			m_graphics->StartFrame(color);
+			Graphics::Instance->StartFrame(color);
 
-			for (auto d : m_drawables)
-				d->Draw();
+			mRootScene.Draw();
 		}
 
 	private:

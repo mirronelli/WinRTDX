@@ -50,11 +50,11 @@ void Dx::Graphics::CreateDeviceResources()
 		context.put()									// Returns the device immediate context.
 	);
 
-	m_device = device.as<ID3D11Device3>();
-	m_context = context.as<ID3D11DeviceContext4>();
+	Device = device.as<ID3D11Device3>();
+	Context = context.as<ID3D11DeviceContext4>();
 
 	com_ptr<IDXGIDevice3> dxgiDevice;
-	dxgiDevice = m_device.as<IDXGIDevice3>();
+	dxgiDevice = Device.as<IDXGIDevice3>();
 
 	com_ptr<IDXGIAdapter> dxgiAdapter;
 	dxgiDevice->GetAdapter(dxgiAdapter.put());
@@ -102,7 +102,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 		if (
 			FAILED(
 				m_factory->CreateSwapChainForCoreWindow(
-					m_device.get(),
+					Device.get(),
 					winrt::get_unknown(m_window),
 					&swapChainDescriptor,
 					nullptr,
@@ -125,7 +125,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), backBuffer.put_void());
 
 	com_ptr<ID3D11RenderTargetView> renderTargetView;
-	m_device->CreateRenderTargetView(backBuffer.get(), nullptr, renderTargetView.put());
+	Device->CreateRenderTargetView(backBuffer.get(), nullptr, renderTargetView.put());
 	m_renderTargetView = renderTargetView;
 
 #pragma endregion
@@ -141,7 +141,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	viewports[0].MinDepth = D3D11_MIN_DEPTH;
 	viewports[0].MaxDepth = D3D11_MAX_DEPTH;
 
-	m_context->RSSetViewports(1, viewports);
+	Context->RSSetViewports(1, viewports);
 
 #pragma endregion
 
@@ -152,8 +152,8 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	depthBufferDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS;
 	depthBufferDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 	com_ptr<ID3D11DepthStencilState> depthStencilState;
-	m_device->CreateDepthStencilState(&depthBufferDesc, depthStencilState.put());
-	m_context->OMSetDepthStencilState(depthStencilState.get(), 1);
+	Device->CreateDepthStencilState(&depthBufferDesc, depthStencilState.put());
+	Context->OMSetDepthStencilState(depthStencilState.get(), 1);
 
 	com_ptr<ID3D11Texture2D> depthBufferTexture;
 	D3D11_TEXTURE2D_DESC depthBufferTextureDesc{ 0 };
@@ -166,14 +166,14 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	depthBufferTextureDesc.SampleDesc.Quality = 0;
 	depthBufferTextureDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	depthBufferTextureDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
-	m_device->CreateTexture2D(&depthBufferTextureDesc, nullptr, depthBufferTexture.put());
+	Device->CreateTexture2D(&depthBufferTextureDesc, nullptr, depthBufferTexture.put());
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
 	depthStencilViewDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	m_device->CreateDepthStencilView(depthBufferTexture.get(), &depthStencilViewDesc, m_depthStencilView.put());
+	Device->CreateDepthStencilView(depthBufferTexture.get(), &depthStencilViewDesc, m_depthStencilView.put());
 
 #pragma endregion
 }
@@ -182,6 +182,11 @@ void Dx::Graphics::OnMouseMove(CoreWindow sender, PointerEventArgs args)
 {
 	m_mouseX = 4 * (args.CurrentPoint().Position().X - m_width / 2) / m_width;
 	m_mouseY = 4 * (-args.CurrentPoint().Position().Y + m_height / 2) / m_height;
+}
+
+void Dx::Graphics::CreateInstance()
+{
+	Instance = std::make_shared<Graphics>();
 }
 
 void Dx::Graphics::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
@@ -201,14 +206,14 @@ void Dx::Graphics::Resize()
 void Dx::Graphics::StartFrame(float color[4])
 {
 	ID3D11RenderTargetView* views[] = { m_renderTargetView.get() };
-	m_context->OMSetRenderTargets(
+	Context->OMSetRenderTargets(
 		1,
 		views,
 		m_depthStencilView.get()
 	);
 
-	m_context->ClearRenderTargetView(m_renderTargetView.get(), color);
-	m_context->ClearDepthStencilView(m_depthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
+	Context->ClearRenderTargetView(m_renderTargetView.get(), color);
+	Context->ClearDepthStencilView(m_depthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
 }
 
 float Dx::Graphics::Width()
@@ -234,16 +239,6 @@ float Dx::Graphics::MouseY()
 void Dx::Graphics::Present()
 {
 	m_swapChain->Present(1, 0);
-}
-
-com_ptr<ID3D11Device3> Dx::Graphics::Device()
-{
-	return m_device;
-}
-
-com_ptr<ID3D11DeviceContext4> Dx::Graphics::Context()
-{
-	return m_context;
 }
 
 CoreWindow Dx::Graphics::Window()

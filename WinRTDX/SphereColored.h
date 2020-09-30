@@ -3,6 +3,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include <DirectXMath.h>
+#include "Graphics.h"
 
 using namespace Dx::Attachables;
 using namespace DirectX;
@@ -12,13 +13,12 @@ namespace Dx {
 	{
 	public:
 		SphereColored (
-			std::shared_ptr<Graphics> graphics,
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader,
 			int resourceCacheID,
 			int steps
 		) :
-			Drawable(graphics, vertexShader, pixelShader, resourceCacheID),
+			Drawable(vertexShader, pixelShader, resourceCacheID),
 			m_steps(steps)
 		{}
 
@@ -27,7 +27,8 @@ namespace Dx {
 			GenerateVerticesAndIndices();
 			m_sharedConstants.reflectionPower = 16;
 			m_sharedConstants.reflectiveness = 0.5;
-			mInitialized = true;
+
+			Drawable::Init();
 		}
 
 		void Color(XMFLOAT3 value) { m_color = value; m_useRandomColor = false; }
@@ -60,12 +61,11 @@ namespace Dx {
 		
 
 		void RegisterResources() {
-			assert(mInitialized);
-			m_vertexBuffer =		VertexBuffer<Vertex>::					Create(m_resourceCacheID, false, m_graphics, Vertices);
-			m_indexBuffer =		IndexBuffer::								Create(m_resourceCacheID, false, m_graphics, Indices);
-			m_vsConstantBuffer = VSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_graphics, m_sharedConstants, 2);
-			m_psConstantBuffer = PSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_graphics, m_sharedConstants, 2);
-			m_inputLayout =		InputLayout::								Create(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
+			m_vertexBuffer =		VertexBuffer<Vertex>::					Create(m_resourceCacheID, false, Vertices);
+			m_indexBuffer =		IndexBuffer::								Create(m_resourceCacheID, false, Indices);
+			m_vsConstantBuffer = VSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_sharedConstants, 2);
+			m_psConstantBuffer = PSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_sharedConstants, 2);
+			m_inputLayout =		InputLayout::								Create(m_resourceCacheID, false, Ieds, m_vertexShader);
 			m_indicesCount =		(int)Indices.size();
 		}
 

@@ -24,10 +24,10 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader5_6.cso");
-					m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader5_6.cso");
+					m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader5_6.cso");
+					m_pixelShaderTextured = PixelShader::Load(2, false, L"PixelShader5_6.cso");
 
-					m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
+					m_texture = Texture::Load(1, false, L"Assets\\karin3.dds", 0);
 				}
 			);
 		}
@@ -44,7 +44,7 @@ namespace Dx::Levels
 
 			for (int i = 0; i <= 5000; i++)
 			{
-				auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1u);
+				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured, 1u);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -67,6 +67,7 @@ namespace Dx::Levels
 				cube->ScaleZ(scale(generator));
 
 				cube->Texture(m_texture);
+				cube->Init();
 
 				m_drawables.push_back(std::move(cube));
 			}
@@ -75,7 +76,7 @@ namespace Dx::Levels
 				d->RegisterResources();
 			}
 
-			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_graphics, m_worldViewTransform, 0, false);
+			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_worldViewTransform, 0, false);
 			m_worldViewTransformConstantBuffer->Attach(false);
 			m_worldRotationSpeedY = 0.f;
 		}
@@ -106,7 +107,7 @@ namespace Dx::Levels
 				m_mouseInput->RelativeDeltaX() * m_mouseSensitivity
 			);
 		}
-		
+
 		void Update(float delta)
 		{
 			ProcessInput();
@@ -126,10 +127,7 @@ namespace Dx::Levels
 				m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
 			m_worldViewTransform *= m_camera.GetMatrix();
-			//m_worldViewTransform *= DirectX::XMMatrixOrthographicLH(m_graphics->Width()/10, m_graphics->Height()/10, .1f, 1000.0f);
-			//m_worldViewTransform *= DirectX::XMMatrixPerspectiveLH(160, 90, 10.f, 100.0f);
-			//m_worldViewTransform *= DirectX::XMMatrixOrthographicLH(m_graphics->Width(), m_graphics->Height(), .1f, 1000.0f);
-			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 1000.0f);
+			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, Dx::Graphics::Instance->Width() / Dx::Graphics::Instance->Height(), .1f, 1000.0f);
 			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 			for (auto d : m_drawables)
@@ -139,7 +137,7 @@ namespace Dx::Levels
 		void Render()
 		{
 			float color[4]{ 0.3f, .0f, .1f, .2f };
-			m_graphics->StartFrame(color);
+			Graphics::Instance->StartFrame(color);
 
 			for (auto d : m_drawables)
 				d->Draw();
@@ -167,7 +165,7 @@ namespace Dx::Levels
 
 		float																			m_cameraMovementSpeed = 1;
 		float																			m_cameraRotationSpeed = .03f;
-		float																			m_mouseSensitivity	 = .0006f;
+		float																			m_mouseSensitivity = .0006f;
 	};
 }
 

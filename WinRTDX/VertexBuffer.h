@@ -12,21 +12,21 @@ namespace Dx::Attachables
 	class VertexBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<VertexBuffer<T>> Create(int const& key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices, UINT slot = 0)
+		static std::shared_ptr<VertexBuffer<T>> Create(int const& key, bool overwrite, std::vector<T> const& vertices, UINT slot = 0)
 		{
 			std::shared_ptr<VertexBuffer<T>> instance = std::static_pointer_cast<VertexBuffer<T>>(ResourceManager::VertexBuffers[key]);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<VertexBuffer>(key, graphics, vertices, slot);
+				instance = std::make_shared<VertexBuffer>(key, vertices, slot);
 				ResourceManager::VertexBuffers[key] = instance;
 			}
 
 			return instance;
 		}
 
-		VertexBuffer(int key, std::shared_ptr<Graphics> graphics, std::vector<T> const& vertices, UINT slot)
-			: Attachable(key, graphics),
+		VertexBuffer(int key, std::vector<T> const& vertices, UINT slot)
+			: Attachable(key),
 			m_slot(slot)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };
@@ -37,7 +37,7 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = vertices.data();
 
-			m_device->CreateBuffer(&desc, &srd, m_buffer.put());
+			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
 		void AttachPrivate(bool force)
@@ -47,7 +47,7 @@ namespace Dx::Attachables
 				UINT strideVertices = sizeof(T);
 				UINT offsetVertices = 0;
 				ID3D11Buffer* vertexBuffers[1] = { m_buffer.get() };
-				m_context->IASetVertexBuffers(m_slot, 1, vertexBuffers, &strideVertices, &offsetVertices);
+				Graphics::Context->IASetVertexBuffers(m_slot, 1, vertexBuffers, &strideVertices, &offsetVertices);
 				ResourceManager::CurrentVertexBuffer = m_key;
 			}
 		}

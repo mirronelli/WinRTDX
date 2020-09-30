@@ -9,8 +9,8 @@ concurrency::task<void> Dx::Levels::Level2::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShader = VertexShader::Load(1, true, m_graphics, L"VertexShader2.cso");
-			m_pixelShader = PixelShader::Load(1, true, m_graphics, L"PixelShader2.cso");
+			m_vertexShader = VertexShader::Load(1, true, L"VertexShader2.cso");
+			m_pixelShader = PixelShader::Load(1, true, L"PixelShader2.cso");
 		}
 	);
 }
@@ -23,14 +23,14 @@ void Dx::Levels::Level2::CreateVertices()
 		{ "COLOR",		0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 16,									D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	com_ptr<ID3D11InputLayout> inputLayout;
-	m_device->CreateInputLayout(
+	Graphics::Device->CreateInputLayout(
 		ieds,
 		ARRAYSIZE(ieds),
 		m_vertexShader->Data(),
 		m_vertexShader->Length(),
 		inputLayout.put()
 	);
-	m_context->IASetInputLayout(inputLayout.get());
+	Graphics::Context->IASetInputLayout(inputLayout.get());
 
 	// define vertices and its buffer
 	Vertex vertices[] = {
@@ -46,7 +46,7 @@ void Dx::Levels::Level2::CreateVertices()
 
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
 
-	m_device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
+	Graphics::Device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
 	m_vertexShader->Attach(true);
 	m_pixelShader->Attach(true);
 }
@@ -66,7 +66,7 @@ void Dx::Levels::Level2::CreateIndices()
 
 	D3D11_SUBRESOURCE_DATA srdIndices = { indices, 0, 0 };
 
-	m_device->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
+	Graphics::Device->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
 }
 
 void Dx::Levels::Level2::CreateConstantData()
@@ -80,7 +80,7 @@ void Dx::Levels::Level2::CreateConstantData()
 	D3D11_SUBRESOURCE_DATA transformSrd{ 0 };
 	transformSrd.pSysMem = &m_constantData;
 
-	m_device->CreateBuffer(&transformDesc, &transformSrd, m_constantBuffer.put());
+	Graphics::Device->CreateBuffer(&transformDesc, &transformSrd, m_constantBuffer.put());
 }
 
 void Dx::Levels::Level2::RegisterBuffers()
@@ -88,13 +88,13 @@ void Dx::Levels::Level2::RegisterBuffers()
 	UINT strideVertices = sizeof(Vertex);
 	UINT offsetVertices = 0;
 	ID3D11Buffer* vertexBuffers[1] = { m_vertexBuffer.get() };
-	m_context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
+	Graphics::Context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
 
-	m_context->IASetIndexBuffer(m_indexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
+	Graphics::Context->IASetIndexBuffer(m_indexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
 
 	ID3D11Buffer* constantBuffers[1] = { m_constantBuffer.get() };
-	m_context->VSSetConstantBuffers(0, 1, constantBuffers);
-	m_context->PSSetConstantBuffers(0, 1, constantBuffers);
+	Graphics::Context->VSSetConstantBuffers(0, 1, constantBuffers);
+	Graphics::Context->PSSetConstantBuffers(0, 1, constantBuffers);
 }
 
 void Dx::Levels::Level2::SetupModel()
@@ -116,19 +116,19 @@ void Dx::Levels::Level2::Update(float delta)
 
 void Dx::Levels::Level2::Draw(float angle, float x, float y, float z)
 {
-	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Graphics::Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_constantData.matrix = DirectX::XMMatrixRotationZ(angle);
 	m_constantData.matrix *= DirectX::XMMatrixTranslation(x, y, z);
-	m_constantData.matrix *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
-	m_context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_constantData, 0, 0);
+	m_constantData.matrix *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, Graphics::Instance->Width() / Graphics::Instance->Height(), 1.f, 100.0f);
+	Graphics::Context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_constantData, 0, 0);
 	
-	m_context->DrawIndexed(6, 0, 0);
+	Graphics::Context->DrawIndexed(6, 0, 0);
 }
 
 void Dx::Levels::Level2::Render()
 {
 	float color[4]{ .4f, .2f, .2f, .2f };
-	m_graphics->StartFrame(color);
+	Graphics::Instance->StartFrame(color);
 
-	Draw(m_progress, m_graphics->MouseX(), m_graphics->MouseY(), 2.0f);
+	Draw(m_progress, Graphics::Instance->MouseX(), Graphics::Instance->MouseY(), 2.0f);
 }

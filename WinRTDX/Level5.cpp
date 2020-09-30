@@ -9,10 +9,10 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShaderTextured = VertexShader::Load(2, false, m_graphics, L"VertexShader5_6.cso");
-			m_pixelShaderTextured = PixelShader::Load(2, false, m_graphics, L"PixelShader5_6.cso");
+			m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader5_6.cso");
+			m_pixelShaderTextured = PixelShader::Load(2, false, L"PixelShader5_6.cso");
 
-			m_texture = Texture::Load(1, false, m_graphics, L"Assets\\karin3.dds", 0);
+			m_texture = Texture::Load(1, false, L"Assets\\karin3.dds", 0);
 		}
 	);
 }
@@ -29,7 +29,7 @@ void Dx::Levels::Level5::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		auto cube = std::make_unique<CubeTextured>(m_graphics, m_vertexShaderTextured, m_pixelShaderTextured, 1);
+		auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured, 1);
 
 		cube->X(location(generator));
 		cube->Y(location(generator));
@@ -52,6 +52,7 @@ void Dx::Levels::Level5::SetupModel()
 		cube->ScaleZ(scale(generator));
 
 		cube->Texture(m_texture);
+		cube->Init();
 
 		m_drawables.push_back(std::move(cube)); 
 	}
@@ -60,7 +61,7 @@ void Dx::Levels::Level5::SetupModel()
 		d->RegisterResources();
 	}
 
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(2u, false, m_graphics, m_worldViewTransform, 0, false);
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(2u, false, m_worldViewTransform, 0, false);
 	m_worldViewTransformConstantBuffer->Attach(false);
 
 	m_worldRotationSpeedY = 0.1f;
@@ -82,7 +83,7 @@ void Dx::Levels::Level5::Update(float delta)
 	if (m_worldRotationY != 0)
 		m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
-	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, m_graphics->Width() / m_graphics->Height(), .1f, 250.0f);
+	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 250.0f);
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 
@@ -93,7 +94,7 @@ void Dx::Levels::Level5::Update(float delta)
 void Dx::Levels::Level5::Render()
 {
 	float color[4]{ .2f, .3f, .1f, .2f };
-	m_graphics->StartFrame(color);
+	Graphics::Instance->StartFrame(color);
 
 	for (auto d : m_drawables)
 		d->Draw();

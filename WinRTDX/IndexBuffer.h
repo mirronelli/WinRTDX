@@ -9,21 +9,21 @@ namespace Dx::Attachables
 	class IndexBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<IndexBuffer> Create(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
+		static std::shared_ptr<IndexBuffer> Create(int key, bool overwrite, std::vector<UINT> const& indices)
 		{
 			std::shared_ptr<IndexBuffer> instance = std::static_pointer_cast<IndexBuffer>( ResourceManager::IndexBuffers[key]);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<IndexBuffer>(key, graphics, indices);
+				instance = std::make_shared<IndexBuffer>(key, indices);
 				ResourceManager::IndexBuffers[key] = instance;
 			}
 
 			return instance;
 		}
 
-		IndexBuffer(UINT const& key, std::shared_ptr<Graphics> graphics, std::vector<UINT> const& indices)
-			: Attachable(key, graphics)
+		IndexBuffer(UINT const& key, std::vector<UINT> const& indices)
+			: Attachable(key)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(UINT) * indices.size());
@@ -34,14 +34,14 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = indices.data();
 
-			m_device->CreateBuffer(&desc, &srd, m_buffer.put());
+			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
 		void AttachPrivate(bool force)
 		{
 			if (force || ResourceManager::CurrentIndexBuffer != m_key)
 			{
-				m_context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
+				Graphics::Context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 				ResourceManager::CurrentIndexBuffer = m_key;
 			}
 		}

@@ -12,15 +12,18 @@ namespace Dx
 	{
 
 	public:
+		static void CreateInstance();
 		Graphics();
+
 		void SetWindow(winrt::Windows::UI::Core::CoreWindow const& window);
 		void Resize();
 
 		void StartFrame(float color[4]);
 		void Present();
 
-		com_ptr<ID3D11Device3> Device();
-		com_ptr<ID3D11DeviceContext4> Context();
+		inline static std::shared_ptr<Graphics>		Instance;
+		inline static com_ptr<ID3D11Device3>			Device;
+		inline static com_ptr<ID3D11DeviceContext4>	Context;
 		CoreWindow Window();
 
 		float Width();
@@ -35,8 +38,6 @@ namespace Dx
 
 
 		// Direct3D objects.
-		com_ptr<ID3D11Device3>						m_device;
-		com_ptr<ID3D11DeviceContext4>				m_context;
 		com_ptr<IDXGIFactory7>						m_factory;
 		com_ptr<IDXGISwapChain4>					m_swapChain;
 		com_ptr<ID3D11RenderTargetView>			m_renderTargetView;

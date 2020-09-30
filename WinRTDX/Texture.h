@@ -13,21 +13,21 @@ namespace Dx::Attachables
 
 
 	public:
-		static std::shared_ptr<Texture> Load(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName, UINT slot=0)
+		static std::shared_ptr<Texture> Load(int key, bool overwrite, std::wstring fileName, UINT slot=0)
 		{
 			std::shared_ptr<Texture> instance = std::static_pointer_cast<Texture>(ResourceManager::Textures[key]);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<Texture>(key, graphics, fileName, slot);
+				instance = std::make_shared<Texture>(key, fileName, slot);
 				ResourceManager::Textures[key] = instance;
 			}
 
 			return instance;
 		}
 
-		Texture(int key, std::shared_ptr<Graphics> graphics, std::wstring filename, UINT slot)
-			: Attachable(key, graphics),
+		Texture(int key, std::wstring filename, UINT slot)
+			: Attachable(key),
 			m_slot(slot)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
@@ -50,7 +50,7 @@ namespace Dx::Attachables
 			srd.pSysMem = &textureStruct->data;
 			srd.SysMemPitch = textureStruct->header.pitchOrLinearSize;
 		
-			m_device->CreateTexture2D(&desc, &srd, m_texture.put());
+			Graphics::Device->CreateTexture2D(&desc, &srd, m_texture.put());
 
 			// Texture view
 			D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc = {};
@@ -59,7 +59,7 @@ namespace Dx::Attachables
 			viewDesc.Texture2D.MipLevels = desc.MipLevels;
 			viewDesc.Texture2D.MostDetailedMip = 0;
 
-			m_device->CreateShaderResourceView(m_texture.get(), &viewDesc, m_textureView.put());
+			Graphics::Device->CreateShaderResourceView(m_texture.get(), &viewDesc, m_textureView.put());
 
 			// Sampler
 			D3D11_SAMPLER_DESC samplerDesc = {};
@@ -76,7 +76,7 @@ namespace Dx::Attachables
 			samplerDesc.BorderColor[2] = 0.0f;
 			samplerDesc.BorderColor[3] = 0.0f;
 
-			m_device->CreateSamplerState(&samplerDesc, m_sampler.put());
+			Graphics::Device->CreateSamplerState(&samplerDesc, m_sampler.put());
 		}
 
 		void AttachPrivate(bool force)
@@ -84,10 +84,10 @@ namespace Dx::Attachables
 			if (force || ResourceManager::CurrentTexture != m_key)
 			{
 				ID3D11ShaderResourceView* textureViews[1] = { m_textureView.get() };
-				m_context->PSSetShaderResources(m_slot, 1, textureViews);
+				Graphics::Context->PSSetShaderResources(m_slot, 1, textureViews);
 
 				ID3D11SamplerState* samplers[1] = { m_sampler.get() };
-				m_context->PSSetSamplers(m_slot, 1, samplers);
+				Graphics::Context->PSSetSamplers(m_slot, 1, samplers);
 
 				ResourceManager::CurrentTexture = m_key;
 			}

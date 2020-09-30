@@ -8,8 +8,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShaderSimple = VertexShader::Load(1, false, m_graphics, L"VertexShader4.cso");
-			m_pixelShaderSimple = PixelShader::Load(1, false, m_graphics, L"PixelShader4.cso");
+			m_vertexShaderSimple = VertexShader::Load(1, false, L"VertexShader4.cso");
+			m_pixelShaderSimple = PixelShader::Load(1, false, L"PixelShader4.cso");
 		}
 	);
 }
@@ -26,7 +26,7 @@ void Dx::Levels::Level4::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		auto cube = std::make_unique<Cube>(m_graphics, m_vertexShaderSimple, m_pixelShaderSimple, 1);
+		auto cube = std::make_unique<Cube>(m_vertexShaderSimple, m_pixelShaderSimple, 1);
 
 		cube->X(location(generator));
 		cube->Y(location(generator));
@@ -47,6 +47,7 @@ void Dx::Levels::Level4::SetupModel()
 		cube->ScaleX(scale(generator));
 		cube->ScaleY(scale(generator));
 		cube->ScaleZ(scale(generator));
+		cube->Init();
 
 		m_drawables.push_back(std::move(cube));
 	}
@@ -55,7 +56,7 @@ void Dx::Levels::Level4::SetupModel()
 		d->RegisterResources();
 	}
 
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(2, false, m_graphics, m_worldViewTransform, 0, false);
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(2, false, m_worldViewTransform, 0, false);
 	m_worldViewTransformConstantBuffer->Attach(false);
 
 	m_worldRotationSpeedY = 0.01f;
@@ -77,7 +78,7 @@ void Dx::Levels::Level4::Update(float delta)
 	if (m_worldRotationY != 0)
 		m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
-	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, m_graphics->Width() / m_graphics->Height(), 1.f, 100.0f);
+	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, Graphics::Instance->Width() / Graphics::Instance->Height(), 1.f, 100.0f);
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 
@@ -88,7 +89,7 @@ void Dx::Levels::Level4::Update(float delta)
 void Dx::Levels::Level4::Render()
 {
 	float color[4]{ .2f, .2f, .3f, .2f};
-	m_graphics->StartFrame(color);
+	Graphics::Instance->StartFrame(color);
 
 	for (auto d : m_drawables)
 		d->Draw();

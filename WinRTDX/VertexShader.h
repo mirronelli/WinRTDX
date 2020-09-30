@@ -10,26 +10,26 @@ namespace Dx::Attachables
 	class VertexShader : public Attachable
 	{
 	public:
-		static std::shared_ptr<VertexShader> Load(int key, bool overwrite, std::shared_ptr<Graphics> graphics, std::wstring fileName)
+		static std::shared_ptr<VertexShader> Load(int key, bool overwrite, std::wstring fileName)
 		{
 			std::shared_ptr<VertexShader> instance = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[key]);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<VertexShader>(key, graphics, fileName);
+				instance = std::make_shared<VertexShader>(key, fileName);
 				ResourceManager::VertexShaders[key] = instance;
 			}
 
 			return instance;
 		}
 
-		VertexShader(int key, std::shared_ptr<Graphics> graphics, std::wstring filename)
-			: Attachable(key, graphics)
+		VertexShader(int key, std::wstring filename)
+			: Attachable(key)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
 
 			com_ptr<ID3D11VertexShader> shader;
-			m_device->CreateVertexShader(
+			Graphics::Device->CreateVertexShader(
 				m_rawDataBuffer.data(),
 				m_rawDataBuffer.Length(),
 				nullptr,
@@ -51,7 +51,7 @@ namespace Dx::Attachables
 		{
 			if (force || ResourceManager::CurrentVertexShader != m_key)
 			{
-				m_context->VSSetShader(m_compiledShader.get(), nullptr, 0);
+				Graphics::Context->VSSetShader(m_compiledShader.get(), nullptr, 0);
 				ResourceManager::CurrentVertexShader = m_key;
 			}
 		}

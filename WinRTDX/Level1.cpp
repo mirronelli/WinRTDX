@@ -8,8 +8,8 @@ concurrency::task<void> Dx::Levels::Level1::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShader = VertexShader::Load(1, true, m_graphics, L"VertexShader.cso");
-			m_pixelShader = PixelShader::Load(1, true, m_graphics, L"PixelShader.cso");
+			m_vertexShader = VertexShader::Load(1, true, L"VertexShader.cso");
+			m_pixelShader = PixelShader::Load(1, true, L"PixelShader.cso");
 		}
 	);
 }
@@ -32,21 +32,21 @@ void Dx::Levels::Level1::SetupModel()
 		 {"COLOR",		0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT,	D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 	com_ptr<ID3D11InputLayout> inputLayout;
-	m_graphics->Device()->CreateInputLayout(
+	Graphics::Device->CreateInputLayout(
 		ieds,
 		ARRAYSIZE(ieds),
 		m_vertexShader->Data(),
 		m_vertexShader->Length(),
 		inputLayout.put()
 	);
-	m_graphics->Context()->IASetInputLayout(inputLayout.get());
+	Graphics::Context->IASetInputLayout(inputLayout.get());
 
 	// Create Vertex Buffer over vertices
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
 	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
 	vertexBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
-	m_graphics->Device()->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
+	Graphics::Device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
 	
 	// define indices
 	const unsigned short indices[] = {
@@ -61,7 +61,7 @@ void Dx::Levels::Level1::SetupModel()
 	indexBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	indexBufferDesc.StructureByteStride = sizeof(unsigned short);
 	D3D11_SUBRESOURCE_DATA srdIndices = { indices, 0, 0 };
-	m_graphics->Device()->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
+	Graphics::Device->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
 	m_vertexShader->Attach(true);
 	m_pixelShader->Attach(true);
 }
@@ -69,15 +69,15 @@ void Dx::Levels::Level1::SetupModel()
 void Dx::Levels::Level1::Render()
 {
 	float color[4]{ m_red * c_maxColorIntensity, m_green * c_maxColorIntensity, m_blue * c_maxColorIntensity, .0 };
-	m_graphics->StartFrame(color);
+	Graphics::Instance->StartFrame(color);
 
 	UINT strideVertices = sizeof(Vertex);
 	UINT offsetVertices = 0;
 	ID3D11Buffer* vertexBuffers[1] = { m_vertexBuffer.get() };
-	m_graphics->Context()->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
-	m_graphics->Context()->IASetIndexBuffer(m_indexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
-	m_graphics->Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_graphics->Context()->DrawIndexed(9, 0, 0);
+	Graphics::Context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);
+	Graphics::Context->IASetIndexBuffer(m_indexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
+	Graphics::Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Graphics::Context->DrawIndexed(9, 0, 0);
 }
 
 void Dx::Levels::Level1::Update(float delta)

@@ -22,7 +22,6 @@ private:
 	void Render();
 	void Present();
 
-	std::shared_ptr<Dx::Graphics>						m_graphics;
 	std::unique_ptr<Dx::Levels::ILevel>				m_level{ nullptr };
 	CoreWindow												m_window{ nullptr };
 	bool														m_isClosing = false;

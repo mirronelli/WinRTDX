@@ -9,21 +9,21 @@ namespace Dx::Attachables
 	class PSConstantBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<PSConstantBuffer<T>> Create(int key, bool overwrite, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot = 0, bool fastMode = true)
+		static std::shared_ptr<PSConstantBuffer<T>> Create(int key, bool overwrite, T& constantData, UINT slot = 0, bool fastMode = true)
 		{
 			std::shared_ptr<PSConstantBuffer<T>> instance = std::static_pointer_cast<PSConstantBuffer<T>>(ResourceManager::PSConstantBuffers[key]);
 
 			if (overwrite || instance == nullptr)
 			{
-				instance = std::make_shared<PSConstantBuffer>(key, graphics, constantData, slot, fastMode);
+				instance = std::make_shared<PSConstantBuffer>(key, constantData, slot, fastMode);
 				ResourceManager::PSConstantBuffers[key] = instance;
 			}
 
 			return instance;
 		}
 
-		PSConstantBuffer(int key, std::shared_ptr<Graphics> graphics, T& constantData, UINT slot, bool fastMode)
-			: Attachable(key, graphics),
+		PSConstantBuffer(int key, T& constantData, UINT slot, bool fastMode)
+			: Attachable(key),
 			m_slot(slot),
 			m_fastMode(fastMode)
 		{
@@ -36,7 +36,7 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = &constantData;
 
-			m_device->CreateBuffer(&desc, &srd, m_buffer.put());
+			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
 		void AttachPrivate(bool force)
@@ -44,7 +44,7 @@ namespace Dx::Attachables
 			if (force || ResourceManager::CurrentPSConstantBuffer != m_key)
 			{
 				ID3D11Buffer* PSConstantBuffers[1] = { m_buffer.get() };
-				m_context->PSSetConstantBuffers(m_slot, 1, PSConstantBuffers);
+				Graphics::Context->PSSetConstantBuffers(m_slot, 1, PSConstantBuffers);
 				ResourceManager::CurrentPSConstantBuffer = m_key;
 			}
 		}
@@ -54,12 +54,12 @@ namespace Dx::Attachables
 			if (m_fastMode)
 			{ 
 				D3D11_MAPPED_SUBRESOURCE subresource;
-				m_context->Map(m_buffer.get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource);
+				Graphics::Context->Map(m_buffer.get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource);
 				memcpy(subresource.pData, &constantData, sizeof(constantData));
-				m_context->Unmap(m_buffer.get(), 0);
+				Graphics::Context->Unmap(m_buffer.get(), 0);
 			}
 			else
-				m_context->UpdateSubresource(m_buffer.get(), 0, 0, &constantData, 0, 0);
+				Graphics::Context->UpdateSubresource(m_buffer.get(), 0, 0, &constantData, 0, 0);
 		}
 
 	private:

@@ -63,11 +63,11 @@ namespace Dx::Drawables
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(m_resourceCacheID, false, m_graphics, Vertices);
-			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, m_graphics, Indices);
-			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(m_resourceCacheID, false, m_graphics, m_psConstants);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_graphics, m_vsConstants, 2);
-			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, m_graphics, Ieds, m_vertexShader);
+			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(m_resourceCacheID, false, Vertices);
+			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, Indices);
+			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(m_resourceCacheID, false, m_psConstants);
+			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_vsConstants, 2);
+			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, Ieds, m_vertexShader);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 

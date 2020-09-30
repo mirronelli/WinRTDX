@@ -10,10 +10,7 @@ namespace Dx::Levels
 class ILevel
 {
 public:
-   ILevel(std::shared_ptr<Dx::Graphics> graphics, std::shared_ptr<KeyboardInput> keyboardInput, std::shared_ptr<MouseInput> mouseInput) :
-      m_graphics(graphics),
-      m_device(graphics->Device()),
-      m_context(graphics->Context()),
+   ILevel(std::shared_ptr<KeyboardInput> keyboardInput, std::shared_ptr<MouseInput> mouseInput) :
       m_keyboardInput(keyboardInput),
       m_mouseInput(mouseInput)
    {};
@@ -25,9 +22,6 @@ public:
 
    virtual ~ILevel() {}
 protected:
-   std::shared_ptr<Dx::Graphics>    m_graphics;
-   com_ptr<ID3D11Device3>           m_device;
-   com_ptr<ID3D11DeviceContext4>    m_context;
    std::shared_ptr<KeyboardInput>   m_keyboardInput;
    std::shared_ptr<MouseInput>      m_mouseInput;
 };
