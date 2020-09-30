@@ -144,6 +144,9 @@
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="ObjectInSpace.h" />
+    <ClInclude Include="Level9.h">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

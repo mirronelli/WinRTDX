@@ -9,6 +9,7 @@
 #include "Level6.h"
 #include "Level7.h"
 #include "Level8.h"
+#include "Level8.h"
 
 Game::Game(CoreWindow const& window) :
 	m_window(window)
@@ -50,6 +51,9 @@ void Game::LoadLevel(byte name)
 		m_level = std::make_unique<Dx::Levels::Level7>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	case 8:
+		m_level = std::make_unique<Dx::Levels::Level8>(m_graphics, m_keyboardInput, m_mouseInput);
+		break;
+	case 9:
 		m_level = std::make_unique<Dx::Levels::Level8>(m_graphics, m_keyboardInput, m_mouseInput);
 		break;
 	default:

@@ -165,7 +165,7 @@ namespace Dx::Levels
 
 				sphere->Color(XMFLOAT3(color(generator), color(generator), color(generator)));
 
-				sphere->Prepare();
+				sphere->Init();
 
 				m_drawables.push_back(std::move(sphere));
 			}
@@ -182,7 +182,7 @@ namespace Dx::Levels
 			theSun->ScaleY(10);
 			theSun->ScaleZ(10);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
-			theSun->Prepare();
+			theSun->Init();
 
 			m_drawables.push_back(std::move(theSun));
 

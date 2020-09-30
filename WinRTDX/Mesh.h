@@ -23,7 +23,7 @@ namespace Dx
 
 		void Specular(XMFLOAT2 specular) { m_specular = specular; }
 
-		void Prepare()
+		void Init()
 		{
 			if ((m_meshData = m_loadedMeshes[m_meshFileName]) == nullptr)
 			{
@@ -35,7 +35,7 @@ namespace Dx
 			m_pixelPerInstanceConstants.reflectiveness = m_specular.x;
 			m_pixelPerInstanceConstants.reflectionPower = m_specular.y;
 
-			m_prepared = true;
+			mInitialized = true;
 		}
 
 	protected:

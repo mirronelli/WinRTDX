@@ -22,12 +22,12 @@ namespace Dx {
 			m_steps(steps)
 		{}
 
-		void Prepare()
+		void Init()
 		{
 			GenerateVerticesAndIndices();
 			m_sharedConstants.reflectionPower = 16;
 			m_sharedConstants.reflectiveness = 0.5;
-			m_prepared = true;
+			mInitialized = true;
 		}
 
 		void Color(XMFLOAT3 value) { m_color = value; m_useRandomColor = false; }
@@ -60,7 +60,7 @@ namespace Dx {
 		
 
 		void RegisterResources() {
-			assert(m_prepared);
+			assert(mInitialized);
 			m_vertexBuffer =		VertexBuffer<Vertex>::					Create(m_resourceCacheID, false, m_graphics, Vertices);
 			m_indexBuffer =		IndexBuffer::								Create(m_resourceCacheID, false, m_graphics, Indices);
 			m_vsConstantBuffer = VSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_graphics, m_sharedConstants, 2);

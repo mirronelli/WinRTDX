@@ -39,8 +39,9 @@ namespace Dx::Drawables
 			m_pixelShader(pixelShader),
 			m_resourceCacheID(resourceCacheID)
 		{};
+
 		virtual ~Drawable() {};
-		virtual void Prepare() { m_prepared = true; };
+		virtual void Init() { RegisterResources(); mInitialized = true; };
 		virtual void RegisterResources() = 0;
 		virtual void UpdateConstants(DirectX::CXMMATRIX) = 0;
 
@@ -99,6 +100,6 @@ namespace Dx::Drawables
 		std::shared_ptr<Attachable>					m_vsConstantBuffer;
 
 		UINT m_indicesCount = 0;
-		bool m_prepared = false;
+		bool mInitialized = false;
 	};
 }
