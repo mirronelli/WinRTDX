@@ -33,6 +33,12 @@
     <ClCompile Include="ObjectInSpace.cpp">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="SceneFactory.cpp">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshColored.cpp">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -149,6 +155,12 @@
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="Meshh.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFactory.h">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshColored.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
   </ItemGroup>

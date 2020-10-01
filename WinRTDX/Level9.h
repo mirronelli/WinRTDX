@@ -12,6 +12,7 @@
 #include "IO.h"
 #include "Camera.h"
 #include "Scene.h"
+#include "SceneFactory.h"
 
 using namespace Dx::Attachables;
 
@@ -37,6 +38,8 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
+			mRootScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal);
+			
 			GenerateScene();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
@@ -59,28 +62,6 @@ namespace Dx::Levels
 
 		void GenerateScene()
 		{
-			std::unique_ptr childScene = std::make_unique<Scene>();
-			std::unique_ptr<Meshh> mesh = std::make_unique<Meshh>(
-				mVertexShaderWithNormal,
-				mPixelShaderWithNormal,
-				5u
-				);
-
-			mesh->X(0);
-			mesh->Y(0);
-			mesh->Z(0);
-			mesh->RotationSpeedY(0.05f);
-			mesh->Color({ 1, 0, 0, 0 });
-			mesh->Specular({ 1, 32});
-			mesh->FileName("Assets\\suzanne.obj");
-			mesh->Scale(20);
-			mesh->Init();
-
-			childScene->AddDrawable(std::move(mesh));
-			childScene->X(-50);
-			childScene->Scale(0.5);
-			mRootScene.AddScene(std::move(childScene));
-
 			auto theSun = std::make_unique<SphereColored>(
 				mVertexShaderWithColor,
 				mPixelShaderWithColor,
@@ -92,7 +73,7 @@ namespace Dx::Levels
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Init();
 
-			mRootScene.AddDrawable(std::move(theSun));
+			mRootScene->AddDrawable(std::move(theSun));
 		}
 
 		void ProcessInput()
@@ -134,7 +115,7 @@ namespace Dx::Levels
 			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
 			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
 
-			mRootScene.Update(delta, XMMatrixIdentity());
+			mRootScene->Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()
@@ -142,7 +123,7 @@ namespace Dx::Levels
 			float color[4]{ 0.0f, .0f, .02f, .0f };
 			Graphics::Instance->StartFrame(color);
 
-			mRootScene.Draw();
+			mRootScene->Draw();
 		}
 
 	private:
@@ -167,7 +148,7 @@ namespace Dx::Levels
 			float		attenuationConstant;
 		};
 
-		Scene																			mRootScene;
+		std::unique_ptr<Scene>													mRootScene;
 
 		std::shared_ptr<VertexShader>											mVertexShaderWithColor;
 		std::shared_ptr<VertexShader>											mVertexShaderWithNormal;

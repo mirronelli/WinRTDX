@@ -6,7 +6,8 @@ namespace Dx::Levels
 
 	class SceneFactory
 	{
-		static std::unique_ptr<Dx::Drawables::Scene> LoadFromFile(std::string fileName);
+	public:
+		static std::unique_ptr<Dx::Drawables::Scene> LoadFromFile(std::string fileName, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader);
 	};
 
 }
