@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "pch.h"
+
 #include "ObjectInSpace.h"
 
 namespace Dx::Drawables
@@ -17,15 +17,17 @@ namespace Dx::Drawables
 		mZ += mSpeedZ * delta;
 
 		mTransform =
-			parentMatrix
-			* DirectX::XMMatrixScaling(mScaleX, mScaleY, mScaleX)
+			DirectX::XMMatrixScaling(mScaleX, mScaleY, mScaleX)
 
 			// rotate object
 			* DirectX::XMMatrixRotationZ(mRotationZ)
 			* DirectX::XMMatrixRotationX(mRotationX)
 			* DirectX::XMMatrixRotationY(mRotationY)
 
-			// move object to its world coords
-			* DirectX::XMMatrixTranslation(mX, mY, mZ);
+			// move object to its coords in parent
+			* DirectX::XMMatrixTranslation(mX, mY, mZ)
+
+			// apply parent matrix
+			* parentMatrix;
 	};
 }

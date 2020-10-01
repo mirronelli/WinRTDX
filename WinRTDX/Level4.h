@@ -1,11 +1,9 @@
 #pragma once
 #include "pch.h"
 #include "ILevel.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 #include "Drawable.h"
 #include "VertexShader.h"
 
-using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
 using namespace Dx::Drawables;
 

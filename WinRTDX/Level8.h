@@ -1,20 +1,17 @@
 #pragma once
 #include "pch.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 
 #include <random>
-#include <DirectXMath.h>
 
+#include "ILevel.h"
 #include "Drawable.h"
 #include "CubeColored.h"
 #include "SphereColored.h"
 #include "CubeTextured.h"
-#include "Mesh.h"
-#include "ILevel.h"
+#include "Meshh.h"
 #include "IO.h"
 #include "Camera.h"
 
-using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
 
 namespace Dx::Levels
@@ -74,7 +71,7 @@ namespace Dx::Levels
 
 			for (int i = 0; i < 100; i++)
 			{
-				std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
+				std::unique_ptr<Meshh> mesh = std::make_unique<Meshh>(
 					m_vertexShaderWithNormal,
 					m_pixelShaderWithNormal,
 					5u
@@ -188,9 +185,9 @@ namespace Dx::Levels
 		};
 
 		struct PixelPerLevelConstants {
-			float4	lightPosition;
-			float4	lightColor;
-			float4	ambientLight;
+			XMFLOAT4	lightPosition;
+			XMFLOAT4	lightColor;
+			XMFLOAT4	ambientLight;
 
 			float		diffuseIntensity;
 			float		attenuationQuadratic;

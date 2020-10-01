@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "Graphics.h"
 #include "InputLayout.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
@@ -20,7 +19,7 @@ namespace Dx::Drawables
 		SphereColored = 1,
 		CubeColored = 2,
 		CubeTextured = 3,
-		Mesh = 4,
+		Meshh = 4,
 	};
 
 	class Drawable : public ObjectInSpace
@@ -76,9 +75,7 @@ namespace Dx::Drawables
 			Graphics::Context->DrawIndexed(m_indicesCount, 0, 0);
 		};
 
-#pragma region Property Setters
 		void Texture(std::shared_ptr<Attachables::Texture> value) { m_texture = value; }
-#pragma endregion
 
 	protected:
 		int													m_resourceCacheID;

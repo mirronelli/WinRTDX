@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 
 #include <random>
 
@@ -13,7 +12,6 @@
 #include "Camera.h"
 #include <DirectXMath.h>
 
-using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
 
 namespace Dx::Levels
@@ -251,9 +249,9 @@ namespace Dx::Levels
 		};
 
 		struct PSConstants {
-			float4	lightPosition;
-			float4	lightColor;
-			float4	ambientLight;
+			XMFLOAT4	lightPosition;
+			XMFLOAT4	lightColor;
+			XMFLOAT4	ambientLight;
 			
 			float		diffuseIntensity;
 			float		attenuationQuadratic;

@@ -1,21 +1,18 @@
 #pragma once
 #include "pch.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 
 #include <random>
-#include <DirectXMath.h>
 
+#include "ILevel.h"
 #include "Drawable.h"
 #include "CubeColored.h"
 #include "SphereColored.h"
 #include "CubeTextured.h"
-#include "Mesh.h"
-#include "ILevel.h"
+#include "Meshh.h"
 #include "IO.h"
 #include "Camera.h"
 #include "Scene.h"
 
-using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
 
 namespace Dx::Levels
@@ -62,50 +59,27 @@ namespace Dx::Levels
 
 		void GenerateScene()
 		{
-			std::random_device rd;  //Will be used to obtain a seed for the random number engine
-			std::mt19937 generator(rd());
-			std::uniform_real_distribution<float> location(-240.0f, 240.0f);
-			std::uniform_real_distribution<float> movementSpeed(.0f, .0f);
-			std::uniform_real_distribution<float> startAngle(-DirectX::XM_PI, DirectX::XM_PI);
-			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 50.f, DirectX::XM_PI / 50.f);
-			std::uniform_real_distribution<float> scale(1.f, 6.0f);
-			std::uniform_real_distribution<float> color(0.f, 1.0f);
-			std::uniform_real_distribution<float> refelctiveness(0.f, 1.0f);
-			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
+			std::unique_ptr childScene = std::make_unique<Scene>();
+			std::unique_ptr<Meshh> mesh = std::make_unique<Meshh>(
+				mVertexShaderWithNormal,
+				mPixelShaderWithNormal,
+				5u
+				);
 
-			for (int i = 0; i < 3000; i++)
-			{
-				std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>(
-					mVertexShaderWithNormal,
-					mPixelShaderWithNormal,
-					5u
-					);
+			mesh->X(0);
+			mesh->Y(0);
+			mesh->Z(0);
+			mesh->RotationSpeedY(0.05f);
+			mesh->Color({ 1, 0, 0, 0 });
+			mesh->Specular({ 1, 32});
+			mesh->FileName("Assets\\suzanne.obj");
+			mesh->Scale(20);
+			mesh->Init();
 
-				mesh->X(location(generator));
-				mesh->Y(location(generator));
-				mesh->Z(location(generator));
-
-				mesh->SpeedX(movementSpeed(generator));
-				mesh->SpeedY(movementSpeed(generator));
-				mesh->SpeedZ(movementSpeed(generator));
-
-				mesh->RotationX(startAngle(generator));
-				mesh->RotationY(startAngle(generator));
-				mesh->RotationZ(startAngle(generator));
-
-				mesh->RotationSpeedX(rotationSpeed(generator));
-				mesh->RotationSpeedY(rotationSpeed(generator));
-				mesh->RotationSpeedZ(rotationSpeed(generator));
-
-				mesh->Color({ color(generator), color(generator), color(generator), 1 });
-				mesh->Specular({ refelctiveness(generator), specularPower(generator) });
-				mesh->FileName("Assets\\suzanne.obj");
-				mesh->Scale(20);
-				mesh->Init();
-
-				mRootScene.AddDrawable(std::move(mesh));
-
-			}
+			childScene->AddDrawable(std::move(mesh));
+			childScene->X(-50);
+			childScene->Scale(0.5);
+			mRootScene.AddScene(std::move(childScene));
 
 			auto theSun = std::make_unique<SphereColored>(
 				mVertexShaderWithColor,
@@ -183,9 +157,9 @@ namespace Dx::Levels
 		};
 
 		struct PixelPerLevelConstants {
-			float4	lightPosition;
-			float4	lightColor;
-			float4	ambientLight;
+			XMFLOAT4	lightPosition;
+			XMFLOAT4	lightColor;
+			XMFLOAT4	ambientLight;
 
 			float		diffuseIntensity;
 			float		attenuationQuadratic;

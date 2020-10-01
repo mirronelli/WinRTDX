@@ -3,9 +3,7 @@
 #include "ILevel.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 
-using namespace winrt::Windows::Foundation::Numerics;
 
 namespace Dx::Levels
 {

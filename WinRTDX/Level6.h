@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 
 #include <random>
 
@@ -10,7 +9,6 @@
 #include "IO.h"
 #include "Camera.h"
 
-using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
 
 namespace Dx::Levels

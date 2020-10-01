@@ -19,5 +19,7 @@
 #include <sstream>
 #include <ppltasks.h>
 #include <pplawait.h>
+#include <DirectXMath.h>
+#include <memory.h>
 
 #include "Graphics.h"

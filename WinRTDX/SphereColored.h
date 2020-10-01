@@ -47,7 +47,7 @@ namespace Dx {
 			DirectX::XMMATRIX matrix;
 			float	reflectiveness;
 			float reflectionPower;
-			float2	padding;
+			DirectX::XMFLOAT2	padding;
 		} SharedConstants;
 
 		inline static std::vector<D3D11_INPUT_ELEMENT_DESC> Ieds{

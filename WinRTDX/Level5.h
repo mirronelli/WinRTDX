@@ -1,11 +1,9 @@
 #pragma once
 #include "pch.h"
 #include "ILevel.h"
-#include "winrt/Windows.Foundation.Numerics.h"
 #include "Drawable.h"
 #include "VertexShader.h"
 
-using namespace winrt::Windows::Foundation::Numerics;
 using namespace Dx::Attachables;
 using namespace Dx::Drawables;
 
@@ -18,7 +16,6 @@ namespace Dx::Levels
 		using ILevel::ILevel;
 		concurrency::task<void> Load();
 		void SetupModel();
-		void DrawCube(float angle, float x, float y, float z);
 		void Render();
 		void Update(float delta);
 

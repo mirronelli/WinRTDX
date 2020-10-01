@@ -1,8 +1,8 @@
 #pragma once
-#include "Graphics.h"
-#include "ILevel.h"
 #include "StepTimer.h"
 #include "KeyboardInput.h"
+#include "MouseInput.h"
+#include "ILevel.h"
 
 class Game
 {

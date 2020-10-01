@@ -2,36 +2,39 @@
 #include "Scene.h"
 
 using namespace DirectX;
-using namespace Dx::Drawables;
 
-Scene::Scene(){}
-
-void Scene::AddDrawable(std::unique_ptr<Drawable> drawable)
+namespace Dx::Drawables
 {
-	mDrawables.push_back(std::move(drawable));
-}
 
-void Scene::AddScene(std::unique_ptr<Scene> scene)
-{
-	mScenes.push_back(std::move(scene));
-}
+	Scene::Scene() {}
 
-void Scene::Draw()
-{
-	for (auto& scene : mScenes)
-		scene->Draw();
+	void Scene::AddDrawable(std::unique_ptr<Drawable> drawable)
+	{
+		mDrawables.push_back(std::move(drawable));
+	}
 
-	for (auto& drawable : mDrawables)
-		drawable->Draw();
-}
+	void Scene::AddScene(std::unique_ptr<Scene> scene)
+	{
+		mScenes.push_back(std::move(scene));
+	}
 
-void Scene::Update(float delta, CXMMATRIX parentMatrix)
-{
-	ObjectInSpace::Update(delta, parentMatrix);
+	void Scene::Draw()
+	{
+		for (auto& scene : mScenes)
+			scene->Draw();
 
-	for (auto& scene : mScenes)
-		scene->Update(delta, mTransform);
+		for (auto& drawable : mDrawables)
+			drawable->Draw();
+	}
 
-	for (auto& drawable : mDrawables)
-		drawable->Update(delta, mTransform);
+	void Scene::Update(float delta, CXMMATRIX parentMatrix)
+	{
+		ObjectInSpace::Update(delta, parentMatrix);
+
+		for (auto& scene : mScenes)
+			scene->Update(delta, mTransform);
+
+		for (auto& drawable : mDrawables)
+			drawable->Update(delta, mTransform);
+	}
 }

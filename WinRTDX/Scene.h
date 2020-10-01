@@ -1,13 +1,11 @@
 #pragma once
-#include <memory.h>
-#include <DirectXMath.h>
 
 #include "Drawable.h"
 #include "ObjectInSpace.h"
 
 namespace Dx::Drawables
 {
-	class Scene : ObjectInSpace
+	class Scene : public ObjectInSpace
 	{
 	public:
 		Scene();
