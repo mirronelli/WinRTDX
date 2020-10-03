@@ -38,9 +38,10 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			mRootScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal);
-			
-			GenerateScene();
+			mRootScene.AddScene(
+				SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal)
+			);
+			AddSun();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
@@ -60,7 +61,7 @@ namespace Dx::Levels
 			m_mouseInput->RelativeTrackingEnter();
 		}
 
-		void GenerateScene()
+		void AddSun()
 		{
 			auto theSun = std::make_unique<SphereColored>(
 				mVertexShaderWithColor,
@@ -73,7 +74,7 @@ namespace Dx::Levels
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Init();
 
-			mRootScene->AddDrawable(std::move(theSun));
+			mRootScene.AddDrawable(std::move(theSun));
 		}
 
 		void ProcessInput()
@@ -115,7 +116,7 @@ namespace Dx::Levels
 			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
 			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
 
-			mRootScene->Update(delta, XMMatrixIdentity());
+			mRootScene.Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()
@@ -123,7 +124,7 @@ namespace Dx::Levels
 			float color[4]{ 0.0f, .0f, .02f, .0f };
 			Graphics::Instance->StartFrame(color);
 
-			mRootScene->Draw();
+			mRootScene.Draw();
 		}
 
 	private:
@@ -148,7 +149,7 @@ namespace Dx::Levels
 			float		attenuationConstant;
 		};
 
-		std::unique_ptr<Scene>													mRootScene;
+		Scene																			mRootScene;
 
 		std::shared_ptr<VertexShader>											mVertexShaderWithColor;
 		std::shared_ptr<VertexShader>											mVertexShaderWithNormal;
