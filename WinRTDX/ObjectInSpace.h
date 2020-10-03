@@ -11,26 +11,28 @@ namespace Dx::Drawables
 
 		virtual void Update(float delta, DirectX::CXMMATRIX parentMatrix);
 
-		void X(float value) { mX = value; }
-		void Y(float value) { mY = value; }
-		void Z(float value) { mZ = value; }
+		void X(float value);
+		void Y(float value);
+		void Z(float value);
 
-		void SpeedX(float value) { mSpeedX = value; }
-		void SpeedY(float value) { mSpeedY = value; }
-		void SpeedZ(float value) { mSpeedZ = value; }
+		void SpeedX(float value);
+		void SpeedY(float value);
+		void SpeedZ(float value);
 
-		void RotationSpeedX(float value) { mRotationSpeedX = value; }
-		void RotationSpeedY(float value) { mRotationSpeedY = value; }
-		void RotationSpeedZ(float value) { mRotationSpeedZ = value; }
+		void RotationSpeedX(float value);
+		void RotationSpeedY(float value);
+		void RotationSpeedZ(float value);
 
-		void RotationX(float value) { mRotationX = value; }
-		void RotationY(float value) { mRotationY = value; }
-		void RotationZ(float value) { mRotationZ = value; }
+		void RotationX(float value);
+		void RotationY(float value);
+		void RotationZ(float value);
 
-		void ScaleX(float value) { mScaleX = value; }
-		void ScaleY(float value) { mScaleY = value; }
-		void ScaleZ(float value) { mScaleZ = value; }
-		void Scale(float value) { mScaleX = value; mScaleY = value, mScaleZ = value; }
+		void ScaleX(float value);
+		void ScaleY(float value);
+		void ScaleZ(float value);
+		void Scale(float value);
+
+		void Transform(DirectX::CXMMATRIX transform);
 
 	protected:
 		DirectX::XMMATRIX	mTransform;
