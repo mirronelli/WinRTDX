@@ -36,6 +36,7 @@ namespace Dx::Drawables
 
 	protected:
 		DirectX::XMMATRIX	mTransform;
+		DirectX::XMVECTOR mInitialQuaternion;
 
 		float	mX = 0;
 		float	mY = 0;

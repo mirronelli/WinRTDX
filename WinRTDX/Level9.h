@@ -38,9 +38,13 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			mRootScene.AddScene(
-				SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal)
-			);
+			std::unique_ptr<Scene> importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal);
+			importedScene->Transform(
+				XMMatrixScaling(40, 40, 40)
+				* XMMatrixTranslation(-150, 0, 0));
+			importedScene->RotationSpeedY(0.1);
+			mRootScene.AddScene(std::move(importedScene));
+
 			AddSun();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };

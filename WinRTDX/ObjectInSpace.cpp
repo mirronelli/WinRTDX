@@ -6,7 +6,7 @@ using namespace DirectX;
 
 namespace Dx::Drawables
 {
-	ObjectInSpace::ObjectInSpace() : mTransform() {};
+	ObjectInSpace::ObjectInSpace() : mTransform(XMMatrixIdentity()), mInitialQuaternion (XMQuaternionIdentity()) { };
 
 	void ObjectInSpace::Update(float delta, CXMMATRIX parentMatrix) 
 	{
@@ -19,7 +19,9 @@ namespace Dx::Drawables
 		mZ += mSpeedZ * delta;
 
 		mTransform =
-			XMMatrixScaling(mScaleX, mScaleY, mScaleX)
+			XMMatrixRotationQuaternion(mInitialQuaternion)
+			
+			* XMMatrixScaling(mScaleX, mScaleY, mScaleX)
 
 			// rotate object
 			* XMMatrixRotationZ(mRotationZ)
@@ -62,12 +64,10 @@ namespace Dx::Drawables
 		XMVECTOR scaleVector;
 		
 		XMFLOAT3 translation;
-		XMFLOAT3 rotatation;
 		XMFLOAT3 scale;
 
-		XMMatrixDecompose(&scaleVector, &rotationVector, &translationVector, transform);
+		XMMatrixDecompose(&scaleVector, &mInitialQuaternion, &translationVector, transform);
 		XMStoreFloat3(&translation, translationVector);
-		XMStoreFloat3(&rotatation, rotationVector);
 		XMStoreFloat3(&scale, scaleVector);
 
 		mX = translation.x;
@@ -78,8 +78,9 @@ namespace Dx::Drawables
 		mScaleY = scale.y;
 		mScaleZ = scale.z;
 
-		mRotationX = rotatation.x;
-		mRotationY = rotatation.y;
-		mRotationZ = rotatation.z;
+		// the rotation is extracted to mInitialQuaternion, these need to be reset to zero
+		mRotationX = 0;
+		mRotationY = 0;
+		mRotationZ = 0;
 	}
 }

@@ -51,9 +51,6 @@ namespace Dx::Levels
 
 			newMesh->Color({ 1,0,0,0 });
 			newMesh->Specular(1, 32);
-			newMesh->Scale(40);
-			newMesh->X(-150);
-			newMesh->RotationSpeedY(0.1f);
 			newMesh->Init();
 			newScene->AddDrawable(std::move(newMesh));
 			return newScene;
