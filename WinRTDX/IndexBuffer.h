@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "Attachable.h"
-
+#include "ResourceManager.h"
 
 namespace Dx::Attachables
 {

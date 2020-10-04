@@ -33,7 +33,7 @@ void Dx::Levels::Level2::CreateVertices()
 	Graphics::Context->IASetInputLayout(inputLayout.get());
 
 	// define vertices and its buffer
-	Vertex vertices[] = {
+	VertexSimple vertices[] = {
 		{ -1.0f,	 1.0f,	1.0f,	 1.0f,	1.f,	.0f,	0.f, 0.f},
 		{ 1.0f,	 1.0f,	1.0f,	 1.0f,	0.f,	1.f,	0.f, 0.f},
 		{ 1.0f,	-1.0f,	1.0f,	 1.0f,	0.f,	0.f,	1.f, 0.f},
@@ -41,7 +41,7 @@ void Dx::Levels::Level2::CreateVertices()
 	};
 
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
+	vertexBufferDesc.ByteWidth = sizeof(VertexSimple) * ARRAYSIZE(vertices);
 	vertexBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
 
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
@@ -85,7 +85,7 @@ void Dx::Levels::Level2::CreateConstantData()
 
 void Dx::Levels::Level2::RegisterBuffers()
 {
-	UINT strideVertices = sizeof(Vertex);
+	UINT strideVertices = sizeof(VertexSimple);
 	UINT offsetVertices = 0;
 	ID3D11Buffer* vertexBuffers[1] = { m_vertexBuffer.get() };
 	Graphics::Context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);

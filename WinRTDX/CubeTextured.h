@@ -15,7 +15,7 @@ namespace Dx::Drawables
 	public:
 		using Drawable::Drawable;
 	
-		struct Vertex {
+		struct VertexSimple {
 			DirectX::XMFLOAT3	position;
 			DirectX::XMFLOAT3 normal;
 			DirectX::XMFLOAT2	textureCoordinates;
@@ -31,7 +31,7 @@ namespace Dx::Drawables
 			{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,		0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		inline static std::vector<Vertex> Vertices  {
+		inline static std::vector<VertexSimple> Vertices  {
 			{ XMFLOAT3( -1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.0f, 0.0f )},  // 0
 			{ XMFLOAT3(  1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f,  .0f )},  // 1
 			{ XMFLOAT3(  1.0f,	-1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f,  .5f )},  // 2
@@ -85,10 +85,10 @@ namespace Dx::Drawables
 		};
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(m_resourceCacheID, false, Vertices);
+			m_vertexBuffer =		VertexBuffer<VertexSimple>::Create				(m_resourceCacheID, false, Vertices);
 			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, Indices);
 			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_vsConstants, 2);
-			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, Ieds, m_vertexShader);
+			m_inputLayout =		ResourceManager::GetInputLayout(VertexType::TextuedWithNormal);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 

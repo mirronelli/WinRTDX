@@ -9,7 +9,7 @@ namespace Dx::Levels
 	class Level1 : public ILevel
 	{
 
-		struct Vertex
+		struct VertexSimple
 		{
 			float x, y, z, w; // vertex position
 			float r, g, b, a; // vertex color

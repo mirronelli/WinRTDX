@@ -16,7 +16,7 @@ concurrency::task<void> Dx::Levels::Level1::Load()
 
 void Dx::Levels::Level1::SetupModel()
 {
-	Vertex vertices[] = {
+	VertexSimple vertices[] = {
 		{  -1.0f,  1.0f, 0.0f, 1.0f,		1.0f,  .0f,  .0f, 1.0f },
 		{  -0.6f,  0.5f, 0.0f, 1.0f,		 .0f, 1.0f,  .0f, 1.0f },
 		{  -0.8f,  0.2f, 0.0f, 1.0f,		 .0f,  .0f, 1.0f, 1.0f },
@@ -43,7 +43,7 @@ void Dx::Levels::Level1::SetupModel()
 
 	// Create Vertex Buffer over vertices
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-	vertexBufferDesc.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
+	vertexBufferDesc.ByteWidth = sizeof(VertexSimple) * ARRAYSIZE(vertices);
 	vertexBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
 	Graphics::Device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
@@ -71,7 +71,7 @@ void Dx::Levels::Level1::Render()
 	float color[4]{ m_red * c_maxColorIntensity, m_green * c_maxColorIntensity, m_blue * c_maxColorIntensity, .0 };
 	Graphics::Instance->StartFrame(color);
 
-	UINT strideVertices = sizeof(Vertex);
+	UINT strideVertices = sizeof(VertexSimple);
 	UINT offsetVertices = 0;
 	ID3D11Buffer* vertexBuffers[1] = { m_vertexBuffer.get() };
 	Graphics::Context->IASetVertexBuffers(0, 1, vertexBuffers, &strideVertices, &offsetVertices);

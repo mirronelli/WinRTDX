@@ -23,7 +23,7 @@ namespace Dx::Drawables
 	private:
 		ColorSpecular							mPixelPerInstanceConstants;
 		WorldTransform							mVertexPerInstanceConstants;
-		std::vector<VertexWithNormal>		mVertices;
+		std::vector<VertexSimpleWithNormal>		mVertices;
 		std::vector<UINT>						mIndices;
 	};
 

@@ -5,13 +5,10 @@
 
 #include "ILevel.h"
 #include "Drawable.h"
-#include "CubeColored.h"
-#include "SphereColored.h"
-#include "CubeTextured.h"
-#include "Meshh.h"
 #include "IO.h"
 #include "Camera.h"
 #include "Scene.h"
+#include "SphereColored.h"
 #include "SceneFactory.h"
 
 using namespace Dx::Attachables;
@@ -30,6 +27,7 @@ namespace Dx::Levels
 				{
 					mVertexShaderWithNormal = VertexShader::Load(1, false, L"8_VertexWithNormal.cso");
 					mVertexShaderWithColor = VertexShader::Load(2, false, L"8_VertexWithColor.cso");
+					
 					mPixelShaderWithNormal = PixelShader::Load(3, false, L"8_PixelWithNormal.cso");
 					mPixelShaderWithColor = PixelShader::Load(4, false, L"8_PixelWithColor.cso");
 				}
@@ -38,11 +36,27 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			std::unique_ptr<Scene> importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal);
+			int lastResourceID = 10;
+			std::unique_ptr<Dx::Drawables::Scene> importedScene;
+
+			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal, lastResourceID);
 			importedScene->Transform(
-				XMMatrixScaling(40, 40, 40)
-				* XMMatrixTranslation(-150, 0, 0));
-			importedScene->RotationSpeedY(0.1);
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(-50, 0, 0));
+			importedScene->RotationSpeedY(0.1f);
+			mRootScene.AddScene(std::move(importedScene));
+
+			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal, lastResourceID);
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(50, 0, 0));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
+
+			importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj", mVertexShaderWithNormal, mPixelShaderWithNormal, lastResourceID);
+			importedScene->Transform(
+				XMMatrixTranslation(0, -10, 100));
+			importedScene->RotationSpeedY(-0.1f);
 			mRootScene.AddScene(std::move(importedScene));
 
 			AddSun();
@@ -62,12 +76,15 @@ namespace Dx::Levels
 			mPixelPerLevelConstantsBuffer->Attach(false);
 			mPixelPerFrameConstantsBuffer->Attach(false);
 			mVertexPerFrameConstantsBuffer->Attach(false);
+
+			mRootScene.RotationSpeedY(.05f);
+
 			m_mouseInput->RelativeTrackingEnter();
 		}
 
 		void AddSun()
 		{
-			auto theSun = std::make_unique<SphereColored>(
+			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(
 				mVertexShaderWithColor,
 				mPixelShaderWithColor,
 				200u,
@@ -153,7 +170,7 @@ namespace Dx::Levels
 			float		attenuationConstant;
 		};
 
-		Scene																			mRootScene;
+		Dx::Drawables::Scene														mRootScene;
 
 		std::shared_ptr<VertexShader>											mVertexShaderWithColor;
 		std::shared_ptr<VertexShader>											mVertexShaderWithNormal;
@@ -169,7 +186,7 @@ namespace Dx::Levels
 		PixelPerLevelConstants													mPixelPerLevelConstants;
 		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	mPixelPerLevelConstantsBuffer;
 
-		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
+		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, -150, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
 		float																			mCameraMovementSpeed = 1;
 		float																			mMouseSensitivity = .0006f;
 	};

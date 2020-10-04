@@ -13,7 +13,7 @@ using namespace DirectX;
 namespace Dx::Levels
 {
 
-	std::unique_ptr<Scene> SceneFactory::LoadFromFile(std::string fileName, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader)
+	std::unique_ptr<Scene> SceneFactory::LoadFromFile(std::string fileName, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader, int& lastResourceID)
 	{
 		Assimp::Importer importer;
 		const aiScene* sourceScene = importer.ReadFile(fileName,
@@ -25,8 +25,8 @@ namespace Dx::Levels
 
 		if (sourceScene != nullptr && sourceScene->HasMeshes())
 		{
-			std::unique_ptr<Scene> newScene = std::make_unique<Scene>();
-			SceneFactory::LoadMeshesToScene(newScene.get(), sourceScene->mRootNode, DirectX::XMMatrixIdentity(), sourceScene, vertexShader, pixelShader);
+			std::unique_ptr<Scene> newScene = std::make_unique<Scene>(fileName);
+			SceneFactory::LoadMeshesToScene(newScene.get(), sourceScene->mRootNode, sourceScene, vertexShader, pixelShader, lastResourceID);
 			return newScene;
 		}
 		else
@@ -35,22 +35,33 @@ namespace Dx::Levels
 		}
 	}
 
-	void SceneFactory::LoadMeshesToScene(Scene* parentScene, aiNode* node, DirectX::CXMMATRIX parentMatrix, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader)
+	void SceneFactory::LoadMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader, int& lastResourceID)
 	{
 		if (node->mNumMeshes > 0)
 		{
-			CopyMeshesToScene(parentScene, node, sourceScene, vertexShader, pixelShader);
+			CopyMeshesToScene(parentScene, node, sourceScene, vertexShader, pixelShader, lastResourceID);
+		}
+
+		for (unsigned int childNodeIndex = 0; childNodeIndex < node->mNumChildren; childNodeIndex++)
+		{
+			aiNode* childNode = node->mChildren[childNodeIndex];
+			std::unique_ptr<Scene> childScene = std::make_unique<Scene>(node->mName.C_Str());
+			
+			childScene->Transform(ConvertMatrix(childNode->mTransformation));
+			LoadMeshesToScene(childScene.get(), childNode, sourceScene, vertexShader, pixelShader, lastResourceID);
+			
+			parentScene->AddScene(std::move(childScene));
 		}
 	}
 
-	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader)
+	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader, int& lastResourceID)
 	{
-		for (int meshInNodeIndex = 0; meshInNodeIndex < node->mNumMeshes; meshInNodeIndex++)
+		for (unsigned int meshInNodeIndex = 0; meshInNodeIndex < node->mNumMeshes; meshInNodeIndex++)
 		{
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
 
-			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader, 10);
+			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader, lastResourceID++);
 			newMesh->mVertices.reserve(sourceMesh->mNumVertices);
 
 			for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)
@@ -77,4 +88,10 @@ namespace Dx::Levels
 
 			parentScene->AddDrawable(std::move(newMesh));
 		}
+	}
+
+	XMMATRIX SceneFactory::ConvertMatrix(aiMatrix4x4& source)
+	{
+		return XMLoadFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&source));
+	}
 }

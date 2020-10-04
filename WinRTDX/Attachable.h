@@ -1,7 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "Graphics.h"
-#include "ResourceManager.h"
 
 namespace Dx::Attachables
 {

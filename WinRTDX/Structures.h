@@ -2,34 +2,70 @@
 
 namespace Dx::Drawables
 {
-	struct Vertex
+	enum class VertexType
+	{
+		None,
+
+		Simple,
+		SimpleWithNormal,
+
+		Colored,
+		ColoredWithNormal,
+
+		Textured,
+		TextuedWithNormal
+	};
+
+	struct VertexSimple
 	{
 		DirectX::XMFLOAT3	position;
 	};
-	struct VertexWithNormal : Vertex
+	struct VertexSimpleWithNormal : VertexSimple
 	{
 		DirectX::XMFLOAT3 normal;
 	};
-	struct VertextWithColor : Vertex
+
+	struct VertexColored : VertexSimple
 	{
 		DirectX::XMFLOAT3	color;
 	};
-	struct VertexWithTexture : Vertex
+	struct VertexColoredWithNormal : VertexColored, VertexSimpleWithNormal {};
+
+	struct VertexTextured : VertexSimple
 	{
 		DirectX::XMFLOAT2 textureCoordinates;
 	};
-	struct VertexWithNormalColor : VertexWithNormal, VertextWithColor {};
-	struct VertexWithNormalTexture : VertexWithNormal, VertexWithTexture {};
+	struct VertexTexturedWithNormal : VertexTextured, VertexSimpleWithNormal {};
 
-	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsWithNormalColor = {
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsSimple = {
+		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsSimpleWithNormal = {
+		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsColored = {
+		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsColoredWithNormal = {
 				{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "COLOR",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
-	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsWithNormal = {
-				{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsTextured = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,		0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsTexturedWithNormal = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,		0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	struct LightBuffer

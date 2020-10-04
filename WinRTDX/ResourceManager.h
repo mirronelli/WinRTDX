@@ -2,6 +2,9 @@
 #include "pch.h"
 #include <map>
 
+#include "Structures.h"
+#include "InputLayout.h"
+
 namespace Dx::Attachables {
 	enum class ResourceSlots
 	{
@@ -13,35 +16,9 @@ namespace Dx::Attachables {
 	class ResourceManager
 	{
 	public:
-		inline static void ClearCache()
-		{
-			CurrentInputLayout = 0;
-			InputLayouts.clear();
+		static void ClearCache();
 
-			CurrentVertexBuffer = 0;
-			VertexBuffers.clear();
-
-			CurrentIndexBuffer = 0;
-			IndexBuffers.clear();
-
-			CurrentPSConstantBuffer = 0;
-			PSConstantBuffers.clear();
-
-			CurrentVSConstantBuffer = 0;
-			VSConstantBuffers.clear();
-
-			CurrentPixelShader = 0;
-			PixelShaders.clear();
-
-			CurrentVertexShader = 0;
-			VertexShaders.clear();
-
-			CurrentTexture = 0;
-			Textures.clear();
-		}
-
-		inline static int CurrentInputLayout = 0;
-		inline static std::map < int, std::shared_ptr<void>>	InputLayouts;
+		static std::shared_ptr<Dx::Attachables::InputLayout> GetInputLayout(Dx::Drawables::VertexType type);
 
 		inline static int CurrentVertexBuffer = 0;
 		inline static std::map < int, std::shared_ptr<void>>	VertexBuffers;
@@ -63,5 +40,12 @@ namespace Dx::Attachables {
 
 		inline static int CurrentTexture = 0;
 		inline static std::map < int, std::shared_ptr<void>>	Textures;
+
+		static Dx::Drawables::VertexType CurrentInputLayout();
+		static void CurrentInputLayout(Dx::Drawables::VertexType);
+
+	private:
+		inline static Dx::Drawables::VertexType mCurrentInputLayout;
+		inline static std::map <Dx::Drawables::VertexType, std::shared_ptr<Dx::Attachables::InputLayout>>	InputLayouts;
 	};
 }

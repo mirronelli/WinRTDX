@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Attachable.h"
 #include "IO.h"
+#include "ResourceManager.h"
 
 namespace Dx::Attachables
 {

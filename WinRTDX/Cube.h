@@ -11,7 +11,7 @@ namespace Dx::Drawables
 		using Drawable::Drawable;
 
 	public:
-		struct Vertex {
+		struct VertexSimple {
 			float	x, y, z, w;
 		};
 
@@ -27,7 +27,7 @@ namespace Dx::Drawables
 			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 0,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		inline static std::vector<Vertex> Vertices  {
+		inline static std::vector<VertexSimple> Vertices  {
 			{ -1.0f,	 1.0f,	-1.0f,	 1.0f },
 			{ 1.0f,	 1.0f,	-1.0f,	 1.0f },
 			{ 1.0f,	-1.0f,	-1.0f,	 1.0f },
@@ -63,11 +63,11 @@ namespace Dx::Drawables
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			m_vertexBuffer =		VertexBuffer<Vertex>::Create				(m_resourceCacheID, false, Vertices);
+			m_vertexBuffer =		VertexBuffer<VertexSimple>::Create				(m_resourceCacheID, false, Vertices);
 			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, Indices);
 			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(m_resourceCacheID, false, m_psConstants);
 			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_vsConstants, 2);
-			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, Ieds, m_vertexShader);
+			m_inputLayout =		ResourceManager::GetInputLayout(VertexType::Simple);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 

@@ -6,7 +6,7 @@ using namespace DirectX;
 namespace Dx::Drawables
 {
 
-	Scene::Scene() {}
+	Scene::Scene(std::string name) : mName(name) {}
 
 	void Scene::AddDrawable(std::unique_ptr<Drawable> drawable)
 	{

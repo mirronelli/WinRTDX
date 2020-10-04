@@ -117,6 +117,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cache.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeColored.h" />
     <ClInclude Include="CubeTextured.h" />
@@ -128,7 +129,6 @@
     <ClInclude Include="Level8.h" />
     <ClInclude Include="Level9.h" />
     <ClInclude Include="MeshColored.h" />
-    <ClInclude Include="Meshh.h" />
     <ClInclude Include="MouseInput.h" />
     <ClInclude Include="ObjectInSpace.h" />
     <ClInclude Include="PSConstantBuffer.h" />
@@ -179,8 +179,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Cache.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="Level2.cpp" />
@@ -192,6 +194,7 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
   </ItemGroup>

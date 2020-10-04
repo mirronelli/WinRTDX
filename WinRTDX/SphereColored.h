@@ -2,14 +2,15 @@
 #include "Drawable.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
-#include <DirectXMath.h>
-#include "Graphics.h"
+#include "Structures.h"
 
 using namespace Dx::Attachables;
 using namespace DirectX;
-namespace Dx {
 
-	class SphereColored : public Drawable
+namespace Dx::Drawables 
+{
+
+	class SphereColored : public Dx::Drawables::Drawable
 	{
 	public:
 		SphereColored (
@@ -34,7 +35,7 @@ namespace Dx {
 		void Color(XMFLOAT3 value) { m_color = value; m_useRandomColor = false; }
 		void ColorRanges(XMFLOAT3 minValue, XMFLOAT3 maxValue) { m_colorMin = minValue; m_colorMax = maxValue; m_useRandomColor = true; }
 
-		struct Vertex {
+		struct VertexSimple {
 			DirectX::XMFLOAT3	position;
 			DirectX::XMFLOAT3 normal;
 			DirectX::XMFLOAT3	color;
@@ -56,16 +57,16 @@ namespace Dx {
 			{ "COLOR",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		std::vector<Vertex> Vertices;
+		std::vector<VertexSimple> Vertices;
 		std::vector<UINT> Indices;
 		
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<Vertex>::					Create(m_resourceCacheID, false, Vertices);
+			m_vertexBuffer =		VertexBuffer<VertexSimple>::				Create(m_resourceCacheID, false, Vertices);
 			m_indexBuffer =		IndexBuffer::								Create(m_resourceCacheID, false, Indices);
 			m_vsConstantBuffer = VSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_sharedConstants, 2);
 			m_psConstantBuffer = PSConstantBuffer<SharedConstants>::	Create(m_resourceCacheID, false, m_sharedConstants, 2);
-			m_inputLayout =		InputLayout::								Create(m_resourceCacheID, false, Ieds, m_vertexShader);
+			m_inputLayout =		ResourceManager::GetInputLayout(VertexType::Colored);
 			m_indicesCount =		(int)Indices.size();
 		}
 

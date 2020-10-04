@@ -4,6 +4,7 @@
 #include "Attachable.h"
 #include <map>
 #include "IO.h"
+#include "ResourceManager.h"
 
 namespace Dx::Attachables
 {

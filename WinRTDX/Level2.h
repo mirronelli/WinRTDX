@@ -12,7 +12,7 @@ namespace Dx::Levels
 	{
 		using ILevel::ILevel;
 
-		struct Vertex
+		struct VertexSimple
 		{
 			float x, y, z, w; // vertex position
 			float r, g, b, a; // vertex color

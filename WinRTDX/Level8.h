@@ -8,7 +8,6 @@
 #include "CubeColored.h"
 #include "SphereColored.h"
 #include "CubeTextured.h"
-#include "Meshh.h"
 #include "IO.h"
 #include "Camera.h"
 
@@ -69,39 +68,39 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> refelctiveness(0.f, 1.0f);
 			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
 
-			for (int i = 0; i < 100; i++)
-			{
-				std::unique_ptr<Meshh> mesh = std::make_unique<Meshh>(
-					m_vertexShaderWithNormal,
-					m_pixelShaderWithNormal,
-					5u
-				);
+			//for (int i = 0; i < 100; i++)
+			//{
+			//	std::unique_ptr<Meshh> mesh = std::make_unique<Meshh>(
+			//		m_vertexShaderWithNormal,
+			//		m_pixelShaderWithNormal,
+			//		5u
+			//	);
 
-				mesh->X(location(generator));
-				mesh->Y(location(generator));
-				mesh->Z(location(generator));
+			//	mesh->X(location(generator));
+			//	mesh->Y(location(generator));
+			//	mesh->Z(location(generator));
 
-				mesh->SpeedX(movementSpeed(generator));
-				mesh->SpeedY(movementSpeed(generator));
-				mesh->SpeedZ(movementSpeed(generator));
+			//	mesh->SpeedX(movementSpeed(generator));
+			//	mesh->SpeedY(movementSpeed(generator));
+			//	mesh->SpeedZ(movementSpeed(generator));
 
-				mesh->RotationX(startAngle(generator));
-				mesh->RotationY(startAngle(generator));
-				mesh->RotationZ(startAngle(generator));
+			//	mesh->RotationX(startAngle(generator));
+			//	mesh->RotationY(startAngle(generator));
+			//	mesh->RotationZ(startAngle(generator));
 
-				mesh->RotationSpeedX(rotationSpeed(generator));
-				mesh->RotationSpeedY(rotationSpeed(generator));
-				mesh->RotationSpeedZ(rotationSpeed(generator));
+			//	mesh->RotationSpeedX(rotationSpeed(generator));
+			//	mesh->RotationSpeedY(rotationSpeed(generator));
+			//	mesh->RotationSpeedZ(rotationSpeed(generator));
 
-				mesh->Color({ color(generator), color(generator), color(generator), 1 });
-				mesh->Specular({ refelctiveness(generator), specularPower(generator) });
-				mesh->FileName("Assets\\suzanne.obj");
-				mesh->Scale(20);
-				mesh->Init();
+			//	mesh->Color({ color(generator), color(generator), color(generator), 1 });
+			//	mesh->Specular({ refelctiveness(generator), specularPower(generator) });
+			//	mesh->FileName("Assets\\suzanne.obj");
+			//	mesh->Scale(20);
+			//	mesh->Init();
 
-				m_drawables.push_back(std::move(mesh));
+			//	m_drawables.push_back(std::move(mesh));
 
-			}
+			//}
 
 			auto theSun = std::make_unique<SphereColored>(
 				m_vertexShaderWithColor,
@@ -195,7 +194,7 @@ namespace Dx::Levels
 			float		attenuationConstant;
 		};
 
-		std::vector<std::shared_ptr<Drawable>>								m_drawables;
+		std::vector<std::shared_ptr<Dx::Drawables::Drawable>>			m_drawables;
 
 		std::shared_ptr<VertexShader>											m_vertexShaderWithColor;
 		std::shared_ptr<VertexShader>											m_vertexShaderWithNormal;
