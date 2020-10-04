@@ -4,6 +4,7 @@
 #include "PixelShader.h"
 #include "Structures.h"
 #include "Cache.h"
+#include "CacheWithPreload.h"
 
 using namespace Dx::Attachables;
 using namespace DirectX;
@@ -20,7 +21,10 @@ namespace Dx::Drawables
 			int resourceCacheID,
 			int steps
 		) :
-			Drawable(vertexShader, pixelShader, resourceCacheID),
+			Drawable(
+				Dx::Attachables::CacheWithPreload<VertexShader>::Get(VertexType::Colored), 
+				Dx::Attachables::CacheWithPreload<PixelShader>::Get(VertexType::Colored),
+				resourceCacheID),
 			m_steps(steps)
 		{}
 

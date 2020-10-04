@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Cache.h" />
+    <ClInclude Include="CacheWithPreload.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeColored.h" />
     <ClInclude Include="CubeTextured.h" />
@@ -181,6 +182,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Cache.cpp" />
+    <ClCompile Include="CacheWithPreload.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputLayout.cpp" />

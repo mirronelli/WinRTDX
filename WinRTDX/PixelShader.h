@@ -1,30 +1,17 @@
 #pragma once
 #include "pch.h"
-#include "Graphics.h"
 #include "Attachable.h"
 #include "IO.h"
-#include "ResourceManager.h"
+#include "CacheWithPreload.h"
+#include "Structures.h"
 
 namespace Dx::Attachables
 {
 	class PixelShader : public Attachable
 	{
 	public:
-		static std::shared_ptr<PixelShader> Load(int key, bool overwrite, std::wstring filename)
-		{
-			std::shared_ptr<PixelShader> instance = std::static_pointer_cast<PixelShader>(ResourceManager::PixelShaders[key]);
-
-			if (overwrite || instance == nullptr)
-			{
-				instance = std::make_shared<PixelShader>(key, filename);
-				ResourceManager::PixelShaders[key] = instance;
-			}
-
-			return instance;
-		}
-
-		PixelShader(int key, std::wstring filename)
-			: Attachable(key)
+		PixelShader(Dx::Drawables::VertexType type, std::wstring filename)
+			: Attachable(1), mType(type)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
 
@@ -48,15 +35,16 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || ResourceManager::CurrentPixelShader != m_key)
+			if (force || !CacheWithPreload<PixelShader>::IsCurrent(mType))
 			{
 				Graphics::Context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				ResourceManager::CurrentPixelShader = m_key;
+				CacheWithPreload<PixelShader>::SetCurrent(mType);
 			}
 		}
 
 	private:
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11PixelShader>		m_compiledShader;
+		Dx::Drawables::VertexType		mType;
 	};
 }

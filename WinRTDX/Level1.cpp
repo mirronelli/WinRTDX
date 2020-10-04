@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Level1.h"
 #include "IO.h"
+#include "CacheWithPreload.h"
 
 using namespace Dx::Attachables;
 
@@ -8,8 +9,8 @@ concurrency::task<void> Dx::Levels::Level1::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShader = VertexShader::Load(1, true, L"VertexShader.cso");
-			m_pixelShader = PixelShader::Load(1, true, L"PixelShader.cso");
+			//m_vertexShader = Dx::Attachables::CacheWithPreload<VertexShader>::Preload (VertexType::, L"VertexShader.cso");
+			//m_pixelShader = PixelShader::Load(1, true, L"PixelShader.cso");
 		}
 	);
 }

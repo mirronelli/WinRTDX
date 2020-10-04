@@ -11,6 +11,7 @@
 #include "SphereColoredWithNormal.h"
 #include "SphereColored.h"
 #include "SceneFactory.h"
+#include "CacheWithPreload.h"
 
 using namespace Dx::Attachables;
 
@@ -26,13 +27,13 @@ namespace Dx::Levels
 			return concurrency::create_task(
 				[this]()
 				{
-					mVertexShaderColored					= VertexShader::Load(1, false, L"9_VertexColored.cso");
-					mVertexShaderColoredWithNormal	= VertexShader::Load(2, false, L"9_VertexColoredWithNormal.cso");
-					mVertexShaderSimpleWithNormal		= VertexShader::Load(3, false, L"9_VertexSimpleWithNormal.cso");
+					CacheWithPreload<VertexShader>::Preload(Dx::Drawables::VertexType::Colored, L"9_VertexColored.cso");
+					CacheWithPreload<VertexShader>::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
+					CacheWithPreload<VertexShader>::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_VertexSimpleWithNormal.cso");
 					
-					mPixelShaderColored					= PixelShader::Load(1, false, L"9_PixelColored.cso");
-					mPixelShaderColoredWithNormal		= PixelShader::Load(2, false, L"9_PixelColoredWithNormal.cso");
-					mPixelShaderSimpleWithNormal		= PixelShader::Load(3, false, L"9_PixelSimpleWithNormal.cso");
+					CacheWithPreload<PixelShader>::Preload(Dx::Drawables::VertexType::Colored, L"9_PixelColored.cso");
+					CacheWithPreload<PixelShader>::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
+					CacheWithPreload<PixelShader>::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_PixelSimpleWithNormal.cso");
 				}
 			);
 		}
@@ -42,25 +43,25 @@ namespace Dx::Levels
 			int lastResourceID = 10;
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
-			importedScene->Transform(
-				XMMatrixScaling(10, 10, 10)
-				* XMMatrixTranslation(-50, 0, 0));
-			importedScene->RotationSpeedY(0.1f);
-			mRootScene.AddScene(std::move(importedScene));
+			//importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
+			//importedScene->Transform(
+			//	XMMatrixScaling(10, 10, 10)
+			//	* XMMatrixTranslation(-50, 0, 0));
+			//importedScene->RotationSpeedY(0.1f);
+			//mRootScene.AddScene(std::move(importedScene));
 
-			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
-			importedScene->Transform(
-				XMMatrixScaling(10, 10, 10)
-				* XMMatrixTranslation(50, 0, 0));
-			importedScene->RotationSpeedY(-0.1f);
-			mRootScene.AddScene(std::move(importedScene));
+			//importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
+			//importedScene->Transform(
+			//	XMMatrixScaling(10, 10, 10)
+			//	* XMMatrixTranslation(50, 0, 0));
+			//importedScene->RotationSpeedY(-0.1f);
+			//mRootScene.AddScene(std::move(importedScene));
 
-			importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
-			importedScene->Transform(
-				XMMatrixTranslation(0, -10, 100));
-			importedScene->RotationSpeedY(-0.1f);
-			mRootScene.AddScene(std::move(importedScene));
+			//importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
+			//importedScene->Transform(
+			//	XMMatrixTranslation(0, -10, 100));
+			//importedScene->RotationSpeedY(-0.1f);
+			//mRootScene.AddScene(std::move(importedScene));
 
 			AddSun();
 
@@ -88,8 +89,8 @@ namespace Dx::Levels
 		void AddSun()
 		{
 			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(
-				mVertexShaderColored,
-				mPixelShaderColored,
+				nullptr,
+				nullptr,
 				200u,
 				40
 				);

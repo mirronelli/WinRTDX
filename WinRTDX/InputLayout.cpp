@@ -3,6 +3,7 @@
 #include "Structures.h"
 #include "VertexShader.h"
 #include "Cache.h"
+#include "CacheWithPreload.h"
 
 namespace Dx::Attachables
 {
@@ -11,27 +12,23 @@ namespace Dx::Attachables
 		: Attachable(1), mType(type)
 	{
 		std::vector<D3D11_INPUT_ELEMENT_DESC>* ieds = nullptr;
-		std::shared_ptr<VertexShader> vertexShader;
+		std::shared_ptr<VertexShader> vertexShader =CacheWithPreload<VertexShader>::Get(type);
 		switch (type)
 		{
 			case Dx::Drawables::VertexType::ColoredWithNormal:
 				ieds = &Dx::Drawables::IedsColoredWithNormal;
-				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[2]);
 				break;
 
 			case Dx::Drawables::VertexType::Colored:
 				ieds = &Dx::Drawables::IedsColored;
-				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[1]);
 				break;
 
 			case Dx::Drawables::VertexType::SimpleWithNormal:
 				ieds = &Dx::Drawables::IedsSimpleWithNormal;
-				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[3]);
 				break;
 
 			default:
 				ieds = &Dx::Drawables::IedsSimple;
-				vertexShader = vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[2]);
 				break;
 		}
 

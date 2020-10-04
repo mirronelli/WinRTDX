@@ -9,8 +9,8 @@ concurrency::task<void> Dx::Levels::Level3::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShader = VertexShader::Load(1, true, L"VertexShader3.cso");
-			m_pixelShader = PixelShader::Load(1, true, L"PixelShader3.cso");
+			//m_vertexShader = VertexShader::Load(1, true, L"VertexShader3.cso");
+			//m_pixelShader = PixelShader::Load(1, true, L"PixelShader3.cso");
 		}
 	);
 }

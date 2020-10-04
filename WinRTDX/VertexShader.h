@@ -1,31 +1,17 @@
 #pragma once
 #include "pch.h"
-#include "Graphics.h"
 #include "Attachable.h"
-#include <map>
 #include "IO.h"
-#include "ResourceManager.h"
+#include "CacheWithPreload.h"
+#include "Structures.h"
 
 namespace Dx::Attachables
 {
 	class VertexShader : public Attachable
 	{
 	public:
-		static std::shared_ptr<VertexShader> Load(int key, bool overwrite, std::wstring fileName)
-		{
-			std::shared_ptr<VertexShader> instance = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[key]);
-
-			if (overwrite || instance == nullptr)
-			{
-				instance = std::make_shared<VertexShader>(key, fileName);
-				ResourceManager::VertexShaders[key] = instance;
-			}
-
-			return instance;
-		}
-
-		VertexShader(int key, std::wstring filename)
-			: Attachable(key)
+		VertexShader(Dx::Drawables::VertexType type, std::wstring filename)
+			: Attachable(1), mType(type)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
 
@@ -50,15 +36,16 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || ResourceManager::CurrentVertexShader != m_key)
+			if (force || !CacheWithPreload<VertexShader>::IsCurrent(mType))
 			{
 				Graphics::Context->VSSetShader(m_compiledShader.get(), nullptr, 0);
-				ResourceManager::CurrentVertexShader = m_key;
+				CacheWithPreload<VertexShader>::SetCurrent(mType);
 			}
 		}
 
 	private:
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11VertexShader>	m_compiledShader;
+		Dx::Drawables::VertexType		mType;
 	};
 }

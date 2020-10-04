@@ -8,8 +8,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShaderSimple = VertexShader::Load(1, false, L"VertexShader4.cso");
-			m_pixelShaderSimple = PixelShader::Load(1, false, L"PixelShader4.cso");
+			//m_vertexShaderSimple = VertexShader::Load(1, false, L"VertexShader4.cso");
+			//m_pixelShaderSimple = PixelShader::Load(1, false, L"PixelShader4.cso");
 		}
 	);
 }
