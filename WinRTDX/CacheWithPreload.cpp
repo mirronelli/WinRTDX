@@ -11,6 +11,12 @@ namespace Dx::Attachables
 	template CacheWithPreload<Dx::Attachables::PixelShader>;
 
 	template<class T>
+	CacheWithPreload<T>::CacheWithPreload(VertexType key)
+	{
+		mKey = key;
+	}
+
+	template<class T>
 	void CacheWithPreload<T>::Preload(Dx::Drawables::VertexType type, std::wstring fileName)
 	{
 		mMap[type] = std::make_shared<T>(type, fileName);

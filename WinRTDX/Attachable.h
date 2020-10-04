@@ -6,7 +6,7 @@ namespace Dx::Attachables
 	class Attachable
 	{
 	public:
-
+		Attachable(){};
 		Attachable(int key) : m_key(key){};
 		void Attach(bool force = false) { AttachPrivate(force); };
 

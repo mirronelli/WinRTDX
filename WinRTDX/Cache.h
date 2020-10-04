@@ -6,17 +6,20 @@
 namespace Dx::Attachables
 {
 
-	template <class T>
+	template <typename Tkey, typename Tvalue>
 	class Cache
 	{
 	public:
-		void Preload(Dx::Drawables::VertexType type, std::wstring fileName);
-		static std::shared_ptr<T> Get(Dx::Drawables::VertexType type);
-		static bool IsCurrent(Dx::Drawables::VertexType type);
-		static void SetCurrent(Dx::Drawables::VertexType type);
+		Cache(Tkey key);
+		static std::shared_ptr<Tvalue> Get(Tkey key);
+		static bool IsCurrent(Tkey key);
+		static void SetCurrent(Tkey key);
 	private:
-		inline static std::map<Dx::Drawables::VertexType, std::shared_ptr<T>> mMap;
-		inline static Dx::Drawables::VertexType mCurrentType;
+		inline static std::map<Tkey, std::shared_ptr<Tvalue>> mMap;
+		inline static Tkey mCurrentKey;
+
+	protected:
+		Tkey	mKey;
 	};
 
 }

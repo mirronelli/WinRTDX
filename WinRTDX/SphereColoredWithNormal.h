@@ -57,7 +57,7 @@ namespace Dx::Drawables
 			m_indexBuffer =		IndexBuffer::										Create(m_resourceCacheID, false, mIndices);
 			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::			Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
 			m_psConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::					Create(m_resourceCacheID+1, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_inputLayout =		Dx::Attachables::Cache<InputLayout>::Get(VertexType::ColoredWithNormal);
+			m_inputLayout =		Dx::Attachables::Cache<VertexType, InputLayout>::Get(VertexType::ColoredWithNormal);
 			m_indicesCount =		(int)mIndices.size();
 		}
 

@@ -5,25 +5,27 @@
 #include "Cache.h"
 #include "CacheWithPreload.h"
 
+using Dx::Drawables::VertexType;
+
 namespace Dx::Attachables
 {
 	InputLayout::InputLayout(
-		Dx::Drawables::VertexType type)
-		: Attachable(1), mType(type)
+		VertexType type)
+		: Attachable(1), Cache<VertexType, InputLayout>(type)
 	{
 		std::vector<D3D11_INPUT_ELEMENT_DESC>* ieds = nullptr;
-		std::shared_ptr<VertexShader> vertexShader =CacheWithPreload<VertexShader>::Get(type);
+		std::shared_ptr<VertexShader> vertexShader = CacheWithPreload<VertexShader>::Get(type);
 		switch (type)
 		{
-			case Dx::Drawables::VertexType::ColoredWithNormal:
+			case VertexType::ColoredWithNormal:
 				ieds = &Dx::Drawables::IedsColoredWithNormal;
 				break;
 
-			case Dx::Drawables::VertexType::Colored:
+			case VertexType::Colored:
 				ieds = &Dx::Drawables::IedsColored;
 				break;
 
-			case Dx::Drawables::VertexType::SimpleWithNormal:
+			case VertexType::SimpleWithNormal:
 				ieds = &Dx::Drawables::IedsSimpleWithNormal;
 				break;
 
@@ -43,10 +45,10 @@ namespace Dx::Attachables
 
 	void InputLayout::AttachPrivate(bool force)
 	{
-		if (force || !Cache<InputLayout>::IsCurrent(mType))
+		if (force || !InputLayout::IsCurrent(mType))
 		{
 			Graphics::Context->IASetInputLayout(m_inputLayout.get());
-			Cache<InputLayout>::SetCurrent(mType);
+			InputLayout::SetCurrent(mType);
 		}
 	}
 }

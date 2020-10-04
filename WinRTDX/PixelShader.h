@@ -7,11 +7,11 @@
 
 namespace Dx::Attachables
 {
-	class PixelShader : public Attachable
+	class PixelShader : public Attachable, CacheWithPreload<PixelShader>
 	{
 	public:
 		PixelShader(Dx::Drawables::VertexType type, std::wstring filename)
-			: Attachable(1), mType(type)
+			: CacheWithPreload<PixelShader>(type)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
 
@@ -35,10 +35,10 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || !CacheWithPreload<PixelShader>::IsCurrent(mType))
+			if (force || !PixelShader::IsCurrent(mType))
 			{
 				Graphics::Context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				CacheWithPreload<PixelShader>::SetCurrent(mType);
+				PixelShader::SetCurrent(mType);
 			}
 		}
 

@@ -2,33 +2,39 @@
 #include "Cache.h"
 #include "InputLayout.h"
 
-using namespace Dx::Drawables;
+using Dx::Drawables::VertexType;
 
 namespace Dx::Attachables
 {
-	template Cache<Dx::Attachables::InputLayout>;
+	template Cache<VertexType, Dx::Attachables::InputLayout>;
 
-	template <class T>
-	std::shared_ptr<T> Cache<T>::Get(VertexType type)
+	template<typename Tkey, typename Tvalue>
+	Cache<Tkey, Tvalue>::Cache(Tkey key)
 	{
-		std::shared_ptr<T> result = mMap[type];
+		mKey = key;
+	}
+
+	template <typename Tkey, typename Tvalue>
+	std::shared_ptr<Tvalue> Cache<Tkey, Tvalue>::Get(Tkey key)
+	{
+		std::shared_ptr<Tvalue> result = mMap[key];
 		if (!result)
 		{
-			result = std::make_shared<T>(type);
-			mMap[type] = result;
+			result = std::make_shared<Tvalue>(key);
+			mMap[key] = result;
 		}
 		return result;
 	}
 	
-	template<class T>
-	bool Cache<T>::IsCurrent(VertexType type)
+	template<typename Tkey, typename Tvalue>
+	bool Cache<Tkey, Tvalue>::IsCurrent(Tkey key)
 	{
-		return type == mCurrentType;
+		return key == mCurrentKey;
 	}
 
-	template<class T>
-	void Cache<T>::SetCurrent(VertexType type)
+	template<typename Tkey, typename Tvalue>
+	void Cache<Tkey, Tvalue>::SetCurrent(Tkey key)
 	{
-		mCurrentType = type;
+		mCurrentKey = key;
 	}
 }

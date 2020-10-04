@@ -7,11 +7,11 @@
 
 namespace Dx::Attachables
 {
-	class VertexShader : public Attachable
+	class VertexShader : public Attachable, public CacheWithPreload<VertexShader>
 	{
 	public:
 		VertexShader(Dx::Drawables::VertexType type, std::wstring filename)
-			: Attachable(1), mType(type)
+			: CacheWithPreload<VertexShader>(type)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
 
@@ -36,16 +36,15 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || !CacheWithPreload<VertexShader>::IsCurrent(mType))
+			if (force || !VertexShader::IsCurrent(mKey))
 			{
 				Graphics::Context->VSSetShader(m_compiledShader.get(), nullptr, 0);
-				CacheWithPreload<VertexShader>::SetCurrent(mType);
+				VertexShader::SetCurrent(mKey);
 			}
 		}
 
 	private:
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11VertexShader>	m_compiledShader;
-		Dx::Drawables::VertexType		mType;
 	};
 }

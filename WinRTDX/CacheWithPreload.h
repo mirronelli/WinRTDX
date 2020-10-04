@@ -10,6 +10,7 @@ namespace Dx::Attachables
 	class CacheWithPreload
 	{
 	public:
+		CacheWithPreload(Dx::Drawables::VertexType key);
 		static void Preload(Dx::Drawables::VertexType type, std::wstring fileName);
 		static std::shared_ptr<T> Get(Dx::Drawables::VertexType type);
 		static bool IsCurrent(Dx::Drawables::VertexType type);
@@ -17,6 +18,9 @@ namespace Dx::Attachables
 	private:
 		inline static std::map<Dx::Drawables::VertexType, std::shared_ptr<T>> mMap;
 		inline static Dx::Drawables::VertexType mCurrentType;
+
+	protected:
+		Dx::Drawables::VertexType	mKey;
 	};
 
 }

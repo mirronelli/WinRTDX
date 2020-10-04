@@ -22,7 +22,7 @@ namespace Dx::Drawables
 		m_indexBuffer = IndexBuffer											::Create(m_resourceCacheID, false, mIndices);
 		m_vsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
 		m_psConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(m_resourceCacheID, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-		m_inputLayout = Cache<InputLayout>::Get(VertexType::ColoredWithNormal);
+		m_inputLayout = Cache<VertexType, InputLayout>::Get(VertexType::ColoredWithNormal);
 		m_indicesCount = (UINT)mIndices.size();
 	}
 

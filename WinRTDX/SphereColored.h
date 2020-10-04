@@ -51,7 +51,7 @@ namespace Dx::Drawables
 			m_vertexBuffer = VertexBuffer<VertexColored>::Create(m_resourceCacheID, false, mVertices);
 			m_indexBuffer = IndexBuffer::Create(m_resourceCacheID, false, mIndices);
 			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_inputLayout = Dx::Attachables::Cache<InputLayout>::Get(VertexType::Colored);
+			m_inputLayout = Dx::Attachables::Cache<VertexType, InputLayout>::Get(VertexType::Colored);
 			m_indicesCount = (int)mIndices.size();
 		}
 

@@ -4,10 +4,11 @@
 
 #include "Attachable.h"
 #include "Structures.h"
+#include "Cache.h"
 
 namespace Dx::Attachables
 {
-	class InputLayout : public Dx::Attachables::Attachable
+	class InputLayout : public Dx::Attachables::Attachable, public Dx::Attachables::Cache<Dx::Drawables::VertexType, InputLayout>
 	{
 	public:
 		InputLayout(Dx::Drawables::VertexType type);
