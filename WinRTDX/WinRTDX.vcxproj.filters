@@ -45,9 +45,6 @@
     <ClCompile Include="InputLayout.cpp">
       <Filter>Dx\Graphics\Attachables</Filter>
     </ClCompile>
-    <ClCompile Include="Cache.cpp">
-      <Filter>Dx\Graphics\Attachables</Filter>
-    </ClCompile>
     <ClCompile Include="CacheWithPreload.cpp">
       <Filter>Dx\Graphics\Attachables</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
     </ClInclude>
     <ClInclude Include="MeshColored.h">
       <Filter>Dx\Graphics\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="Cache.h">
-      <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="SphereColoredWithNormal.h">
       <Filter>Dx\Graphics\Drawables</Filter>

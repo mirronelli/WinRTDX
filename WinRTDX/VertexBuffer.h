@@ -12,22 +12,20 @@ namespace Dx::Attachables
 	class VertexBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<VertexBuffer<T>> Create(int const& key, bool overwrite, std::vector<T> const& vertices, UINT slot = 0)
+		static std::shared_ptr<VertexBuffer<T>> Get(std::string key, std::vector<T>& vertices, UINT slot = 0)
 		{
-			std::shared_ptr<VertexBuffer<T>> instance = std::static_pointer_cast<VertexBuffer<T>>(ResourceManager::VertexBuffers[key]);
-
-			if (overwrite || instance == nullptr)
+			std::shared_ptr<VertexBuffer<T>> instance = mMap[key];
+			if (!instance)
 			{
-				instance = std::make_shared<VertexBuffer>(key, vertices, slot);
-				ResourceManager::VertexBuffers[key] = instance;
+				instance = std::make_shared<VertexBuffer<T>>(key, vertices, slot);
+				mMap[key] = instance;
 			}
 
 			return instance;
 		}
 
-		VertexBuffer(int key, std::vector<T> const& vertices, UINT slot)
-			: Attachable(key),
-			m_slot(slot)
+		VertexBuffer(std::string key, std::vector<T> const& vertices, UINT slot)
+			: m_slot(slot), mKey(key)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(T) * vertices.size());
@@ -42,18 +40,21 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || ResourceManager::CurrentVertexBuffer != m_key)
+			if (force || mKey != mCurrentVertexBuffer)
 			{
+				mCurrentVertexBuffer = mKey;
 				UINT strideVertices = sizeof(T);
 				UINT offsetVertices = 0;
 				ID3D11Buffer* vertexBuffers[1] = { m_buffer.get() };
 				Graphics::Context->IASetVertexBuffers(m_slot, 1, vertexBuffers, &strideVertices, &offsetVertices);
-				ResourceManager::CurrentVertexBuffer = m_key;
 			}
 		}
 
 	private:
 		com_ptr<ID3D11Buffer>	m_buffer;
 		UINT							m_slot;
+
+		std::string mKey;
+		inline static std::map < std::string, std::shared_ptr<VertexBuffer<T>>> mMap;
 	};
 }

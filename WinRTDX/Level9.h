@@ -43,25 +43,25 @@ namespace Dx::Levels
 			int lastResourceID = 10;
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			//importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
-			//importedScene->Transform(
-			//	XMMatrixScaling(10, 10, 10)
-			//	* XMMatrixTranslation(-50, 0, 0));
-			//importedScene->RotationSpeedY(0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(-50, 0, 0));
+			importedScene->RotationSpeedY(0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
-			//importedScene->Transform(
-			//	XMMatrixScaling(10, 10, 10)
-			//	* XMMatrixTranslation(50, 0, 0));
-			//importedScene->RotationSpeedY(-0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(50, 0, 0));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
-			//importedScene->Transform(
-			//	XMMatrixTranslation(0, -10, 100));
-			//importedScene->RotationSpeedY(-0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj");
+			importedScene->Transform(
+				XMMatrixTranslation(0, -10, 100));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
 			AddSun();
 
@@ -81,7 +81,7 @@ namespace Dx::Levels
 			mPixelPerFrameConstantsBuffer->Attach(false);
 			mVertexPerFrameConstantsBuffer->Attach(false);
 
-			mRootScene.RotationSpeedY(.05f);
+			//mRootScene.RotationSpeedY(.05f);
 
 			m_mouseInput->RelativeTrackingEnter();
 		}
@@ -99,7 +99,7 @@ namespace Dx::Levels
 			auto theSun2 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
 
 			theSun2->Scale(10);
-			theSun2->X(-40);
+			theSun2->X(-120);
 			theSun2->Color({ 1,0.5,0 });
 			theSun2->Init();
 

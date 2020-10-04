@@ -3,7 +3,6 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Structures.h"
-#include "Cache.h"
 
 using namespace Dx::Attachables;
 using namespace DirectX;
@@ -54,7 +53,7 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexColoredWithNormal>::	Create(m_resourceCacheID, false, mVertices);
+			m_vertexBuffer =		VertexBuffer<VertexColoredWithNormal>::	Get(MAKEID("sphere:coloredWithNormal:", m_steps), mVertices);
 			m_indexBuffer =		IndexBuffer::										Create(m_resourceCacheID, false, mIndices);
 			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::			Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
 			m_psConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::					Create(m_resourceCacheID+1, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);

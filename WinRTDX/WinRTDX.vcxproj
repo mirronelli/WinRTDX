@@ -117,7 +117,6 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Cache.h" />
     <ClInclude Include="CacheWithPreload.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeColored.h" />
@@ -181,7 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Cache.cpp" />
     <ClCompile Include="CacheWithPreload.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Game.cpp" />

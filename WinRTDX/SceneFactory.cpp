@@ -5,6 +5,8 @@
 
 #include "SceneFactory.h"
 #include "MeshColored.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 
 //using Dx::Drawables::Mesh;
 using namespace Dx::Drawables;
@@ -13,7 +15,7 @@ using namespace DirectX;
 namespace Dx::Levels
 {
 
-	std::unique_ptr<Scene> SceneFactory::LoadFromFile(std::string fileName, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader, int& lastResourceID)
+	std::unique_ptr<Scene> SceneFactory::LoadFromFile(std::string fileName)
 	{
 		Assimp::Importer importer;
 		const aiScene* sourceScene = importer.ReadFile(fileName,
@@ -26,7 +28,7 @@ namespace Dx::Levels
 		if (sourceScene != nullptr && sourceScene->HasMeshes())
 		{
 			std::unique_ptr<Scene> newScene = std::make_unique<Scene>(fileName);
-			SceneFactory::LoadMeshesToScene(newScene.get(), sourceScene->mRootNode, sourceScene, vertexShader, pixelShader, lastResourceID);
+			SceneFactory::LoadMeshesToScene(newScene.get(), sourceScene->mRootNode, sourceScene);
 			return newScene;
 		}
 		else
@@ -35,11 +37,11 @@ namespace Dx::Levels
 		}
 	}
 
-	void SceneFactory::LoadMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader, int& lastResourceID)
+	void SceneFactory::LoadMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene)
 	{
 		if (node->mNumMeshes > 0)
 		{
-			CopyMeshesToScene(parentScene, node, sourceScene, vertexShader, pixelShader, lastResourceID);
+			CopyMeshesToScene(parentScene, node, sourceScene);
 		}
 
 		for (unsigned int childNodeIndex = 0; childNodeIndex < node->mNumChildren; childNodeIndex++)
@@ -48,20 +50,25 @@ namespace Dx::Levels
 			std::unique_ptr<Scene> childScene = std::make_unique<Scene>(node->mName.C_Str());
 			
 			childScene->Transform(ConvertMatrix(childNode->mTransformation));
-			LoadMeshesToScene(childScene.get(), childNode, sourceScene, vertexShader, pixelShader, lastResourceID);
+			LoadMeshesToScene(childScene.get(), childNode, sourceScene);
 			
 			parentScene->AddScene(std::move(childScene));
 		}
 	}
 
-	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader, int& lastResourceID)
+	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene)
 	{
+		std::shared_ptr<VertexShader> vertexShader = VertexShader::Get(VertexType::SimpleWithNormal);
+		std::shared_ptr<PixelShader> pixelShader = PixelShader::Get(VertexType::SimpleWithNormal);
+
+
 		for (unsigned int meshInNodeIndex = 0; meshInNodeIndex < node->mNumMeshes; meshInNodeIndex++)
 		{
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
 
-			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader, lastResourceID++);
+			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader, 7);
+			newMesh->mName = std::string(sourceMesh->mName.C_Str());
 			newMesh->mVertices.reserve(sourceMesh->mNumVertices);
 
 			for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)

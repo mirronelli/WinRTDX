@@ -10,29 +10,20 @@ namespace Dx::Levels
 	{
 	public:
 		static std::unique_ptr<Dx::Drawables::Scene> LoadFromFile(
-			std::string fileName, 
-			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader, 
-			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
-			int& lastResourceID
+			std::string fileName
 		);
 
 	private:
 		static void SceneFactory::LoadMeshesToScene(
 			Dx::Drawables::Scene* parentScene, 
 			aiNode* node, 
-			const aiScene* sourceScene, 
-			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader, 
-			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
-			int& lastResourceID
+			const aiScene* sourceScene
 		);
 		
 		static void SceneFactory::CopyMeshesToScene(
 			Dx::Drawables::Scene* parentScene, 
 			aiNode* node, 
-			const aiScene* sourceScene, 
-			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader, 
-			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
-			int& lastResourceID
+			const aiScene* sourceScene
 		);
 
 		static DirectX::XMMATRIX ConvertMatrix(aiMatrix4x4& source);

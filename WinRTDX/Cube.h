@@ -63,7 +63,7 @@ namespace Dx::Drawables
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			m_vertexBuffer =		VertexBuffer<VertexSimple>::Create				(m_resourceCacheID, false, Vertices);
+			m_vertexBuffer =		VertexBuffer<VertexSimple>::Get("cube", Vertices);
 			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, Indices);
 			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::Create	(m_resourceCacheID, false, m_psConstants);
 			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_vsConstants, 2);

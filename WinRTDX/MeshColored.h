@@ -21,10 +21,13 @@ namespace Dx::Drawables
 		void UpdateConstants(DirectX::CXMMATRIX worldTransform);
 
 	private:
-		ColorSpecular							mPixelPerInstanceConstants;
-		WorldTransform							mVertexPerInstanceConstants;
+		ColorSpecular									mPixelPerInstanceConstants;
+		WorldTransform									mVertexPerInstanceConstants;
 		std::vector<VertexSimpleWithNormal>		mVertices;
-		std::vector<UINT>						mIndices;
+		std::vector<UINT>								mIndices;
+		std::string										mName;
+
+		static inline int id;
 	};
 
 }

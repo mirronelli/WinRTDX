@@ -85,10 +85,10 @@ namespace Dx::Drawables
 		};
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexSimple>::Create				(m_resourceCacheID, false, Vertices);
+			m_vertexBuffer =		VertexBuffer<VertexSimple>::Get("cube:texturedWithNormal", Vertices);
 			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, Indices);
 			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_vsConstants, 2);
-			m_inputLayout =		ResourceManager::GetInputLayout(VertexType::TextuedWithNormal);
+			m_inputLayout =		ResourceManager::GetInputLayout(VertexType::TexturedWithNormal);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 

@@ -13,7 +13,7 @@ namespace Dx::Drawables
 		ColoredWithNormal,
 
 		Textured,
-		TextuedWithNormal
+		TexturedWithNormal
 	};
 
 	struct VertexSimple

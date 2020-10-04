@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "MeshColored.h"
-#include "Cache.h"
 
 
 namespace Dx::Drawables
@@ -18,11 +17,11 @@ namespace Dx::Drawables
 
 	void MeshColored::RegisterResources()
 	{
-		m_vertexBuffer = VertexBuffer<VertexSimpleWithNormal>			::Create(m_resourceCacheID, false, mVertices);
-		m_indexBuffer = IndexBuffer											::Create(m_resourceCacheID, false, mIndices);
-		m_vsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-		m_psConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(m_resourceCacheID, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-		m_inputLayout = Cache<VertexType, InputLayout>::Get(VertexType::ColoredWithNormal);
+		m_vertexBuffer =		VertexBuffer<VertexSimpleWithNormal>	::Get("mesh:" + mName, mVertices);
+		m_indexBuffer =		IndexBuffer										::Create(id++, false, mIndices);
+		m_vsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(id++, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+		m_psConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(id++, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+		m_inputLayout =		InputLayout										::Get(VertexType::SimpleWithNormal);
 		m_indicesCount = (UINT)mIndices.size();
 	}
 

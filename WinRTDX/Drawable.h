@@ -12,15 +12,10 @@
 
 using namespace Dx::Attachables;
 
+#define MAKEID(A,B) std::string(A) + std::to_string(B)
+
 namespace Dx::Drawables
 {
-	enum class DrawableTypes
-	{
-		SphereColoredWithNormal = 1,
-		CubeColored = 2,
-		CubeTextured = 3,
-		Meshh = 4,
-	};
 
 	class Drawable : public ObjectInSpace
 	{

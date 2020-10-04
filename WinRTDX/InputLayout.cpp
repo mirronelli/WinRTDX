@@ -2,36 +2,46 @@
 #include "InputLayout.h"
 #include "Structures.h"
 #include "VertexShader.h"
-#include "Cache.h"
 #include "CacheWithPreload.h"
 
 using Dx::Drawables::VertexType;
 
 namespace Dx::Attachables
 {
-	InputLayout::InputLayout(
-		VertexType type)
-		: Attachable(1), Cache<VertexType, InputLayout>(type)
+	 std::shared_ptr<InputLayout> InputLayout::Get(Dx::Drawables::VertexType key)
+	{
+		std::shared_ptr<InputLayout> instance = mMap[key];
+		if (!instance)
+		{
+			instance = std::make_shared<InputLayout>(key);
+			mMap[key] = instance;
+		}
+
+		return instance;
+	}
+
+
+	InputLayout::InputLayout(VertexType key) : mKey(key)
 	{
 		std::vector<D3D11_INPUT_ELEMENT_DESC>* ieds = nullptr;
-		std::shared_ptr<VertexShader> vertexShader = CacheWithPreload<VertexShader>::Get(type);
-		switch (type)
+		std::shared_ptr<VertexShader> vertexShader = VertexShader::Get(key);
+		switch (key)
 		{
-			case VertexType::ColoredWithNormal:
-				ieds = &Dx::Drawables::IedsColoredWithNormal;
-				break;
+		case VertexType::ColoredWithNormal:
+			ieds = &Dx::Drawables::IedsColoredWithNormal;
+			break;
 
-			case VertexType::Colored:
-				ieds = &Dx::Drawables::IedsColored;
-				break;
+		case VertexType::Colored:
+			ieds = &Dx::Drawables::IedsColored;
+			break;
 
-			case VertexType::SimpleWithNormal:
-				ieds = &Dx::Drawables::IedsSimpleWithNormal;
-				break;
+		case VertexType::SimpleWithNormal:
+			ieds = &Dx::Drawables::IedsSimpleWithNormal;
+			break;
 
-			default:
-				ieds = &Dx::Drawables::IedsSimple;
-				break;
+		default:
+			ieds = &Dx::Drawables::IedsSimple;
+			break;
 		}
 
 		Graphics::Device->CreateInputLayout(
@@ -45,10 +55,10 @@ namespace Dx::Attachables
 
 	void InputLayout::AttachPrivate(bool force)
 	{
-		if (force || !InputLayout::IsCurrent(mKey))
+		if (force || mKey != mCurrentInputLayout)
 		{
+			mCurrentInputLayout = mKey;
 			Graphics::Context->IASetInputLayout(m_inputLayout.get());
-			InputLayout::SetCurrent(mKey);
 		}
 	}
 }

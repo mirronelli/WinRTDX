@@ -3,7 +3,6 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Structures.h"
-#include "Cache.h"
 #include "CacheWithPreload.h"
 
 using namespace Dx::Attachables;
@@ -45,7 +44,7 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =			VertexBuffer<VertexColored>::Create(m_resourceCacheID, false, mVertices);
+			m_vertexBuffer =			VertexBuffer<VertexColored>::Get(MAKEID("sphere:colored:",m_steps), mVertices);
 			m_indexBuffer =			IndexBuffer::Create(m_resourceCacheID, false, mIndices);
 			m_vsConstantBuffer =		VSConstantBuffer<WorldTransform>::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
 			m_inputLayout =			InputLayout::Get(VertexType::Colored);

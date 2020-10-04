@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "Structures.h"
 
 namespace Dx::Attachables
 {
@@ -13,5 +14,8 @@ namespace Dx::Attachables
 	protected:
 		virtual void AttachPrivate(bool force) = 0;
 		int m_key;
+
+		static inline std::string mCurrentVertexBuffer;
+		static inline Dx::Drawables::VertexType mCurrentInputLayout;
 	};
 }
