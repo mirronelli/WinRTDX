@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Scene.h"
 #include "SphereColoredWithNormal.h"
+#include "SphereColored.h"
 #include "SceneFactory.h"
 
 using namespace Dx::Attachables;
@@ -25,11 +26,13 @@ namespace Dx::Levels
 			return concurrency::create_task(
 				[this]()
 				{
-					mVertexShaderColoredWithNormal = VertexShader::Load(1, false, L"9_VertexColoredWithNormal.cso");
-					//mVertexShaderWithColor = VertexShader::Load(2, false, L"8_VertexWithColor.cso");
+					mVertexShaderColored					= VertexShader::Load(1, false, L"9_VertexColored.cso");
+					mVertexShaderColoredWithNormal	= VertexShader::Load(2, false, L"9_VertexColoredWithNormal.cso");
+					mVertexShaderSimpleWithNormal		= VertexShader::Load(3, false, L"9_VertexSimpleWithNormal.cso");
 					
-					mPixelShaderColoredWithNormal = PixelShader::Load(3, false, L"9_PixelColoredWithNormal.cso");
-					//mPixelShaderWithColor = PixelShader::Load(4, false, L"8_PixelWithColor.cso");
+					mPixelShaderColored					= PixelShader::Load(1, false, L"9_PixelColored.cso");
+					mPixelShaderColoredWithNormal		= PixelShader::Load(2, false, L"9_PixelColoredWithNormal.cso");
+					mPixelShaderSimpleWithNormal		= PixelShader::Load(3, false, L"9_PixelSimpleWithNormal.cso");
 				}
 			);
 		}
@@ -39,25 +42,25 @@ namespace Dx::Levels
 			int lastResourceID = 10;
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			//importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal, lastResourceID);
-			//importedScene->Transform(
-			//	XMMatrixScaling(10, 10, 10)
-			//	* XMMatrixTranslation(-50, 0, 0));
-			//importedScene->RotationSpeedY(0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(-50, 0, 0));
+			importedScene->RotationSpeedY(0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderWithNormal, mPixelShaderWithNormal, lastResourceID);
-			//importedScene->Transform(
-			//	XMMatrixScaling(10, 10, 10)
-			//	* XMMatrixTranslation(50, 0, 0));
-			//importedScene->RotationSpeedY(-0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(50, 0, 0));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj", mVertexShaderWithNormal, mPixelShaderWithNormal, lastResourceID);
-			//importedScene->Transform(
-			//	XMMatrixTranslation(0, -10, 100));
-			//importedScene->RotationSpeedY(-0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj", mVertexShaderSimpleWithNormal, mPixelShaderSimpleWithNormal, lastResourceID);
+			importedScene->Transform(
+				XMMatrixTranslation(0, -10, 100));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
 			AddSun();
 
@@ -77,22 +80,21 @@ namespace Dx::Levels
 			mPixelPerFrameConstantsBuffer->Attach(false);
 			mVertexPerFrameConstantsBuffer->Attach(false);
 
-			//mRootScene.RotationSpeedY(.05f);
+			mRootScene.RotationSpeedY(.05f);
 
 			m_mouseInput->RelativeTrackingEnter();
 		}
 
 		void AddSun()
 		{
-			auto theSun = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(
-				mVertexShaderColoredWithNormal,
-				mPixelShaderColoredWithNormal,
+			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(
+				mVertexShaderColored,
+				mPixelShaderColored,
 				200u,
 				40
 				);
 
 			theSun->Scale(10);
-			theSun->Z(130);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			//theSun->Color({ 1,0,0 });
 			theSun->Init();
@@ -174,9 +176,11 @@ namespace Dx::Levels
 
 		Dx::Drawables::Scene														mRootScene;
 
+		std::shared_ptr<VertexShader>											mVertexShaderColored;
 		std::shared_ptr<VertexShader>											mVertexShaderColoredWithNormal;
 		std::shared_ptr<VertexShader>											mVertexShaderSimpleWithNormal;
 
+		std::shared_ptr<PixelShader>											mPixelShaderColored;
 		std::shared_ptr<PixelShader>											mPixelShaderColoredWithNormal;
 		std::shared_ptr<PixelShader>											mPixelShaderSimpleWithNormal;
 

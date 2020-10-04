@@ -172,6 +172,9 @@
     <ClInclude Include="SphereColoredWithNormal.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="SphereColored.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -336,6 +339,15 @@
       <Filter>Dx\Graphics\Shaders\9</Filter>
     </FxCompile>
     <FxCompile Include="9_PixelColoredWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_VertexSimpleWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_PixelSimpleWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_PixelColored.hlsl">
       <Filter>Dx\Graphics\Shaders\9</Filter>
     </FxCompile>
   </ItemGroup>

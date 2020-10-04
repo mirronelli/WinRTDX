@@ -8,13 +8,13 @@
 using namespace Dx::Attachables;
 using namespace DirectX;
 
-namespace Dx::Drawables 
+namespace Dx::Drawables
 {
 
-	class SphereColoredWithNormal : public Dx::Drawables::Drawable
+	class SphereColored: public Dx::Drawables::Drawable
 	{
 	public:
-		SphereColoredWithNormal (
+		SphereColored(
 			std::shared_ptr<VertexShader> vertexShader,
 			std::shared_ptr<PixelShader> pixelShader,
 			int resourceCacheID,
@@ -27,45 +27,34 @@ namespace Dx::Drawables
 		void Init()
 		{
 			GenerateVerticesAndIndices();
-			mPixelPerInstanceConstants.reflectionPower = 16.0f;
-			mPixelPerInstanceConstants.reflectiveness = 1.f;
-
 			Drawable::Init();
 		}
 
-		void Color(XMFLOAT3 value) 
+		void Color(XMFLOAT3 value)
 		{
-			m_color = value; 
-			m_useRandomColor = false; 
+			m_color = value;
+			m_useRandomColor = false;
 		}
 
-		void ColorRanges(XMFLOAT3 minValue, XMFLOAT3 maxValue) 
-		{ 
-			m_colorMin = minValue; 
-			m_colorMax = maxValue; 
-			m_useRandomColor = true; 
-		}
-
-		void Specular(float reflectiveness, float reflectivePower)
+		void ColorRanges(XMFLOAT3 minValue, XMFLOAT3 maxValue)
 		{
-			mPixelPerInstanceConstants.reflectiveness = reflectiveness;
-			mPixelPerInstanceConstants.reflectionPower = reflectivePower;
+			m_colorMin = minValue;
+			m_colorMax = maxValue;
+			m_useRandomColor = true;
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexColoredWithNormal>::	Create(m_resourceCacheID, false, mVertices);
-			m_indexBuffer =		IndexBuffer::										Create(m_resourceCacheID, false, mIndices);
-			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::			Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_psConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::					Create(m_resourceCacheID+1, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_inputLayout =		Dx::Attachables::Cache<InputLayout>::Get(VertexType::ColoredWithNormal);
-			m_indicesCount =		(int)mIndices.size();
+			m_vertexBuffer = VertexBuffer<VertexColored>::Create(m_resourceCacheID, false, mVertices);
+			m_indexBuffer = IndexBuffer::Create(m_resourceCacheID, false, mIndices);
+			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_inputLayout = Dx::Attachables::Cache<InputLayout>::Get(VertexType::Colored);
+			m_indicesCount = (int)mIndices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
 			mVertexPerInstanceConstants.worldTransform = matrix;
 			std::static_pointer_cast<VSConstantBuffer<WorldTransform >> (m_vsConstantBuffer)->Update(mVertexPerInstanceConstants);
-			std::static_pointer_cast<PSConstantBuffer<Dx::Drawables::Specular>> (m_psConstantBuffer)->Update(mPixelPerInstanceConstants);
 		}
 
 	private:
@@ -74,10 +63,10 @@ namespace Dx::Drawables
 			std::random_device rd;  //Will be used to obtain a seed for the random number engine
 			std::mt19937 generator(rd());
 
-			std::uniform_real_distribution<float> randomRed (m_colorMin.x, m_colorMax.x) ;
-			std::uniform_real_distribution<float> randomGreen (m_colorMin.y, m_colorMax.y);
-			std::uniform_real_distribution<float> randomBlue (m_colorMin.z, m_colorMax.z);
-			
+			std::uniform_real_distribution<float> randomRed(m_colorMin.x, m_colorMax.x);
+			std::uniform_real_distribution<float> randomGreen(m_colorMin.y, m_colorMax.y);
+			std::uniform_real_distribution<float> randomBlue(m_colorMin.z, m_colorMax.z);
+
 			float step = DirectX::XM_PI / m_steps;
 			int meridians = m_steps * 2;
 
@@ -89,10 +78,9 @@ namespace Dx::Drawables
 
 			// north pole
 			mVertices.push_back(
-				{ 
-					XMFLOAT3( 0, 1, 0 ), 
-					XMFLOAT3(0, 1, 0), 
-					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color 
+				{
+					XMFLOAT3(0, 1, 0),
+					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color
 				}
 			);
 
@@ -101,14 +89,13 @@ namespace Dx::Drawables
 			{
 				// rotate vector to each meridian of the parallel
 				for (int j = 0; j < meridians; j++)
-				{	
+				{
 					XMFLOAT3 vertex;
 					XMStoreFloat3(&vertex, XMVector3Rotate(vector, XMQuaternionRotationRollPitchYaw(i * step, j * step, 0)));
 					mVertices.push_back(
-						{ 
-							vertex, 
-							vertex, 
-							m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color 
+						{
+							vertex,
+							m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color
 						}
 					);
 
@@ -128,11 +115,10 @@ namespace Dx::Drawables
 			}
 			// south pole
 			mVertices.push_back(
-				{ 
-					XMFLOAT3( 0, -1, 0 ), 
-					XMFLOAT3(0, -1, 0), 
-					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color 
-				} 
+				{
+					XMFLOAT3(0, -1, 0),
+					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color
+				}
 			);
 
 			// join poles with strips
@@ -151,10 +137,10 @@ namespace Dx::Drawables
 			mIndices.push_back(northPole);
 			mIndices.push_back(northPole + meridians);
 			mIndices.push_back(northPole + 1);
-			
+
 			mIndices.push_back(southPole);
 			mIndices.push_back(southPole - meridians);
-			mIndices.push_back(southPole -1);
+			mIndices.push_back(southPole - 1);
 
 			//join strip ends
 			for (int i = northPole + 1; i < southPole - 1 - meridians; i += meridians)
@@ -162,7 +148,7 @@ namespace Dx::Drawables
 				mIndices.push_back(i);
 				mIndices.push_back(i + meridians - 1);
 				mIndices.push_back(i + meridians);
-				
+
 				mIndices.push_back(i + meridians - 1);
 				mIndices.push_back(i + meridians - 1 + meridians);
 				mIndices.push_back(i + meridians);
@@ -175,10 +161,9 @@ namespace Dx::Drawables
 		XMFLOAT3 m_colorMax;
 		bool m_useRandomColor = false;
 
-		Dx::Drawables::Specular				mPixelPerInstanceConstants;
-		WorldTransform							mVertexPerInstanceConstants;
+		WorldTransform					mVertexPerInstanceConstants;
 
-		std::vector<VertexColoredWithNormal>	mVertices;
-		std::vector<UINT>								mIndices;
+		std::vector<VertexColored>	mVertices;
+		std::vector<UINT>				mIndices;
 	};
 }

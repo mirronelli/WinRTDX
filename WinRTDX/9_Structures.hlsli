@@ -48,18 +48,24 @@ struct VertexPerFrameTransformBuffer
 
 
 // pixels
+struct PixelSimple
+{
+    float3 worldPosition : POSITION;
+    float4 position : SV_Position;
+};
+
+struct PixelSimpleWithNormal
+{
+    float3 worldPosition : POSITION;
+    float4 position : SV_Position;
+    float3 normal : NORMAL;
+};
+
 struct PixelColored
 {
     float3 worldPosition : POSITION;
     float4 position : SV_Position;
     float3 color : COLOR;
-};
-
-struct PixelWithNormal
-{
-    float3 worldPosition : POSITION;
-    float4 position : SV_Position;
-    float3 normal : NORMAL;
 };
 
 struct PixelColoredWithNormal
@@ -68,6 +74,13 @@ struct PixelColoredWithNormal
     float4 position : SV_Position;
     float3 normal : NORMAL;
     float3 color : COLOR;
+};
+
+struct PixelTextured
+{
+    float3 worldPosition : POSITION;
+    float4 position : SV_Position;
+    float2 textureCoordinates : TEXCOORD;
 };
 
 struct PixelTexturedWithNormal

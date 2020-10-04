@@ -16,12 +16,17 @@ namespace Dx::Attachables
 		{
 			case Dx::Drawables::VertexType::ColoredWithNormal:
 				ieds = &Dx::Drawables::IedsColoredWithNormal;
-				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[1]);
+				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[2]);
 				break;
 
 			case Dx::Drawables::VertexType::Colored:
 				ieds = &Dx::Drawables::IedsColored;
-				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[2]);
+				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[1]);
+				break;
+
+			case Dx::Drawables::VertexType::SimpleWithNormal:
+				ieds = &Dx::Drawables::IedsSimpleWithNormal;
+				vertexShader = std::static_pointer_cast<VertexShader>(ResourceManager::VertexShaders[3]);
 				break;
 
 			default:
