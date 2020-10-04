@@ -7,7 +7,7 @@
 
 namespace Dx::Attachables
 {
-	class PixelShader : public Attachable, CacheWithPreload<PixelShader>
+	class PixelShader : public Attachable, public CacheWithPreload<PixelShader>
 	{
 	public:
 		PixelShader(Dx::Drawables::VertexType type, std::wstring filename)
@@ -35,16 +35,15 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || !PixelShader::IsCurrent(mType))
+			if (force || !PixelShader::IsCurrent(mKey))
 			{
 				Graphics::Context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				PixelShader::SetCurrent(mType);
+				PixelShader::SetCurrent(mKey);
 			}
 		}
 
 	private:
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11PixelShader>		m_compiledShader;
-		Dx::Drawables::VertexType		mType;
 	};
 }

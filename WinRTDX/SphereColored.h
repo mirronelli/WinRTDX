@@ -16,15 +16,12 @@ namespace Dx::Drawables
 	{
 	public:
 		SphereColored(
-			std::shared_ptr<VertexShader> vertexShader,
-			std::shared_ptr<PixelShader> pixelShader,
-			int resourceCacheID,
 			int steps
 		) :
 			Drawable(
-				Dx::Attachables::CacheWithPreload<VertexShader>::Get(VertexType::Colored), 
-				Dx::Attachables::CacheWithPreload<PixelShader>::Get(VertexType::Colored),
-				resourceCacheID),
+				VertexShader::Get(VertexType::Colored), 
+				PixelShader::Get(VertexType::Colored),
+				200),
 			m_steps(steps)
 		{}
 
@@ -48,10 +45,10 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer = VertexBuffer<VertexColored>::Create(m_resourceCacheID, false, mVertices);
-			m_indexBuffer = IndexBuffer::Create(m_resourceCacheID, false, mIndices);
-			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_inputLayout = Dx::Attachables::Cache<VertexType, InputLayout>::Get(VertexType::Colored);
+			m_vertexBuffer =			VertexBuffer<VertexColored>::Create(m_resourceCacheID, false, mVertices);
+			m_indexBuffer =			IndexBuffer::Create(m_resourceCacheID, false, mIndices);
+			m_vsConstantBuffer =		VSConstantBuffer<WorldTransform>::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_inputLayout =			InputLayout::Get(VertexType::Colored);
 			m_indicesCount = (int)mIndices.size();
 		}
 

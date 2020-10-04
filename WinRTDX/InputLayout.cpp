@@ -45,10 +45,10 @@ namespace Dx::Attachables
 
 	void InputLayout::AttachPrivate(bool force)
 	{
-		if (force || !InputLayout::IsCurrent(mType))
+		if (force || !InputLayout::IsCurrent(mKey))
 		{
 			Graphics::Context->IASetInputLayout(m_inputLayout.get());
-			InputLayout::SetCurrent(mType);
+			InputLayout::SetCurrent(mKey);
 		}
 	}
 }

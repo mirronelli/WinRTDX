@@ -27,13 +27,13 @@ namespace Dx::Levels
 			return concurrency::create_task(
 				[this]()
 				{
-					CacheWithPreload<VertexShader>::Preload(Dx::Drawables::VertexType::Colored, L"9_VertexColored.cso");
-					CacheWithPreload<VertexShader>::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
-					CacheWithPreload<VertexShader>::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_VertexSimpleWithNormal.cso");
+					VertexShader::Preload(Dx::Drawables::VertexType::Colored, L"9_VertexColored.cso");
+					VertexShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
+					VertexShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_VertexSimpleWithNormal.cso");
 					
-					CacheWithPreload<PixelShader>::Preload(Dx::Drawables::VertexType::Colored, L"9_PixelColored.cso");
-					CacheWithPreload<PixelShader>::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
-					CacheWithPreload<PixelShader>::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_PixelSimpleWithNormal.cso");
+					PixelShader::Preload(Dx::Drawables::VertexType::Colored, L"9_PixelColored.cso");
+					PixelShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
+					PixelShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_PixelSimpleWithNormal.cso");
 				}
 			);
 		}
@@ -88,19 +88,22 @@ namespace Dx::Levels
 
 		void AddSun()
 		{
-			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(
-				nullptr,
-				nullptr,
-				200u,
-				40
-				);
+			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(40);
 
 			theSun->Scale(10);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
-			//theSun->Color({ 1,0,0 });
 			theSun->Init();
 
 			mRootScene.AddDrawable(std::move(theSun));
+
+			auto theSun2 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
+
+			theSun2->Scale(10);
+			theSun2->X(-40);
+			theSun2->Color({ 1,0.5,0 });
+			theSun2->Init();
+
+			mRootScene.AddDrawable(std::move(theSun2));
 		}
 
 		void ProcessInput()
