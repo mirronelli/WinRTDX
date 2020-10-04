@@ -90,7 +90,7 @@ namespace Dx::Levels
 		}
 	}
 
-	XMMATRIX SceneFactory::ConvertMatrix(aiMatrix4x4& source)
+	inline XMMATRIX SceneFactory::ConvertMatrix(aiMatrix4x4& source)
 	{
 		return XMLoadFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&source));
 	}

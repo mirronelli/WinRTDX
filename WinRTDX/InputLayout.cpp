@@ -41,7 +41,7 @@ namespace Dx::Attachables
 
 	void InputLayout::AttachPrivate(bool force)
 	{
-		if (force || Cache<InputLayout>::IsCurrent(mType))
+		if (force || !Cache<InputLayout>::IsCurrent(mType))
 		{
 			Graphics::Context->IASetInputLayout(m_inputLayout.get());
 			Cache<InputLayout>::SetCurrent(mType);
