@@ -145,9 +145,6 @@
     <ClInclude Include="CubeColored.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="SphereColored.h">
-      <Filter>Dx\Graphics\Drawables</Filter>
-    </ClInclude>
     <ClInclude Include="Level8.h">
       <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="Cache.h">
       <Filter>Dx\Graphics\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereColoredWithNormal.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +248,9 @@
     <Filter Include="Dx\Graphics\Shaders\older">
       <UniqueIdentifier>{754534bb-e6ed-416e-9de2-0e28da0c98ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dx\Graphics\Shaders\9">
+      <UniqueIdentifier>{dc0e5317-88cc-4a44-a547-cc4ba8877af0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -257,6 +260,12 @@
     </None>
     <None Include="8_Functions.hlsli">
       <Filter>Dx\Graphics\Shaders\8</Filter>
+    </None>
+    <None Include="9_Functions.hlsli">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </None>
+    <None Include="9_Structures.hlsli">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +328,15 @@
     </FxCompile>
     <FxCompile Include="8_VertexWithNormal.hlsl">
       <Filter>Dx\Graphics\Shaders\8</Filter>
+    </FxCompile>
+    <FxCompile Include="9_VertexColored.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_VertexColoredWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_PixelColoredWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -102,7 +102,7 @@ namespace Dx::Levels
 
 			//}
 
-			auto theSun = std::make_unique<SphereColored>(
+			auto theSun = std::make_unique<SphereColoredWithNormal>(
 				m_vertexShaderWithColor,
 				m_pixelShaderWithColor,
 				200u,

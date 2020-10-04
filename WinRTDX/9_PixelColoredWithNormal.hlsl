@@ -1,5 +1,5 @@
-#include "8_Functions.hlsli"
-#include "8_Structures.hlsli"
+#include "9_Functions.hlsli"
+#include "9_Structures.hlsli"
 
 cbuffer light : register(b0)
 {
@@ -14,12 +14,11 @@ cbuffer level : register(b1)
 // once per drawable
 cbuffer drawable : register(b2)
 {
-    PixelPerInstanceColorSpecularBuffer instance;
+    PixelPerInstanceSpecularBuffer instance;
 };
 
-float4 main(PixelWithNormal input) : SV_TARGET
+float4 main(PixelColoredWithNormal input) : SV_TARGET
 {
-    const float3 materialColor = (float3) instance.color;
     const float3 light = mLightIntensity(
         (float3) level_light.ambientLight,
         (float3) level_light.lightColor,
@@ -35,5 +34,5 @@ float4 main(PixelWithNormal input) : SV_TARGET
         frame.cameraPosition
     );
         
-    return float4(materialColor * light, 1.0f);
+    return float4(input.color * light, 1.0f);
 }

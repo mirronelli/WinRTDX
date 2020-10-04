@@ -135,7 +135,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto sphere = std::make_unique<SphereColored>(
+				auto sphere = std::make_unique<SphereColoredWithNormal>(
 					m_vertexShaderColored,
 					m_pixelShaderColored,
 					i + 1000u,
@@ -169,7 +169,7 @@ namespace Dx::Levels
 				m_drawables.push_back(std::move(sphere));
 			}
 
-			auto theSun = std::make_unique<SphereColored>(
+			auto theSun = std::make_unique<SphereColoredWithNormal>(
 				m_vertexShaderColored,
 				m_pixelShaderStatic,
 				3u,

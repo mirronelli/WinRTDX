@@ -29,13 +29,13 @@ namespace Dx::Drawables
 	{
 		DirectX::XMFLOAT3	color;
 	};
-	struct VertexColoredWithNormal : VertexColored, VertexSimpleWithNormal {};
+	struct VertexColoredWithNormal : VertexSimpleWithNormal, VertexColored {};
 
 	struct VertexTextured : VertexSimple
 	{
 		DirectX::XMFLOAT2 textureCoordinates;
 	};
-	struct VertexTexturedWithNormal : VertexTextured, VertexSimpleWithNormal {};
+	struct VertexTexturedWithNormal : VertexSimpleWithNormal, VertexTextured  {};
 
 	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsSimple = {
 		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 }
@@ -97,5 +97,14 @@ namespace Dx::Drawables
 		float reflectionPower;
 		float padding1;
 		float padding2;
+	};
+
+	struct Specular
+	{
+		float	reflectiveness;
+		float reflectionPower;
+		float padding1;
+		float padding2;
+		DirectX::XMFLOAT4 padding3;
 	};
 }

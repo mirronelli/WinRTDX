@@ -16,7 +16,7 @@ namespace Dx::Drawables
 {
 	enum class DrawableTypes
 	{
-		SphereColored = 1,
+		SphereColoredWithNormal = 1,
 		CubeColored = 2,
 		CubeTextured = 3,
 		Meshh = 4,
