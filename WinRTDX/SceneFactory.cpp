@@ -26,9 +26,31 @@ namespace Dx::Levels
 		if (sourceScene != nullptr && sourceScene->HasMeshes())
 		{
 			std::unique_ptr<Scene> newScene = std::make_unique<Scene>();
+			SceneFactory::LoadMeshesToScene(newScene.get(), sourceScene->mRootNode, DirectX::XMMatrixIdentity(), sourceScene, vertexShader, pixelShader);
+			return newScene;
+		}
+		else
+		{
+			throw "Error loading mesh.";
+		}
+	}
+
+	void SceneFactory::LoadMeshesToScene(Scene* parentScene, aiNode* node, DirectX::CXMMATRIX parentMatrix, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader)
+	{
+		if (node->mNumMeshes > 0)
+		{
+			CopyMeshesToScene(parentScene, node, sourceScene, vertexShader, pixelShader);
+		}
+	}
+
+	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::shared_ptr<VertexShader> vertexShader, std::shared_ptr<PixelShader> pixelShader)
+	{
+		for (int meshInNodeIndex = 0; meshInNodeIndex < node->mNumMeshes; meshInNodeIndex++)
+		{
+			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
+			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
+
 			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader, 10);
-			
-			aiMesh* sourceMesh = sourceScene->mMeshes[0];
 			newMesh->mVertices.reserve(sourceMesh->mNumVertices);
 
 			for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)
@@ -52,12 +74,7 @@ namespace Dx::Levels
 			newMesh->Color({ 1,0,0,0 });
 			newMesh->Specular(1, 32);
 			newMesh->Init();
-			newScene->AddDrawable(std::move(newMesh));
-			return newScene;
+
+			parentScene->AddDrawable(std::move(newMesh));
 		}
-		else
-		{
-			throw "Error loading mesh.";
-		}
-	}
 }
