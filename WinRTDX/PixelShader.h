@@ -2,16 +2,25 @@
 #include "pch.h"
 #include "Attachable.h"
 #include "IO.h"
-#include "CacheWithPreload.h"
 #include "Structures.h"
 
 namespace Dx::Attachables
 {
-	class PixelShader : public Attachable, public CacheWithPreload<PixelShader>
+	class PixelShader : public Attachable
 	{
 	public:
-		PixelShader(Dx::Drawables::VertexType type, std::wstring filename)
-			: CacheWithPreload<PixelShader>(type)
+		static void Preload(Dx::Drawables::VertexType key, std::wstring fileName)
+		{
+			mMap[key] = std::make_shared<PixelShader>(key, fileName);
+		}
+
+		static std::shared_ptr<PixelShader> Get(Dx::Drawables::VertexType key)
+		{
+			return mMap[key];
+		}
+
+		PixelShader(Dx::Drawables::VertexType key, std::wstring filename)
+			: mKey(key)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
 
@@ -35,15 +44,18 @@ namespace Dx::Attachables
 		}
 
 		void AttachPrivate(bool force) {
-			if (force || !PixelShader::IsCurrent(mKey))
+			if (force || mKey != mCurrentPixelShader)
 			{
+				mCurrentPixelShader = mKey;
 				Graphics::Context->PSSetShader(m_compiledShader.get(), nullptr, 0);
-				PixelShader::SetCurrent(mKey);
 			}
 		}
 
 	private:
 		IBuffer								m_rawDataBuffer;
 		com_ptr<ID3D11PixelShader>		m_compiledShader;
+
+		Dx::Drawables::VertexType mKey;
+		inline static std::map < Dx::Drawables::VertexType, std::shared_ptr<PixelShader>> mMap;
 	};
 }

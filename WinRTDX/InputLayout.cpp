@@ -2,7 +2,6 @@
 #include "InputLayout.h"
 #include "Structures.h"
 #include "VertexShader.h"
-#include "CacheWithPreload.h"
 
 using Dx::Drawables::VertexType;
 

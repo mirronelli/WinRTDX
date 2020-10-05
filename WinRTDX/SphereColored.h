@@ -3,7 +3,6 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Structures.h"
-#include "CacheWithPreload.h"
 
 using namespace Dx::Attachables;
 using namespace DirectX;

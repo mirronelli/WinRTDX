@@ -11,7 +11,6 @@
 #include "SphereColoredWithNormal.h"
 #include "SphereColored.h"
 #include "SceneFactory.h"
-#include "CacheWithPreload.h"
 
 using namespace Dx::Attachables;
 
