@@ -16,6 +16,7 @@ namespace Dx::Attachables
 		int m_key;
 
 		static inline std::string mCurrentVertexBuffer;
+		static inline std::string mCurrentIndexBuffer;
 		static inline Dx::Drawables::VertexType mCurrentInputLayout;
 	};
 }

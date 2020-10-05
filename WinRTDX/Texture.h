@@ -1,10 +1,10 @@
 #pragma once
 #include "pch.h"
-#include "Graphics.h"
 #include "Attachable.h"
 #include <map>
 #include "IO.h"
 #include "dds.h"
+#include "ResourceManager.h"
 
 namespace Dx::Attachables
 {

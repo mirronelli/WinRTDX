@@ -17,11 +17,12 @@ namespace Dx::Drawables
 
 	void MeshColored::RegisterResources()
 	{
+		id++;
 		m_vertexBuffer =		VertexBuffer<VertexSimpleWithNormal>	::Get("mesh:" + mName, mVertices);
-		m_indexBuffer =		IndexBuffer										::Create(id++, false, mIndices);
+		m_indexBuffer =		IndexBuffer										::Get("mesh:" + mName, mIndices);
+		m_inputLayout =		InputLayout										::Get(VertexType::SimpleWithNormal);
 		m_vsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(id++, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
 		m_psConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(id++, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-		m_inputLayout =		InputLayout										::Get(VertexType::SimpleWithNormal);
 		m_indicesCount = (UINT)mIndices.size();
 	}
 

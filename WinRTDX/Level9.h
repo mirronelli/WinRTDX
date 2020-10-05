@@ -96,14 +96,32 @@ namespace Dx::Levels
 
 			mRootScene.AddDrawable(std::move(theSun));
 
-			auto theSun2 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
+			auto theSun2 = std::make_unique<Dx::Drawables::SphereColored>(40);
 
 			theSun2->Scale(10);
+			theSun2->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun2->X(-120);
-			theSun2->Color({ 1,0.5,0 });
 			theSun2->Init();
 
 			mRootScene.AddDrawable(std::move(theSun2));
+
+			auto theSun3 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
+
+			theSun3->Scale(10);
+			theSun3->X(120);
+			theSun3->Color({ 1,0.5,0 });
+			theSun3->Init();
+
+			mRootScene.AddDrawable(std::move(theSun3));
+
+			auto theSun4 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
+
+			theSun4->Scale(10);
+			theSun4->X(80);
+			theSun4->Color({ 1,0.5,0 });
+			theSun4->Init();
+
+			mRootScene.AddDrawable(std::move(theSun4));
 		}
 
 		void ProcessInput()

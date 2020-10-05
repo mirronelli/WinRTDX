@@ -1,29 +1,26 @@
 #pragma once
 #include "pch.h"
-#include "Graphics.h"
 #include "Attachable.h"
-#include "ResourceManager.h"
 
 namespace Dx::Attachables
 {
 	class IndexBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<IndexBuffer> Create(int key, bool overwrite, std::vector<UINT> const& indices)
+		static std::shared_ptr<IndexBuffer> Get(std::string key, std::vector<UINT>& indices)
 		{
-			std::shared_ptr<IndexBuffer> instance = std::static_pointer_cast<IndexBuffer>( ResourceManager::IndexBuffers[key]);
-
-			if (overwrite || instance == nullptr)
+			std::shared_ptr<IndexBuffer> instance = mMap[key];
+			if (!instance)
 			{
 				instance = std::make_shared<IndexBuffer>(key, indices);
-				ResourceManager::IndexBuffers[key] = instance;
+				mMap[key] = instance;
 			}
 
 			return instance;
 		}
 
-		IndexBuffer(UINT const& key, std::vector<UINT> const& indices)
-			: Attachable(key)
+		IndexBuffer(std::string key, std::vector<UINT> const& indices)
+			: mKey(key)
 		{
 			D3D11_BUFFER_DESC desc = { 0 };
 			desc.ByteWidth = static_cast<UINT>(sizeof(UINT) * indices.size());
@@ -39,14 +36,17 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || ResourceManager::CurrentIndexBuffer != m_key)
+			if (force || mKey != mCurrentIndexBuffer)
 			{
+				mCurrentIndexBuffer = mKey;
 				Graphics::Context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
-				ResourceManager::CurrentIndexBuffer = m_key;
 			}
 		}
 
 	private:
 		com_ptr<ID3D11Buffer> m_buffer;
+
+		std::string mKey;
+		inline static std::map < std::string, std::shared_ptr<IndexBuffer>> mMap;
 	};
 }
