@@ -10,9 +10,10 @@ namespace Dx::Attachables
 	{
 	public:
 
-		static void Preload(Dx::Drawables::VertexType key, std::wstring fileName)
+		static std::shared_ptr<VertexShader> Preload(Dx::Drawables::VertexType key, std::wstring fileName)
 		{
 			mMap[key] = std::make_shared<VertexShader>(key, fileName);
+			return mMap[key];
 		}
 
 		static std::shared_ptr<VertexShader> Get(Dx::Drawables::VertexType key)

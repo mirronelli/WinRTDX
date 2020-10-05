@@ -1,15 +1,19 @@
 #include "pch.h"
 #include "Level1.h"
 #include "IO.h"
+#include "Structures.h"
 
 using namespace Dx::Attachables;
+using namespace Dx::Drawables;
 
 concurrency::task<void> Dx::Levels::Level1::Load()
 {
 	return concurrency::create_task([this]
 		{
-			//m_vertexShader = Dx::Attachables::CacheWithPreload<VertexShader>::Preload (VertexType::, L"VertexShader.cso");
-			//m_pixelShader = PixelShader::Load(1, true, L"PixelShader.cso");
+			VertexShader::Preload (VertexType::Colored, L"VertexShader.cso");
+			PixelShader::Preload(VertexType::Colored, L"PixelShader.cso");
+			m_vertexShader = VertexShader::Get(VertexType::Colored);
+			m_pixelShader = PixelShader::Get(VertexType::Colored);
 		}
 	);
 }

@@ -6,6 +6,7 @@
 #include "Drawable.h"
 #include "CubeColored.h"
 #include "SphereColored.h"
+#include "SphereColoredWithNormal.h"
 #include "CubeTextured.h"
 #include "ILevel.h"
 #include "IO.h"
@@ -25,14 +26,14 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader7Textured.cso");
-					m_vertexShaderColored = VertexShader::Load(3, false, L"VertexShader7Colored.cso");
+					m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader7Textured.cso");
+					m_vertexShaderColored = VertexShader::Preload(VertexType::ColoredWithNormal, L"VertexShader7Colored.cso");
 
-					m_pixelShaderTextured	= PixelShader::Load(2, false, L"PixelShader7Textured.cso");
-					m_pixelShaderColored = PixelShader::Load(3, false, L"PixelShader7Colored.cso");
-					m_pixelShaderStatic = PixelShader::Load(4, false, L"PixelShader7Static.cso");
+					m_pixelShaderTextured	= PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader7Textured.cso");
+					m_pixelShaderColored = PixelShader::Preload(VertexType::ColoredWithNormal, L"PixelShader7Colored.cso");
+					m_pixelShaderStatic = PixelShader::Preload(VertexType::Colored, L"PixelShader7Static.cso");
 
-					m_texture = Texture::Load(1, false, L"Assets\\karin3.dds", 0);
+					m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
 				}
 			);
 		}
@@ -41,10 +42,10 @@ namespace Dx::Levels
 		{
 			GenerateDrawables();
 
-			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(4u, false, m_sharedConstants, 1, false);
+			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(m_sharedConstants, ResourceSlots::PerFrame);
 			m_sharedConstantVSBuffer->Attach(false);
 
-			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(4u, false, m_sharedConstants, 1, false);
+			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(m_sharedConstants, ResourceSlots::PerFrame);
 			m_sharedConstantPSBuffer->Attach(false);
 
 			m_light.lightPosition				= { 0, 0, 0, 0 };
@@ -55,7 +56,7 @@ namespace Dx::Levels
 			m_light.attenuationLinear			= 0.01f;
 			m_light.attenuationConstant		= 0.f;
 
-			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(5u, false, m_light, 0, false);
+			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(m_light, ResourceSlots::PerLevel);
 			m_lightConstantBuffer->Attach(false);
 
 			m_mouseInput->RelativeTrackingEnter();
@@ -135,12 +136,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto sphere = std::make_unique<SphereColoredWithNormal>(
-					m_vertexShaderColored,
-					m_pixelShaderColored,
-					i + 1000u,
-					24
-					);
+				auto sphere = std::make_unique<SphereColoredWithNormal>(24);
 
 				sphere->X(location(generator));
 				sphere->Y(location(generator));
@@ -169,12 +165,7 @@ namespace Dx::Levels
 				m_drawables.push_back(std::move(sphere));
 			}
 
-			auto theSun = std::make_unique<SphereColoredWithNormal>(
-				m_vertexShaderColored,
-				m_pixelShaderStatic,
-				3u,
-				40
-				);
+			auto theSun = std::make_unique<SphereColoredWithNormal>(40);
 
 			theSun->ScaleX(10);
 			theSun->ScaleY(10);

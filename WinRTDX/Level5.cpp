@@ -12,6 +12,11 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 			//m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader5_6.cso");
 			//m_pixelShaderTextured = PixelShader::Load(2, false, L"PixelShader5_6.cso");
 
+			VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
+			PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
+			m_vertexShaderSimple = VertexShader::Get(VertexType::Simple);
+			m_pixelShaderSimple = PixelShader::Get(VertexType::Simple);
+
 			m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
 		}
 	);

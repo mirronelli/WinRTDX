@@ -26,19 +26,32 @@ namespace Dx::Attachables
 		std::shared_ptr<VertexShader> vertexShader = VertexShader::Get(key);
 		switch (key)
 		{
-		case VertexType::ColoredWithNormal:
-			ieds = &Dx::Drawables::IedsColoredWithNormal;
-			break;
-
-		case VertexType::Colored:
-			ieds = &Dx::Drawables::IedsColored;
+		case VertexType::Simple:
+			ieds = &Dx::Drawables::IedsSimple;
 			break;
 
 		case VertexType::SimpleWithNormal:
 			ieds = &Dx::Drawables::IedsSimpleWithNormal;
 			break;
 
+		case VertexType::Colored:
+			ieds = &Dx::Drawables::IedsColored;
+			break;
+
+		case VertexType::ColoredWithNormal:
+			ieds = &Dx::Drawables::IedsColoredWithNormal;
+			break;
+
+		case VertexType::Textured:
+			ieds = &Dx::Drawables::IedsTextured;
+			break;
+
+		case VertexType::TexturedWithNormal:
+			ieds = &Dx::Drawables::IedsTexturedWithNormal;
+			break;
+
 		default:
+			assert(true);
 			ieds = &Dx::Drawables::IedsSimple;
 			break;
 		}

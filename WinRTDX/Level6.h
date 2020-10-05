@@ -22,10 +22,10 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader5_6.cso");
-					m_pixelShaderTextured = PixelShader::Load(2, false, L"PixelShader5_6.cso");
+					m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
+					m_pixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
 
-					m_texture = Texture::Load(1, false, L"Assets\\karin3.dds", 0);
+					m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
 				}
 			);
 		}
@@ -74,7 +74,7 @@ namespace Dx::Levels
 				d->RegisterResources();
 			}
 
-			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(1, false, m_worldViewTransform, 0, false);
+			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel);
 			m_worldViewTransformConstantBuffer->Attach(false);
 			m_worldRotationSpeedY = 0.f;
 		}

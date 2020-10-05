@@ -2,14 +2,14 @@
 
 #include "Game.h"
 #include "ILevel.h"
-//#include "Level1.h"
-//#include "Level2.h"
-//#include "Level3.h"
-//#include "Level4.h"
-//#include "Level5.h"
-//#include "Level6.h"
-//#include "Level7.h"
-//#include "Level8.h"
+#include "Level1.h"
+#include "Level2.h"
+#include "Level3.h"
+#include "Level4.h"
+#include "Level5.h"
+#include "Level6.h"
+#include "Level7.h"
+#include "Level8.h"
 #include "Level9.h"
 
 Game::Game(CoreWindow const& window) :
@@ -30,30 +30,30 @@ void Game::LoadLevel(byte name)
 	//ResourceManager::ClearCache();
 	//name = 4;
 	switch (name) {
-	//case 1:
-	//	m_level = std::make_unique<Dx::Levels::Level1>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 2:
-	//	m_level = std::make_unique<Dx::Levels::Level2>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 3:
-	//	m_level = std::make_unique<Dx::Levels::Level3>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 4:
-	//	m_level = std::make_unique<Dx::Levels::Level4>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 5:
-	//	m_level = std::make_unique<Dx::Levels::Level5>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 6:
-	//	m_level = std::make_unique<Dx::Levels::Level6>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 7:
-	//	m_level = std::make_unique<Dx::Levels::Level7>(m_keyboardInput, m_mouseInput);
-	//	break;
-	//case 8:
-	//	m_level = std::make_unique<Dx::Levels::Level8>(m_keyboardInput, m_mouseInput);
-	//	break;
+	case 1:
+		m_level = std::make_unique<Dx::Levels::Level1>(m_keyboardInput, m_mouseInput);
+		break;
+	case 2:
+		m_level = std::make_unique<Dx::Levels::Level2>(m_keyboardInput, m_mouseInput);
+		break;
+	case 3:
+		m_level = std::make_unique<Dx::Levels::Level3>(m_keyboardInput, m_mouseInput);
+		break;
+	case 4:
+		m_level = std::make_unique<Dx::Levels::Level4>(m_keyboardInput, m_mouseInput);
+		break;
+	case 5:
+		m_level = std::make_unique<Dx::Levels::Level5>(m_keyboardInput, m_mouseInput);
+		break;
+	case 6:
+		m_level = std::make_unique<Dx::Levels::Level6>(m_keyboardInput, m_mouseInput);
+		break;
+	case 7:
+		m_level = std::make_unique<Dx::Levels::Level7>(m_keyboardInput, m_mouseInput);
+		break;
+	case 8:
+		m_level = std::make_unique<Dx::Levels::Level8>(m_keyboardInput, m_mouseInput);
+		break;
 	case 9:
 		m_level = std::make_unique<Dx::Levels::Level9>(m_keyboardInput, m_mouseInput);
 		break;

@@ -9,9 +9,10 @@ namespace Dx::Attachables
 	class PixelShader : public Attachable
 	{
 	public:
-		static void Preload(Dx::Drawables::VertexType key, std::wstring fileName)
+		static std::shared_ptr<PixelShader> Preload(Dx::Drawables::VertexType key, std::wstring fileName)
 		{
 			mMap[key] = std::make_shared<PixelShader>(key, fileName);
+			return mMap[key];
 		}
 
 		static std::shared_ptr<PixelShader> Get(Dx::Drawables::VertexType key)

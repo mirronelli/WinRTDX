@@ -84,10 +84,10 @@ namespace Dx::Drawables
 		};
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexSimple>::Create				(m_resourceCacheID, false, Vertices);
-			m_indexBuffer =		IndexBuffer::Create							(m_resourceCacheID, false, Indices);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::Create	(m_resourceCacheID, false, m_vsConstants, 2);
-			m_inputLayout =		InputLayout::Create							(m_resourceCacheID, false, Ieds, m_vertexShader);
+			m_vertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube", Vertices);
+			m_indexBuffer =		IndexBuffer::							Get("cube", Indices);
+			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(m_vsConstants, ResourceSlots::PerInstance);
+			m_inputLayout =		InputLayout::							Get(VertexType::ColoredWithNormal);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 

@@ -4,13 +4,16 @@
 #include <DirectXMath.h>
 
 using namespace Dx::Attachables;
+using namespace Dx::Drawables;
 
 concurrency::task<void> Dx::Levels::Level2::Load()
 {
 	return concurrency::create_task([this]
 		{
-			//m_vertexShader = VertexShader::Load(1, true, L"VertexShader2.cso");
-			//m_pixelShader = PixelShader::Load(1, true, L"PixelShader2.cso");
+			VertexShader::Preload(VertexType::Colored, L"VertexShader2.cso");
+			PixelShader::Preload(VertexType::Colored, L"PixelShader2.cso");
+			m_vertexShader = VertexShader::Get(VertexType::Colored);
+			m_pixelShader = PixelShader::Get(VertexType::Colored);		
 		}
 	);
 }

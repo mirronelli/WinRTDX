@@ -8,6 +8,7 @@
 #include "CubeColored.h"
 #include "SphereColored.h"
 #include "CubeTextured.h"
+#include "MeshColored.h"
 #include "IO.h"
 #include "Camera.h"
 
@@ -25,10 +26,10 @@ namespace Dx::Levels
 			return concurrency::create_task(
 				[this]()
 				{
-					m_vertexShaderWithNormal = VertexShader::Load(1, false, L"8_VertexWithNormal.cso");
-					m_vertexShaderWithColor = VertexShader::Load(2, false, L"8_VertexWithColor.cso");
-					m_pixelShaderWithNormal = PixelShader::Load(3, false, L"8_PixelWithNormal.cso");
-					m_pixelShaderWithColor = PixelShader::Load(4, false, L"8_PixelWithColor.cso");
+					m_vertexShaderWithNormal = VertexShader::Preload(VertexType::SimpleWithNormal, L"8_VertexWithNormal.cso");
+					m_vertexShaderWithColor = VertexShader::Preload(VertexType::ColoredWithNormal, L"8_VertexWithColor.cso");
+					m_pixelShaderWithNormal = PixelShader::Preload(VertexType::SimpleWithNormal, L"8_PixelWithNormal.cso");
+					m_pixelShaderWithColor = PixelShader::Preload(VertexType::ColoredWithNormal, L"8_PixelWithColor.cso");
 				}
 			);
 		}
@@ -45,9 +46,9 @@ namespace Dx::Levels
 			m_pixelPerLevelConstants.attenuationLinear		= 0.01f;
 			m_pixelPerLevelConstants.attenuationConstant		= 0.f;
 
-			m_pixelPerLevelConstantsBuffer	= PSConstantBuffer<PixelPerLevelConstants>::	Create(1u, false, m_pixelPerLevelConstants, 0, false);
-			m_pixelPerFrameConstantsBuffer	= PSConstantBuffer<PixelPerFrameConstants>::	Create(2u, false, m_pixelPerFrameConstants, 1u, true);
-			m_vertexPerFrameConstantsBuffer	= VSConstantBuffer<VertexPerFrameConstants>::Create(3u, false, m_vertexPerFrameConstants, 1u, true);
+			m_pixelPerLevelConstantsBuffer	= PSConstantBuffer<PixelPerLevelConstants>::	Create(m_pixelPerLevelConstants, ResourceSlots::PerLevel);
+			m_pixelPerFrameConstantsBuffer	= PSConstantBuffer<PixelPerFrameConstants>::	Create(m_pixelPerFrameConstants, ResourceSlots::PerFrame);
+			m_vertexPerFrameConstantsBuffer	= VSConstantBuffer<VertexPerFrameConstants>::Create(m_vertexPerFrameConstants, ResourceSlots::PerFrame);
 
 			m_pixelPerLevelConstantsBuffer->Attach(false);
 			m_pixelPerFrameConstantsBuffer->Attach(false);
@@ -65,12 +66,12 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> rotationSpeed(-DirectX::XM_PI / 50.f, DirectX::XM_PI / 50.f);
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
-			std::uniform_real_distribution<float> refelctiveness(0.f, 1.0f);
+			std::uniform_real_distribution<float> reflectiveness(0.f, 1.0f);
 			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
 
 			//for (int i = 0; i < 100; i++)
 			//{
-			//	std::unique_ptr<Meshh> mesh = std::make_unique<Meshh>(
+			//	std::unique_ptr<MeshColored> mesh = std::make_unique<MeshColored>(
 			//		m_vertexShaderWithNormal,
 			//		m_pixelShaderWithNormal,
 			//		5u
@@ -93,7 +94,7 @@ namespace Dx::Levels
 			//	mesh->RotationSpeedZ(rotationSpeed(generator));
 
 			//	mesh->Color({ color(generator), color(generator), color(generator), 1 });
-			//	mesh->Specular({ refelctiveness(generator), specularPower(generator) });
+			//	mesh->Specular(reflectiveness(generator), specularPower(generator) );
 			//	mesh->FileName("Assets\\suzanne.obj");
 			//	mesh->Scale(20);
 			//	mesh->Init();
@@ -102,12 +103,7 @@ namespace Dx::Levels
 
 			//}
 
-			auto theSun = std::make_unique<SphereColoredWithNormal>(
-				m_vertexShaderWithColor,
-				m_pixelShaderWithColor,
-				200u,
-				40
-				);
+			auto theSun = std::make_unique<SphereColoredWithNormal>(40);
 
 			theSun->Scale(10);
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));

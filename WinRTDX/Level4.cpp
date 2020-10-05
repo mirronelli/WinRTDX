@@ -10,6 +10,10 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 		{
 			//m_vertexShaderSimple = VertexShader::Load(1, false, L"VertexShader4.cso");
 			//m_pixelShaderSimple = PixelShader::Load(1, false, L"PixelShader4.cso");
+			VertexShader::Preload(VertexType::Simple, L"VertexShader4.cso");
+			PixelShader::Preload(VertexType::Simple, L"PixelShader4.cso");
+			m_vertexShaderSimple = VertexShader::Get(VertexType::Simple);
+			m_pixelShaderSimple = PixelShader::Get(VertexType::Simple);
 		}
 	);
 }
