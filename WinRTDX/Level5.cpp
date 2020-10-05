@@ -12,7 +12,7 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 			//m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader5_6.cso");
 			//m_pixelShaderTextured = PixelShader::Load(2, false, L"PixelShader5_6.cso");
 
-			m_texture = Texture::Load(1, false, L"Assets\\karin3.dds", 0);
+			m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
 		}
 	);
 }

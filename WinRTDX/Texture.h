@@ -4,30 +4,25 @@
 #include <map>
 #include "IO.h"
 #include "dds.h"
-#include "ResourceManager.h"
-
 namespace Dx::Attachables
 {
 	class Texture : public Attachable
 	{
-
-
 	public:
-		static std::shared_ptr<Texture> Load(int key, bool overwrite, std::wstring fileName, UINT slot=0)
+		static std::shared_ptr<Texture> Preload(std::string key, std::wstring filename)
 		{
-			std::shared_ptr<Texture> instance = std::static_pointer_cast<Texture>(ResourceManager::Textures[key]);
-
-			if (overwrite || instance == nullptr)
-			{
-				instance = std::make_shared<Texture>(key, fileName, slot);
-				ResourceManager::Textures[key] = instance;
-			}
-
+			std::shared_ptr<Texture> instance = std::make_shared<Texture>(key, filename);
+			mMap[key] = instance;
 			return instance;
 		}
 
-		Texture(int key, std::wstring filename, UINT slot)
-			: Attachable(key),
+		static std::shared_ptr<Texture> Get(std::string key)
+		{
+			return mMap[key];
+		}
+
+		Texture(std::string key, std::wstring filename, UINT slot = 0)
+			: 
 			m_slot(slot)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
@@ -81,15 +76,14 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || ResourceManager::CurrentTexture != m_key)
+			if (force || mKey != mCurrentTexture)
 			{
+				mCurrentTexture = mKey;
 				ID3D11ShaderResourceView* textureViews[1] = { m_textureView.get() };
 				Graphics::Context->PSSetShaderResources(m_slot, 1, textureViews);
 
 				ID3D11SamplerState* samplers[1] = { m_sampler.get() };
 				Graphics::Context->PSSetSamplers(m_slot, 1, samplers);
-
-				ResourceManager::CurrentTexture = m_key;
 			}
 		}
 
@@ -99,5 +93,8 @@ namespace Dx::Attachables
 		com_ptr<ID3D11ShaderResourceView>		m_textureView;
 		com_ptr<ID3D11SamplerState>				m_sampler;
 		UINT												m_slot;
+
+		std::string mKey;
+		inline static std::map < std::string, std::shared_ptr<Texture>> mMap;
 	};
 }

@@ -39,9 +39,6 @@
     <ClCompile Include="MeshColored.cpp">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Dx\Graphics\Attachables</Filter>
-    </ClCompile>
     <ClCompile Include="InputLayout.cpp">
       <Filter>Dx\Graphics\Attachables</Filter>
     </ClCompile>
@@ -97,9 +94,6 @@
       <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="VSConstantBuffer.h">
-      <Filter>Dx\Graphics\Attachables</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
       <Filter>Dx\Graphics\Attachables</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">

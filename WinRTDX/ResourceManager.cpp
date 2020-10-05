@@ -7,7 +7,5 @@ namespace Dx::Attachables
 
 	void ResourceManager::ClearCache()
 	{
-		CurrentTexture = 0;
-		Textures.clear();
 	}
 }
