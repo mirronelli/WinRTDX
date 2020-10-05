@@ -56,7 +56,7 @@ void Dx::Levels::Level4::SetupModel()
 		d->RegisterResources();
 	}
 
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(2, false, m_worldViewTransform, 0, false);
+	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel, false);
 	m_worldViewTransformConstantBuffer->Attach(false);
 
 	m_worldRotationSpeedY = 0.01f;

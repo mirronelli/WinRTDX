@@ -9,21 +9,13 @@ namespace Dx::Attachables
 	class PSConstantBuffer : public Attachable
 	{
 	public:
-		static std::shared_ptr<PSConstantBuffer<T>> Create(int key, bool overwrite, T& constantData, UINT slot = 0, bool fastMode = true)
+		static std::shared_ptr<PSConstantBuffer<T>> Create(T& constantData, ResourceSlots slot, bool fastMode = true)
 		{
-			std::shared_ptr<PSConstantBuffer<T>> instance = std::static_pointer_cast<PSConstantBuffer<T>>(ResourceManager::PSConstantBuffers[key]);
-
-			if (overwrite || instance == nullptr)
-			{
-				instance = std::make_shared<PSConstantBuffer>(key, constantData, slot, fastMode);
-				ResourceManager::PSConstantBuffers[key] = instance;
-			}
-
-			return instance;
+			return std::make_shared<PSConstantBuffer>(constantData, (UINT)slot, fastMode);
 		}
 
-		PSConstantBuffer(int key, T& constantData, UINT slot, bool fastMode)
-			: Attachable(key),
+		PSConstantBuffer(T& constantData, UINT slot, bool fastMode)
+			:
 			m_slot(slot),
 			m_fastMode(fastMode)
 		{
@@ -41,12 +33,8 @@ namespace Dx::Attachables
 
 		void AttachPrivate(bool force)
 		{
-			if (force || ResourceManager::CurrentPSConstantBuffer != m_key)
-			{
-				ID3D11Buffer* PSConstantBuffers[1] = { m_buffer.get() };
-				Graphics::Context->PSSetConstantBuffers(m_slot, 1, PSConstantBuffers);
-				ResourceManager::CurrentPSConstantBuffer = m_key;
-			}
+			ID3D11Buffer* PSConstantBuffers[1] = { m_buffer.get() };
+			Graphics::Context->PSSetConstantBuffers(m_slot, 1, PSConstantBuffers);
 		}
 
 		void Update(T const& constantData)

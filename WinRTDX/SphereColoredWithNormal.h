@@ -53,11 +53,11 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexColoredWithNormal>::	Get(MAKEID("sphere:coloredWithNormal:", m_steps), mVertices);
-			m_indexBuffer =		IndexBuffer::										Get(MAKEID("sphere:coloredWithNormal:", m_steps), mIndices);
-			m_inputLayout =		InputLayout::										Get(VertexType::ColoredWithNormal);
-			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::			Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
-			m_psConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::Create(m_resourceCacheID+1, false, mPixelPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_vertexBuffer =		VertexBuffer<VertexColoredWithNormal>::		Get(MAKEID("sphere:coloredWithNormal:", m_steps), mVertices);
+			m_indexBuffer =		IndexBuffer::											Get(MAKEID("sphere:coloredWithNormal:", m_steps), mIndices);
+			m_inputLayout =		InputLayout::											Get(VertexType::ColoredWithNormal);
+			m_vsConstantBuffer = VSConstantBuffer<WorldTransform>::				Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
+			m_psConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::	Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
 			m_indicesCount =		(int)mIndices.size();
 		}
 

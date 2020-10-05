@@ -65,8 +65,8 @@ namespace Dx::Drawables
 
 			m_vertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube", Vertices);
 			m_indexBuffer =		IndexBuffer::							Get("cube", Indices);
-			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::	Create	(m_resourceCacheID, false, m_psConstants);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create	(m_resourceCacheID, false, m_vsConstants, 2);
+			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::	Create(m_psConstants, ResourceSlots::PerInstance);
+			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(m_vsConstants, ResourceSlots::PerInstance);
 			m_inputLayout =		InputLayout::							Get(VertexType::Simple);
 			m_indicesCount =		(UINT)Indices.size();
 		}

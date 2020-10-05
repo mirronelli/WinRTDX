@@ -40,7 +40,6 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			int lastResourceID = 10;
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
 			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
@@ -73,9 +72,9 @@ namespace Dx::Levels
 			mPixelPerLevelConstants.attenuationLinear = 0.01f;
 			mPixelPerLevelConstants.attenuationConstant = 0.f;
 
-			mPixelPerLevelConstantsBuffer = PSConstantBuffer<PixelPerLevelConstants>::Create(1u, false, mPixelPerLevelConstants, (UINT)ResourceSlots::PerLevel, false);
-			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(2u, false, mPixelPerFrameConstants, (UINT)ResourceSlots::PerFrame, true);
-			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(3u, false, mVertexPerFrameConstants, (UINT)ResourceSlots::PerFrame, true);
+			mPixelPerLevelConstantsBuffer = PSConstantBuffer<PixelPerLevelConstants>::Create(mPixelPerLevelConstants, ResourceSlots::PerLevel, false);
+			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(mPixelPerFrameConstants, ResourceSlots::PerFrame, true);
+			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(mVertexPerFrameConstants, ResourceSlots::PerFrame, true);
 
 			mPixelPerLevelConstantsBuffer->Attach(false);
 			mPixelPerFrameConstantsBuffer->Attach(false);

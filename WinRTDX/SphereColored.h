@@ -44,10 +44,10 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =			VertexBuffer<VertexColored>::	Get(MAKEID("sphere:colored:", m_steps), mVertices);
-			m_indexBuffer =			IndexBuffer::						Get(MAKEID("sphere:colored:", m_steps), mIndices);
-			m_inputLayout =			InputLayout::						Get(VertexType::Colored);
-			m_vsConstantBuffer =		VSConstantBuffer<WorldTransform>::Create(m_resourceCacheID, false, mVertexPerInstanceConstants, (UINT)ResourceSlots::PerInstance);
+			m_vertexBuffer =			VertexBuffer<VertexColored>::			Get(MAKEID("sphere:colored:", m_steps), mVertices);
+			m_indexBuffer =			IndexBuffer::								Get(MAKEID("sphere:colored:", m_steps), mIndices);
+			m_inputLayout =			InputLayout::								Get(VertexType::Colored);
+			m_vsConstantBuffer =		VSConstantBuffer<WorldTransform>::	Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 			m_indicesCount = (int)mIndices.size();
 		}
 

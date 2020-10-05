@@ -4,6 +4,13 @@
 
 namespace Dx::Attachables
 {
+	enum class ResourceSlots
+	{
+		PerLevel = 0,
+		PerFrame = 1,
+		PerInstance = 2
+	};
+
 	class Attachable
 	{
 	public:
