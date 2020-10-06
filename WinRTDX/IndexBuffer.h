@@ -32,7 +32,7 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = indices.data();
 
-			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
+			Graphics::Device->CreateBuffer(&desc, &srd, mBuffer.put());
 		}
 
 		void Attach()
@@ -40,12 +40,12 @@ namespace Dx::Attachables
 			if (mKey != mCurrentIndexBuffer)
 			{
 				mCurrentIndexBuffer = mKey;
-				Graphics::Context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
+				Graphics::Context->IASetIndexBuffer(mBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
 			}
 		}
 
 	private:
-		com_ptr<ID3D11Buffer> m_buffer;
+		com_ptr<ID3D11Buffer> mBuffer;
 
 		std::string mKey;
 		inline static std::map < std::string, std::shared_ptr<IndexBuffer>> mMap;

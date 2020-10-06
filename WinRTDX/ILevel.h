@@ -9,8 +9,8 @@ namespace Dx::Levels
 	{
 	public:
 		ILevel(std::shared_ptr<KeyboardInput> keyboardInput, std::shared_ptr<MouseInput> mouseInput) :
-			m_keyboardInput(keyboardInput),
-			m_mouseInput(mouseInput)
+			mKeyboardInput(keyboardInput),
+			mMouseInput(mouseInput)
 		{};
 
 		virtual concurrency::task<void> Load() = 0;
@@ -20,8 +20,8 @@ namespace Dx::Levels
 
 		virtual ~ILevel() {}
 	protected:
-		std::shared_ptr<KeyboardInput>   m_keyboardInput;
-		std::shared_ptr<MouseInput>      m_mouseInput;
+		std::shared_ptr<KeyboardInput>   mKeyboardInput;
+		std::shared_ptr<MouseInput>      mMouseInput;
 	};
 
 }

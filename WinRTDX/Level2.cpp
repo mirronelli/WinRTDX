@@ -78,12 +78,12 @@ void Dx::Levels::Level2::CreateConstantData()
 	transformDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
 	transformDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	transformDesc.CPUAccessFlags = 0;
-	transformDesc.ByteWidth = sizeof(m_constantData);
+	transformDesc.ByteWidth = sizeof(mConstantData);
 
 	D3D11_SUBRESOURCE_DATA transformSrd{ 0 };
-	transformSrd.pSysMem = &m_constantData;
+	transformSrd.pSysMem = &mConstantData;
 
-	Graphics::Device->CreateBuffer(&transformDesc, &transformSrd, m_constantBuffer.put());
+	Graphics::Device->CreateBuffer(&transformDesc, &transformSrd, mConstantBuffer.put());
 }
 
 void Dx::Levels::Level2::RegisterBuffers()
@@ -95,7 +95,7 @@ void Dx::Levels::Level2::RegisterBuffers()
 
 	Graphics::Context->IASetIndexBuffer(mIndexBuffer.get(), DXGI_FORMAT::DXGI_FORMAT_R16_UINT, 0);
 
-	ID3D11Buffer* constantBuffers[1] = { m_constantBuffer.get() };
+	ID3D11Buffer* constantBuffers[1] = { mConstantBuffer.get() };
 	Graphics::Context->VSSetConstantBuffers(0, 1, constantBuffers);
 	Graphics::Context->PSSetConstantBuffers(0, 1, constantBuffers);
 }
@@ -110,20 +110,20 @@ void Dx::Levels::Level2::SetupModel()
 
 void Dx::Levels::Level2::Update(float delta)
 {
-	m_elapsedTime += delta;
-	while (m_elapsedTime > m_effectDuration)
-		m_elapsedTime -= m_effectDuration;
+	mElapsedTime += delta;
+	while (mElapsedTime > mEffectDuration)
+		mElapsedTime -= mEffectDuration;
 
-	m_progress = m_elapsedTime / m_effectDuration * DirectX::XM_2PI;
+	mProgress = mElapsedTime / mEffectDuration * DirectX::XM_2PI;
 }
 
 void Dx::Levels::Level2::Draw(float angle, float x, float y, float z)
 {
 	Graphics::Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_constantData.matrix = DirectX::XMMatrixRotationZ(angle);
-	m_constantData.matrix *= DirectX::XMMatrixTranslation(x, y, z);
-	m_constantData.matrix *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, Graphics::Instance->Width() / Graphics::Instance->Height(), 1.f, 100.0f);
-	Graphics::Context->UpdateSubresource(m_constantBuffer.get(), 0, 0, &m_constantData, 0, 0);
+	mConstantData.matrix = DirectX::XMMatrixRotationZ(angle);
+	mConstantData.matrix *= DirectX::XMMatrixTranslation(x, y, z);
+	mConstantData.matrix *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, Graphics::Instance->Width() / Graphics::Instance->Height(), 1.f, 100.0f);
+	Graphics::Context->UpdateSubresource(mConstantBuffer.get(), 0, 0, &mConstantData, 0, 0);
 	
 	Graphics::Context->DrawIndexed(6, 0, 0);
 }
@@ -133,5 +133,5 @@ void Dx::Levels::Level2::Render()
 	float color[4]{ .4f, .2f, .2f, .2f };
 	Graphics::Instance->StartFrame(color);
 
-	Draw(m_progress, Graphics::Instance->MouseX(), Graphics::Instance->MouseY(), 2.0f);
+	Draw(mProgress, Graphics::Instance->MouseX(), Graphics::Instance->MouseY(), 2.0f);
 }

@@ -62,7 +62,7 @@ void Dx::Graphics::CreateDeviceResources()
 	com_ptr<IDXGIFactory3> factory;
 	dxgiAdapter->GetParent(IID_PPV_ARGS(&factory));
 
-	m_factory = factory.as<IDXGIFactory7>();
+	mFactory = factory.as<IDXGIFactory7>();
 
 	Dx::Tools::DisplayAdapterDetails(dxgiAdapter);
 }
@@ -70,11 +70,11 @@ void Dx::Graphics::CreateDeviceResources()
 void Dx::Graphics::CreateWindowSizeDependentResources()
 {
 #pragma region swap_chain
-	if (m_swapChain != nullptr)
+	if (mSwapChain != nullptr)
 	{
-		m_renderTargetView = nullptr;
-		m_depthStencilView = nullptr;
-		m_swapChain->ResizeBuffers(
+		mRenderTargetView = nullptr;
+		mDepthStencilView = nullptr;
+		mSwapChain->ResizeBuffers(
 			2,
 			0,
 			0,
@@ -101,9 +101,9 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 
 		if (
 			FAILED(
-				m_factory->CreateSwapChainForCoreWindow(
+				mFactory->CreateSwapChainForCoreWindow(
 					Device.get(),
-					winrt::get_unknown(m_window),
+					winrt::get_unknown(mWindow),
 					&swapChainDescriptor,
 					nullptr,
 					swapChain.put()
@@ -114,7 +114,7 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 			return;
 		}
 
-		m_swapChain = swapChain.as<IDXGISwapChain4>();
+		mSwapChain = swapChain.as<IDXGISwapChain4>();
 	}
 #pragma endregion
 
@@ -122,11 +122,11 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 
 	//  represents the active backbuffer
 	com_ptr<ID3D11Texture2D> backBuffer;
-	m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), backBuffer.put_void());
+	mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), backBuffer.put_void());
 
 	com_ptr<ID3D11RenderTargetView> renderTargetView;
 	Device->CreateRenderTargetView(backBuffer.get(), nullptr, renderTargetView.put());
-	m_renderTargetView = renderTargetView;
+	mRenderTargetView = renderTargetView;
 
 #pragma endregion
 
@@ -136,8 +136,8 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	D3D11_VIEWPORT viewports[1];
 	viewports[0].TopLeftX = 0.0f;
 	viewports[0].TopLeftY = 0.0f;
-	viewports[0].Width = m_width;
-	viewports[0].Height = m_height;
+	viewports[0].Width = mWidth;
+	viewports[0].Height = mHeight;
 	viewports[0].MinDepth = D3D11_MIN_DEPTH;
 	viewports[0].MaxDepth = D3D11_MAX_DEPTH;
 
@@ -157,8 +157,8 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 
 	com_ptr<ID3D11Texture2D> depthBufferTexture;
 	D3D11_TEXTURE2D_DESC depthBufferTextureDesc{ 0 };
-	depthBufferTextureDesc.Width = static_cast<UINT>(m_width);
-	depthBufferTextureDesc.Height = static_cast<UINT>(m_height);
+	depthBufferTextureDesc.Width = static_cast<UINT>(mWidth);
+	depthBufferTextureDesc.Height = static_cast<UINT>(mHeight);
 	depthBufferTextureDesc.MipLevels = 1;
 	depthBufferTextureDesc.ArraySize = 1;
 	depthBufferTextureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
@@ -173,15 +173,15 @@ void Dx::Graphics::CreateWindowSizeDependentResources()
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	Device->CreateDepthStencilView(depthBufferTexture.get(), &depthStencilViewDesc, m_depthStencilView.put());
+	Device->CreateDepthStencilView(depthBufferTexture.get(), &depthStencilViewDesc, mDepthStencilView.put());
 
 #pragma endregion
 }
 
 void Dx::Graphics::OnMouseMove(CoreWindow sender, PointerEventArgs args)
 {
-	m_mouseX = 4 * (args.CurrentPoint().Position().X - m_width / 2) / m_width;
-	m_mouseY = 4 * (-args.CurrentPoint().Position().Y + m_height / 2) / m_height;
+	mMouseX = 4 * (args.CurrentPoint().Position().X - mWidth / 2) / mWidth;
+	mMouseY = 4 * (-args.CurrentPoint().Position().Y + mHeight / 2) / mHeight;
 }
 
 void Dx::Graphics::CreateInstance()
@@ -191,57 +191,57 @@ void Dx::Graphics::CreateInstance()
 
 void Dx::Graphics::SetWindow(winrt::Windows::UI::Core::CoreWindow const& window)
 {
-	m_window = window;
-	m_window.PointerMoved({ this, &Graphics::OnMouseMove });
+	mWindow = window;
+	mWindow.PointerMoved({ this, &Graphics::OnMouseMove });
 	Resize();
 }
 
 void Dx::Graphics::Resize()
 {
-	m_width = m_window.Bounds().Width;
-	m_height = m_window.Bounds().Height;
+	mWidth = mWindow.Bounds().Width;
+	mHeight = mWindow.Bounds().Height;
 	this->CreateWindowSizeDependentResources();
 }
 
 void Dx::Graphics::StartFrame(float color[4])
 {
-	ID3D11RenderTargetView* views[] = { m_renderTargetView.get() };
+	ID3D11RenderTargetView* views[] = { mRenderTargetView.get() };
 	Context->OMSetRenderTargets(
 		1,
 		views,
-		m_depthStencilView.get()
+		mDepthStencilView.get()
 	);
 
-	Context->ClearRenderTargetView(m_renderTargetView.get(), color);
-	Context->ClearDepthStencilView(m_depthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
+	Context->ClearRenderTargetView(mRenderTargetView.get(), color);
+	Context->ClearDepthStencilView(mDepthStencilView.get(), D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH, 1.f, 0);
 }
 
 float Dx::Graphics::Width()
 {
-	return m_width;
+	return mWidth;
 }
 
 float Dx::Graphics::Height()
 {
-	return m_height;
+	return mHeight;
 }
 
 float Dx::Graphics::MouseX()
 {
-	return m_mouseX;
+	return mMouseX;
 }
 
 float Dx::Graphics::MouseY()
 {
-	return m_mouseY;
+	return mMouseY;
 }
 
 void Dx::Graphics::Present()
 {
-	m_swapChain->Present(1, 0);
+	mSwapChain->Present(1, 0);
 }
 
 CoreWindow Dx::Graphics::Window()
 {
-	return m_window;
+	return mWindow;
 }

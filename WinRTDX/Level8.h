@@ -26,10 +26,10 @@ namespace Dx::Levels
 			return concurrency::create_task(
 				[this]()
 				{
-					m_vertexShaderWithNormal = VertexShader::Preload(VertexType::SimpleWithNormal, L"8_VertexWithNormal.cso");
-					m_vertexShaderWithColor = VertexShader::Preload(VertexType::ColoredWithNormal, L"8_VertexWithColor.cso");
-					m_pixelShaderWithNormal = PixelShader::Preload(VertexType::SimpleWithNormal, L"8_PixelWithNormal.cso");
-					m_pixelShaderWithColor = PixelShader::Preload(VertexType::ColoredWithNormal, L"8_PixelWithColor.cso");
+					mVertexShaderWithNormal = VertexShader::Preload(VertexType::SimpleWithNormal, L"8_VertexWithNormal.cso");
+					mVertexShaderWithColor = VertexShader::Preload(VertexType::ColoredWithNormal, L"8_VertexWithColor.cso");
+					mPixelShaderWithNormal = PixelShader::Preload(VertexType::SimpleWithNormal, L"8_PixelWithNormal.cso");
+					mPixelShaderWithColor = PixelShader::Preload(VertexType::ColoredWithNormal, L"8_PixelWithColor.cso");
 				}
 			);
 		}
@@ -38,22 +38,22 @@ namespace Dx::Levels
 		{
 			GenerateDrawables();
 
-			m_pixelPerLevelConstants.lightPosition				= { 0, 0, 0, 0 };
-			m_pixelPerLevelConstants.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
-			m_pixelPerLevelConstants.ambientLight				= { 0.1f, 0.01f, 0.01f, 0.2f };
-			m_pixelPerLevelConstants.diffuseIntensity			= 1.0f;
-			m_pixelPerLevelConstants.attenuationQuadratic	= 0.00001f;
-			m_pixelPerLevelConstants.attenuationLinear		= 0.01f;
-			m_pixelPerLevelConstants.attenuationConstant		= 0.f;
+			mPixelPerLevelConstants.lightPosition				= { 0, 0, 0, 0 };
+			mPixelPerLevelConstants.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
+			mPixelPerLevelConstants.ambientLight				= { 0.1f, 0.01f, 0.01f, 0.2f };
+			mPixelPerLevelConstants.diffuseIntensity			= 1.0f;
+			mPixelPerLevelConstants.attenuationQuadratic	= 0.00001f;
+			mPixelPerLevelConstants.attenuationLinear		= 0.01f;
+			mPixelPerLevelConstants.attenuationConstant		= 0.f;
 
-			m_pixelPerLevelConstantsBuffer	= PSConstantBuffer<PixelPerLevelConstants>::	Create(m_pixelPerLevelConstants, ResourceSlots::PerLevel);
-			m_pixelPerFrameConstantsBuffer	= PSConstantBuffer<PixelPerFrameConstants>::	Create(m_pixelPerFrameConstants, ResourceSlots::PerFrame);
-			m_vertexPerFrameConstantsBuffer	= VSConstantBuffer<VertexPerFrameConstants>::Create(m_vertexPerFrameConstants, ResourceSlots::PerFrame);
+			mPixelPerLevelConstantsBuffer	= PSConstantBuffer<PixelPerLevelConstants>::	Create(mPixelPerLevelConstants, ResourceSlots::PerLevel);
+			mPixelPerFrameConstantsBuffer	= PSConstantBuffer<PixelPerFrameConstants>::	Create(mPixelPerFrameConstants, ResourceSlots::PerFrame);
+			mVertexPerFrameConstantsBuffer	= VSConstantBuffer<VertexPerFrameConstants>::Create(mVertexPerFrameConstants, ResourceSlots::PerFrame);
 
-			m_pixelPerLevelConstantsBuffer->Attach();
-			m_pixelPerFrameConstantsBuffer->Attach();
-			m_vertexPerFrameConstantsBuffer->Attach();
-			m_mouseInput->RelativeTrackingEnter();
+			mPixelPerLevelConstantsBuffer->Attach();
+			mPixelPerFrameConstantsBuffer->Attach();
+			mVertexPerFrameConstantsBuffer->Attach();
+			mMouseInput->RelativeTrackingEnter();
 		}
 
 		void GenerateDrawables()
@@ -118,27 +118,27 @@ namespace Dx::Levels
 
 		void ProcessInput()
 		{
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Up) || mKeyboardInput->IsSet(Windows::System::VirtualKey::W))
 				mCamera.MoveForward(mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Down) || mKeyboardInput->IsSet(Windows::System::VirtualKey::S))
 				mCamera.MoveForward(-mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Left) || mKeyboardInput->IsSet(Windows::System::VirtualKey::A))
 				mCamera.Strafe(-mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Right) || mKeyboardInput->IsSet(Windows::System::VirtualKey::D))
 				mCamera.Strafe(mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
-				m_mouseInput->RelativeTrackingEnter();
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::X, true))
+				mMouseInput->RelativeTrackingEnter();
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
-				m_mouseInput->RelativeTrackingExit();
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
+				mMouseInput->RelativeTrackingExit();
 
 			mCamera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * mMouseSensitivity,
-				m_mouseInput->RelativeDeltaX() * mMouseSensitivity
+				-mMouseInput->RelativeDeltaY() * mMouseSensitivity,
+				mMouseInput->RelativeDeltaX() * mMouseSensitivity
 			);
 		}
 
@@ -146,14 +146,14 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
-			m_vertexPerFrameConstants.worldViewTransform =
+			mVertexPerFrameConstants.worldViewTransform =
 				mCamera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
 
-			m_pixelPerFrameConstants.cameraPosition = mCamera.Position();
+			mPixelPerFrameConstants.cameraPosition = mCamera.Position();
 
-			m_vertexPerFrameConstantsBuffer->Update(m_vertexPerFrameConstants);
-			m_pixelPerFrameConstantsBuffer->Update(m_pixelPerFrameConstants);
+			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
+			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
 
 			for (auto d : mDrawables)
 				d->Update(delta, XMMatrixIdentity());
@@ -192,19 +192,19 @@ namespace Dx::Levels
 
 		std::vector<std::shared_ptr<Dx::Drawables::Drawable>>			mDrawables;
 
-		std::shared_ptr<VertexShader>											m_vertexShaderWithColor;
-		std::shared_ptr<VertexShader>											m_vertexShaderWithNormal;
-		std::shared_ptr<PixelShader>											m_pixelShaderWithColor;
-		std::shared_ptr<PixelShader>											m_pixelShaderWithNormal;
+		std::shared_ptr<VertexShader>											mVertexShaderWithColor;
+		std::shared_ptr<VertexShader>											mVertexShaderWithNormal;
+		std::shared_ptr<PixelShader>											mPixelShaderWithColor;
+		std::shared_ptr<PixelShader>											mPixelShaderWithNormal;
 
-		PixelPerFrameConstants													m_pixelPerFrameConstants;
-		std::shared_ptr<PSConstantBuffer<PixelPerFrameConstants>>	m_pixelPerFrameConstantsBuffer;
+		PixelPerFrameConstants													mPixelPerFrameConstants;
+		std::shared_ptr<PSConstantBuffer<PixelPerFrameConstants>>	mPixelPerFrameConstantsBuffer;
 
-		VertexPerFrameConstants													m_vertexPerFrameConstants;
-		std::shared_ptr<VSConstantBuffer<VertexPerFrameConstants>>	m_vertexPerFrameConstantsBuffer;
+		VertexPerFrameConstants													mVertexPerFrameConstants;
+		std::shared_ptr<VSConstantBuffer<VertexPerFrameConstants>>	mVertexPerFrameConstantsBuffer;
 
-		PixelPerLevelConstants													m_pixelPerLevelConstants;
-		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	m_pixelPerLevelConstantsBuffer;
+		PixelPerLevelConstants													mPixelPerLevelConstants;
+		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	mPixelPerLevelConstantsBuffer;
 
 		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
 		float																			mCameraMovementSpeed = 1;

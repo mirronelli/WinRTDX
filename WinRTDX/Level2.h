@@ -36,11 +36,11 @@ namespace Dx::Levels
 
 		com_ptr<ID3D11Buffer>	mVertexBuffer;
 		com_ptr<ID3D11Buffer>	mIndexBuffer;
-		com_ptr<ID3D11Buffer>	m_constantBuffer;
+		com_ptr<ID3D11Buffer>	mConstantBuffer;
 
-		float							m_elapsedTime{ 0 };
-		float							m_effectDuration{ 5.f };
-		float							m_progress{ 0 };
+		float							mElapsedTime{ 0 };
+		float							mEffectDuration{ 5.f };
+		float							mProgress{ 0 };
 
 		struct ConstantBuffer {
 			DirectX::XMMATRIX matrix{ DirectX::XMMatrixRotationZ(0.f) };
@@ -52,6 +52,6 @@ namespace Dx::Levels
 				DirectX::XMFLOAT4(0.5f, 1.f, 1.f, 1.f),
 				DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
-		} m_constantData;
+		} mConstantData;
 	};
 }

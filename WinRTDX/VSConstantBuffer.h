@@ -16,8 +16,8 @@ namespace Dx::Attachables
 
 		VSConstantBuffer(T& constantData, UINT slot, bool fastMode)
 			: 
-			m_slot(slot),
-			m_fastMode(fastMode)
+			mSlot(slot),
+			mFastMode(fastMode)
 		{
 			D3D11_BUFFER_DESC	desc{ 0 };
 			desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
@@ -28,31 +28,31 @@ namespace Dx::Attachables
 			D3D11_SUBRESOURCE_DATA srd{ 0 };
 			srd.pSysMem = &constantData;
 
-			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
+			Graphics::Device->CreateBuffer(&desc, &srd, mBuffer.put());
 		}
 
 		void Attach()
 		{
-			ID3D11Buffer* VSConstantBuffers[1] = { m_buffer.get() };
-			Graphics::Context->VSSetConstantBuffers(m_slot, 1, VSConstantBuffers);
+			ID3D11Buffer* VSConstantBuffers[1] = { mBuffer.get() };
+			Graphics::Context->VSSetConstantBuffers(mSlot, 1, VSConstantBuffers);
 		}
 
 		void Update(T const& constantData)
 		{
-			if (m_fastMode)
+			if (mFastMode)
 			{
 				D3D11_MAPPED_SUBRESOURCE subresource;
-				Graphics::Context->Map(m_buffer.get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource);
+				Graphics::Context->Map(mBuffer.get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource);
 				memcpy(subresource.pData, &constantData, sizeof(constantData));
-				Graphics::Context->Unmap(m_buffer.get(), 0);
+				Graphics::Context->Unmap(mBuffer.get(), 0);
 			}
 			else
-				Graphics::Context->UpdateSubresource(m_buffer.get(), 0, 0, &constantData, 0, 0);
+				Graphics::Context->UpdateSubresource(mBuffer.get(), 0, 0, &constantData, 0, 0);
 		}
 
 	private:
-		com_ptr<ID3D11Buffer>	m_buffer;
-		UINT							m_slot;
-		bool							m_fastMode;
+		com_ptr<ID3D11Buffer>	mBuffer;
+		UINT							mSlot;
+		bool							mFastMode;
 	};
 }

@@ -6,38 +6,38 @@ namespace Dx
 	class KeyboardInput
 	{
 	public:
-		KeyboardInput(CoreWindow window) : m_window(window)
+		KeyboardInput(CoreWindow window) : mWindow(window)
 		{
-			m_window.KeyUp({ this, &KeyboardInput::KeyUp });
-			m_window.KeyDown({ this, &KeyboardInput::KeyDown });
+			mWindow.KeyUp({ this, &KeyboardInput::KeyUp });
+			mWindow.KeyDown({ this, &KeyboardInput::KeyDown });
 		}
 
 		bool IsSet(Windows::System::VirtualKey key, bool autoReset = false)
 		{
-			bool result = m_keyStates[key];
+			bool result = mKeyStates[key];
 			if (result && autoReset)
-				m_keyStates[key] = false;
+				mKeyStates[key] = false;
 
 			return result;
 		}
 
 		void Reset(Windows::System::VirtualKey key)
 		{
-			m_keyStates[key] = false;
+			mKeyStates[key] = false;
 		}
 
 	private:
 		void KeyUp(CoreWindow window, KeyEventArgs args)
 		{
-			m_keyStates[args.VirtualKey()] = false;
+			mKeyStates[args.VirtualKey()] = false;
 		}
 
 		void KeyDown(CoreWindow window, KeyEventArgs args)
 		{
-			m_keyStates[args.VirtualKey()] = true;
+			mKeyStates[args.VirtualKey()] = true;
 		}
 
-		CoreWindow												m_window;
-		std::map<Windows::System::VirtualKey, bool>	m_keyStates;
+		CoreWindow												mWindow;
+		std::map<Windows::System::VirtualKey, bool>	mKeyStates;
 	};
 }

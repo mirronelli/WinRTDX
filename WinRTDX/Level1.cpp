@@ -72,7 +72,7 @@ void Dx::Levels::Level1::SetupModel()
 
 void Dx::Levels::Level1::Render()
 {
-	float color[4]{ m_red * c_maxColorIntensity, m_green * c_maxColorIntensity, m_blue * c_maxColorIntensity, .0 };
+	float color[4]{ mRed * c_maxColorIntensity, mGreen * c_maxColorIntensity, mBlue * c_maxColorIntensity, .0 };
 	Graphics::Instance->StartFrame(color);
 
 	UINT strideVertices = sizeof(VertexSimple);
@@ -86,46 +86,46 @@ void Dx::Levels::Level1::Render()
 
 void Dx::Levels::Level1::Update(float delta)
 {
-	m_elapsedTime += delta;
-	if (m_elapsedTime > m_effectDuration)
-		m_elapsedTime -= m_effectDuration;
+	mElapsedTime += delta;
+	if (mElapsedTime > mEffectDuration)
+		mElapsedTime -= mEffectDuration;
 
-	float progress = m_elapsedTime / m_effectDuration;
+	float progress = mElapsedTime / mEffectDuration;
 
 	if (progress < c_oneSixth)														//phase 1	
 	{
-		m_red = progress * 6;															// red up	
-		m_green = 0;																		// green zero
-		m_blue = 1.0;																		// blue 1
+		mRed = progress * 6;															// red up	
+		mGreen = 0;																		// green zero
+		mBlue = 1.0;																		// blue 1
 	}
 	else if (progress < c_twoSixths)												//phase 2
 	{
-		m_red = 1.0f;																		// red 1
-		m_green = 0;																		// green zero
-		m_blue = 1.0f - (progress-c_oneSixth) * 6;								// blue down
+		mRed = 1.0f;																		// red 1
+		mGreen = 0;																		// green zero
+		mBlue = 1.0f - (progress-c_oneSixth) * 6;								// blue down
 	}
 	else if (progress < c_threeSixths)											//phase 3
 	{
-		m_red = 1.0;																		// red 1	
-		m_green = (progress - c_twoSixths) * 6;									// green up
-		m_blue = 0;																			// blue 0
+		mRed = 1.0;																		// red 1	
+		mGreen = (progress - c_twoSixths) * 6;									// green up
+		mBlue = 0;																			// blue 0
 	}
 	else if (progress < c_fourSixths)											// phase 4
 	{
-		m_red = 1.0f - (progress - c_threeSixths) * 6;							// red down
-		m_green = 1.0;																		// green 1
-		m_blue = 0;																			// blue 0
+		mRed = 1.0f - (progress - c_threeSixths) * 6;							// red down
+		mGreen = 1.0;																		// green 1
+		mBlue = 0;																			// blue 0
 	}
 	else if (progress < c_fiveSixths)											// phase 5
 	{
-		m_red = 0;																			// red 0
-		m_green = 1;																		// green 1
-		m_blue = (progress - c_fourSixths) * 6;									// blue up
+		mRed = 0;																			// red 0
+		mGreen = 1;																		// green 1
+		mBlue = (progress - c_fourSixths) * 6;									// blue up
 	}
 	else																					// phase 6
 	{
-		m_red = 0;																			// red 0
-		m_green = 1.0f -(progress - c_fiveSixths) * 6;							// green down
-		m_blue = 1;																			// blue up
+		mRed = 0;																			// red 0
+		mGreen = 1.0f -(progress - c_fiveSixths) * 6;							// green down
+		mBlue = 1;																			// blue up
 	}
 }

@@ -24,25 +24,25 @@ namespace Dx::Attachables
 		VertexShader(Dx::Drawables::VertexType key, std::wstring filename)
 			: mKey(key)
 		{
-			m_rawDataBuffer = IO::ReadFile(filename);
+			mRawDataBuffer = IO::ReadFile(filename);
 
 			com_ptr<ID3D11VertexShader> shader;
 			Graphics::Device->CreateVertexShader(
-				m_rawDataBuffer.data(),
-				m_rawDataBuffer.Length(),
+				mRawDataBuffer.data(),
+				mRawDataBuffer.Length(),
 				nullptr,
-				m_compiledShader.put()
+				mCompiledShader.put()
 			);
 		}
 
 		uint8_t* Data()
 		{
-			return m_rawDataBuffer.data();
+			return mRawDataBuffer.data();
 		}
 
 		uint32_t Length()
 		{
-			return m_rawDataBuffer.Length();
+			return mRawDataBuffer.Length();
 		}
 
 		void Attach()
@@ -50,13 +50,13 @@ namespace Dx::Attachables
 			if (mKey != mCurrentVertexShader)
 			{
 				mCurrentVertexShader = mKey;
-				Graphics::Context->VSSetShader(m_compiledShader.get(), nullptr, 0);
+				Graphics::Context->VSSetShader(mCompiledShader.get(), nullptr, 0);
 			}
 		}
 
 	private:
-		IBuffer								m_rawDataBuffer;
-		com_ptr<ID3D11VertexShader>	m_compiledShader;
+		IBuffer								mRawDataBuffer;
+		com_ptr<ID3D11VertexShader>	mCompiledShader;
 
 		Dx::Drawables::VertexType mKey;
 		inline static std::map < Dx::Drawables::VertexType, std::shared_ptr<VertexShader>> mMap;

@@ -74,35 +74,35 @@ namespace Dx::Levels
 				d->RegisterResources();
 			}
 
-			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel);
-			m_worldViewTransformConstantBuffer->Attach();
-			m_worldRotationSpeedY = 0.f;
+			mWorldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(mWorldViewTransform, ResourceSlots::PerLevel);
+			mWorldViewTransformConstantBuffer->Attach();
+			mWorldRotationSpeedY = 0.f;
 		}
 
 		void ProcessInput()
 		{
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Up) || mKeyboardInput->IsSet(Windows::System::VirtualKey::W))
 				mCamera.MoveForward(mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Down) || mKeyboardInput->IsSet(Windows::System::VirtualKey::S))
 				mCamera.MoveForward(-mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Left) || mKeyboardInput->IsSet(Windows::System::VirtualKey::A))
 				mCamera.Strafe(-mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Right) || mKeyboardInput->IsSet(Windows::System::VirtualKey::D))
 				mCamera.Strafe(mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
-				m_mouseInput->RelativeTrackingEnter();
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::X, true))
+				mMouseInput->RelativeTrackingEnter();
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
-				m_mouseInput->RelativeTrackingExit();
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
+				mMouseInput->RelativeTrackingExit();
 
 			//m_camera.Rotate(0, 0.01, 0);
 			mCamera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * mMouseSensitivity,
-				m_mouseInput->RelativeDeltaX() * mMouseSensitivity
+				-mMouseInput->RelativeDeltaY() * mMouseSensitivity,
+				mMouseInput->RelativeDeltaX() * mMouseSensitivity
 			);
 		}
 
@@ -110,23 +110,23 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
-			m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
-			m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
-			m_worldRotationZ = fmod(m_worldRotationZ + delta * m_worldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
+			mWorldRotationX = fmod(mWorldRotationX + delta * mWorldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
+			mWorldRotationY = fmod(mWorldRotationY + delta * mWorldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
+			mWorldRotationZ = fmod(mWorldRotationZ + delta * mWorldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
 
-			m_worldViewTransform = DirectX::XMMatrixIdentity();
-			if (m_worldRotationZ != 0)
-				m_worldViewTransform *= DirectX::XMMatrixRotationZ(m_worldRotationZ);
+			mWorldViewTransform = DirectX::XMMatrixIdentity();
+			if (mWorldRotationZ != 0)
+				mWorldViewTransform *= DirectX::XMMatrixRotationZ(mWorldRotationZ);
 
-			if (m_worldRotationX != 0)
-				m_worldViewTransform *= DirectX::XMMatrixRotationX(m_worldRotationX);
+			if (mWorldRotationX != 0)
+				mWorldViewTransform *= DirectX::XMMatrixRotationX(mWorldRotationX);
 
-			if (m_worldRotationY != 0)
-				m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
+			if (mWorldRotationY != 0)
+				mWorldViewTransform *= DirectX::XMMatrixRotationY(mWorldRotationY);
 
-			m_worldViewTransform *= mCamera.GetMatrix();
-			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, Dx::Graphics::Instance->Width() / Dx::Graphics::Instance->Height(), .1f, 1000.0f);
-			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
+			mWorldViewTransform *= mCamera.GetMatrix();
+			mWorldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, Dx::Graphics::Instance->Width() / Dx::Graphics::Instance->Height(), .1f, 1000.0f);
+			mWorldViewTransformConstantBuffer->Update(mWorldViewTransform);
 
 			for (auto d : mDrawables)
 				d->Update(delta, XMMatrixIdentity());
@@ -143,26 +143,26 @@ namespace Dx::Levels
 
 	private:
 		std::vector<std::shared_ptr<Drawable>>								mDrawables;
-		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
-		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
+		std::shared_ptr<VertexShader>											mVertexShaderSimple;
+		std::shared_ptr<PixelShader>											mPixelShaderSimple;
 		std::shared_ptr<VertexShader>											mVertexShaderTextured;
 		std::shared_ptr<PixelShader>											mPixelShaderTextured;
 		std::shared_ptr<Texture>												mTexture;
 
-		float																			m_worldRotationX{ 0 };
-		float																			m_worldRotationY{ 0 };
-		float																			m_worldRotationZ{ 0 };
+		float																			mWorldRotationX{ 0 };
+		float																			mWorldRotationY{ 0 };
+		float																			mWorldRotationZ{ 0 };
 
-		float																			m_worldRotationSpeedX{ 0 };
-		float																			m_worldRotationSpeedY{ 0 };
-		float																			m_worldRotationSpeedZ{ 0 };
+		float																			mWorldRotationSpeedX{ 0 };
+		float																			mWorldRotationSpeedY{ 0 };
+		float																			mWorldRotationSpeedZ{ 0 };
 
-		DirectX::XMMATRIX															m_worldViewTransform{};
-		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
+		DirectX::XMMATRIX															mWorldViewTransform{};
+		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			mWorldViewTransformConstantBuffer;
 		Camera																		mCamera;
 
 		float																			mCameraMovementSpeed = 1;
-		float																			m_cameraRotationSpeed = .03f;
+		float																			mCameraRotationSpeed = .03f;
 		float																			mMouseSensitivity = .0006f;
 	};
 }

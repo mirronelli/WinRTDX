@@ -8,8 +8,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShaderSimple = VertexShader::Preload(VertexType::Simple, L"VertexShader4.cso");
-			m_pixelShaderSimple = PixelShader::Preload(VertexType::Simple, L"PixelShader4.cso");
+			mVertexShaderSimple = VertexShader::Preload(VertexType::Simple, L"VertexShader4.cso");
+			mPixelShaderSimple = PixelShader::Preload(VertexType::Simple, L"PixelShader4.cso");
 		}
 	);
 }
@@ -26,7 +26,7 @@ void Dx::Levels::Level4::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		auto cube = std::make_unique<Cube>(m_vertexShaderSimple, m_pixelShaderSimple);
+		auto cube = std::make_unique<Cube>(mVertexShaderSimple, mPixelShaderSimple);
 
 		cube->X(location(generator));
 		cube->Y(location(generator));
@@ -56,30 +56,30 @@ void Dx::Levels::Level4::SetupModel()
 		d->RegisterResources();
 	}
 
-	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel, false);
-	m_worldViewTransformConstantBuffer->Attach();
+	mWorldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(mWorldViewTransform, ResourceSlots::PerLevel, false);
+	mWorldViewTransformConstantBuffer->Attach();
 
-	m_worldRotationSpeedY = 0.01f;
+	mWorldRotationSpeedY = 0.01f;
 }
 
 void Dx::Levels::Level4::Update(float delta)
 {
-	m_worldRotationX = fmod(m_worldRotationX + delta * m_worldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
-	m_worldRotationY = fmod(m_worldRotationY + delta * m_worldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
-	m_worldRotationZ = fmod(m_worldRotationZ + delta * m_worldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
+	mWorldRotationX = fmod(mWorldRotationX + delta * mWorldRotationSpeedX * DirectX::XM_2PI, DirectX::XM_2PI);
+	mWorldRotationY = fmod(mWorldRotationY + delta * mWorldRotationSpeedY * DirectX::XM_2PI, DirectX::XM_2PI);
+	mWorldRotationZ = fmod(mWorldRotationZ + delta * mWorldRotationSpeedZ * DirectX::XM_2PI, DirectX::XM_2PI);
 
-	m_worldViewTransform = DirectX::XMMatrixIdentity();
-	if (m_worldRotationZ != 0)
-		m_worldViewTransform *= DirectX::XMMatrixRotationZ(m_worldRotationZ);
+	mWorldViewTransform = DirectX::XMMatrixIdentity();
+	if (mWorldRotationZ != 0)
+		mWorldViewTransform *= DirectX::XMMatrixRotationZ(mWorldRotationZ);
 
-	if (m_worldRotationX != 0)
-		m_worldViewTransform *= DirectX::XMMatrixRotationX(m_worldRotationX);
+	if (mWorldRotationX != 0)
+		mWorldViewTransform *= DirectX::XMMatrixRotationX(mWorldRotationX);
 
-	if (m_worldRotationY != 0)
-		m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
+	if (mWorldRotationY != 0)
+		mWorldViewTransform *= DirectX::XMMatrixRotationY(mWorldRotationY);
 
-	m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, Graphics::Instance->Width() / Graphics::Instance->Height(), 1.f, 100.0f);
-	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
+	mWorldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, Graphics::Instance->Width() / Graphics::Instance->Height(), 1.f, 100.0f);
+	mWorldViewTransformConstantBuffer->Update(mWorldViewTransform);
 
 
 	for (auto d : mDrawables)

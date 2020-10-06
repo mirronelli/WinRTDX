@@ -38,17 +38,17 @@ namespace Dx
 
 
 		// Direct3D objects.
-		com_ptr<IDXGIFactory7>						m_factory;
-		com_ptr<IDXGISwapChain4>					m_swapChain;
-		com_ptr<ID3D11RenderTargetView>			m_renderTargetView;
-		com_ptr<ID3D11DepthStencilView>			m_depthStencilView;
+		com_ptr<IDXGIFactory7>						mFactory;
+		com_ptr<IDXGISwapChain4>					mSwapChain;
+		com_ptr<ID3D11RenderTargetView>			mRenderTargetView;
+		com_ptr<ID3D11DepthStencilView>			mDepthStencilView;
 
 		// Windows objects
-		CoreWindow										m_window{ nullptr };
-		float												m_width;
-		float												m_height;
-		float												m_dpi = 1;
-		float												m_mouseX{ 0 };
-		float												m_mouseY{ 0 };
+		CoreWindow										mWindow{ nullptr };
+		float												mWidth;
+		float												mHeight;
+		float												mDpi = 1;
+		float												mMouseX{ 0 };
+		float												mMouseY{ 0 };
 	};
 }

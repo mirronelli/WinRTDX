@@ -29,9 +29,9 @@ namespace Dx::Levels
 		std::shared_ptr<Dx::Attachables::VertexShader>		mVertexShader;
 		std::shared_ptr<Dx::Attachables::PixelShader>		mPixelShader;
 
-		float							m_red{ 0 }, m_green{ 0 }, m_blue{ 0 };
-		float							m_elapsedTime{ 0 };
-		float							m_effectDuration{ 10.0f };
+		float							mRed{ 0 }, mGreen{ 0 }, mBlue{ 0 };
+		float							mElapsedTime{ 0 };
+		float							mEffectDuration{ 10.0f };
 
 		const float					c_oneSixth{ 1.0f / 6.0f };
 		const float					c_twoSixths{ 2.0f / 6.0f };

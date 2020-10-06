@@ -21,21 +21,21 @@ namespace Dx::Levels
 
 	private:
 		std::vector<std::shared_ptr<Drawable>>								mDrawables;
-		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
-		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
+		std::shared_ptr<VertexShader>											mVertexShaderSimple;
+		std::shared_ptr<PixelShader>											mPixelShaderSimple;
 		std::shared_ptr<VertexShader>											mVertexShaderTextured;
 		std::shared_ptr<PixelShader>											mPixelShaderTextured;
 		std::shared_ptr<Texture>												mTexture;
 
-		float																			m_worldRotationX{ 0 };
-		float																			m_worldRotationY{ 0 };
-		float																			m_worldRotationZ{ 0 };
+		float																			mWorldRotationX{ 0 };
+		float																			mWorldRotationY{ 0 };
+		float																			mWorldRotationZ{ 0 };
 
-		float																			m_worldRotationSpeedX{ 0 };
-		float																			m_worldRotationSpeedY{ 0 };
-		float																			m_worldRotationSpeedZ{ 0 };
+		float																			mWorldRotationSpeedX{ 0 };
+		float																			mWorldRotationSpeedY{ 0 };
+		float																			mWorldRotationSpeedZ{ 0 };
 
-		DirectX::XMMATRIX															m_worldViewTransform{};
-		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
+		DirectX::XMMATRIX															mWorldViewTransform{};
+		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			mWorldViewTransformConstantBuffer;
 	};
 }

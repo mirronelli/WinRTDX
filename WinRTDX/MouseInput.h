@@ -6,44 +6,44 @@ namespace Dx
 	class MouseInput
 	{
 	public:
-		MouseInput(CoreWindow window) : m_window(window), m_mouse(Windows::Devices::Input::MouseDevice::GetForCurrentView())
+		MouseInput(CoreWindow window) : mWindow(window), mMouse(Windows::Devices::Input::MouseDevice::GetForCurrentView())
 		{
-			m_window.PointerPressed({ this, &MouseInput::OnPointerPressed });
-			m_window.PointerReleased({ this, &MouseInput::OnPointerPressed });
-			m_window.PointerMoved({ this, &MouseInput::OnStandardMouseMoved });
-			m_mouse.MouseMoved({ this, &MouseInput::OnRelativeMouseMoved });
+			mWindow.PointerPressed({ this, &MouseInput::OnPointerPressed });
+			mWindow.PointerReleased({ this, &MouseInput::OnPointerPressed });
+			mWindow.PointerMoved({ this, &MouseInput::OnStandardMouseMoved });
+			mMouse.MouseMoved({ this, &MouseInput::OnRelativeMouseMoved });
 		}
 
 		void RelativeTrackingEnter()
 		{
-			if (!m_inRelativeTracking)
+			if (!mInRelativeTracking)
 			{
-				m_inRelativeTracking = true;
-				m_originalCursor = m_window.PointerCursor();
-				m_window.PointerCursor(nullptr);
+				mInRelativeTracking = true;
+				mOriginalCursor = mWindow.PointerCursor();
+				mWindow.PointerCursor(nullptr);
 			}
 		}
 
 		void RelativeTrackingExit()
 		{
-			if (m_inRelativeTracking)
+			if (mInRelativeTracking)
 			{
-				m_inRelativeTracking = false;
-				m_window.PointerCursor(m_originalCursor);
+				mInRelativeTracking = false;
+				mWindow.PointerCursor(mOriginalCursor);
 			}
 		}
 
 		float RelativeDeltaX()
 		{
-			float result = m_inRelativeTracking ? m_deltaX : 0;
-			m_deltaX = 0;
+			float result = mInRelativeTracking ? mDeltaX : 0;
+			mDeltaX = 0;
 			return result;
 		}
 
 		float RelativeDeltaY()
 		{
-			float result = m_inRelativeTracking ? m_deltaY : 0;
-			m_deltaY = 0;
+			float result = mInRelativeTracking ? mDeltaY : 0;
+			mDeltaY = 0;
 			return result;
 		}
 
@@ -60,28 +60,28 @@ namespace Dx
 
 		void OnRelativeMouseMoved(Windows::Devices::Input::MouseDevice mouse, Windows::Devices::Input::MouseEventArgs args)
 		{
-			if (m_inRelativeTracking)
+			if (mInRelativeTracking)
 			{
-				m_deltaX += args.MouseDelta().X;
-				m_deltaY += args.MouseDelta().Y;
+				mDeltaX += args.MouseDelta().X;
+				mDeltaY += args.MouseDelta().Y;
 			}
 		}
 
 		void OnStandardMouseMoved(CoreWindow window, PointerEventArgs args)
 		{
-			if (!m_inRelativeTracking)
+			if (!mInRelativeTracking)
 			{
-				m_pointerX = args.CurrentPoint().Position().X;
-				m_pointerY = args.CurrentPoint().Position().Y;
+				mPointerX = args.CurrentPoint().Position().X;
+				mPointerY = args.CurrentPoint().Position().Y;
 			}
 		}
-		CoreCursor										m_originalCursor{ nullptr };
-		CoreWindow										m_window;
-		Windows::Devices::Input::MouseDevice	m_mouse;
-		bool												m_inRelativeTracking = false;
-		float												m_pointerX = 0;
-		float												m_pointerY = 0;
-		float												m_deltaX = 0;
-		float												m_deltaY = 0;
+		CoreCursor										mOriginalCursor{ nullptr };
+		CoreWindow										mWindow;
+		Windows::Devices::Input::MouseDevice	mMouse;
+		bool												mInRelativeTracking = false;
+		float												mPointerX = 0;
+		float												mPointerY = 0;
+		float												mDeltaX = 0;
+		float												mDeltaY = 0;
 	};
 }

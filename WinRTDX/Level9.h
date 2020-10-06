@@ -81,7 +81,7 @@ namespace Dx::Levels
 
 			//mRootScene.RotationSpeedY(.05f);
 
-			m_mouseInput->RelativeTrackingEnter();
+			mMouseInput->RelativeTrackingEnter();
 		}
 
 		void AddSun()
@@ -124,27 +124,27 @@ namespace Dx::Levels
 
 		void ProcessInput()
 		{
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Up) || mKeyboardInput->IsSet(Windows::System::VirtualKey::W))
 				mCamera.MoveForward(mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Down) || mKeyboardInput->IsSet(Windows::System::VirtualKey::S))
 				mCamera.MoveForward(-mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Left) || mKeyboardInput->IsSet(Windows::System::VirtualKey::A))
 				mCamera.Strafe(-mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Right) || mKeyboardInput->IsSet(Windows::System::VirtualKey::D))
 				mCamera.Strafe(mCameraMovementSpeed);
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
-				m_mouseInput->RelativeTrackingEnter();
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::X, true))
+				mMouseInput->RelativeTrackingEnter();
 
-			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
-				m_mouseInput->RelativeTrackingExit();
+			if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
+				mMouseInput->RelativeTrackingExit();
 
 			mCamera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * mMouseSensitivity,
-				m_mouseInput->RelativeDeltaX() * mMouseSensitivity
+				-mMouseInput->RelativeDeltaY() * mMouseSensitivity,
+				mMouseInput->RelativeDeltaX() * mMouseSensitivity
 			);
 		}
 

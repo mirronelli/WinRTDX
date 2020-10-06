@@ -22,19 +22,19 @@ private:
 	void Render();
 	void Present();
 
-	std::unique_ptr<Dx::Levels::ILevel>				m_level{ nullptr };
-	CoreWindow												m_window{ nullptr };
-	bool														m_isClosing = false;
-	Dx::StepTimer											m_timer;
-	ULONG64													m_frame = 0;
+	std::unique_ptr<Dx::Levels::ILevel>				mLevel{ nullptr };
+	CoreWindow												mWindow{ nullptr };
+	bool														mIsClosing = false;
+	Dx::StepTimer											mTimer;
+	ULONG64													mFrame = 0;
 
-	byte														m_maxLevel = 9;
-	byte														m_currentLevel = 7;
-	//byte														m_currentLevel = m_maxLevel;
-	bool														m_stop = false;
+	byte														mMaxLevel = 9;
+	byte														mCurrentLevel = 7;
+	//byte														mCurrentLevel = mMaxLevel;
+	bool														mStop = false;
 
-	std::shared_ptr<Dx::KeyboardInput>				m_keyboardInput{ nullptr };
-	std::shared_ptr<Dx::MouseInput>					m_mouseInput{ nullptr };
+	std::shared_ptr<Dx::KeyboardInput>				mKeyboardInput{ nullptr };
+	std::shared_ptr<Dx::MouseInput>					mMouseInput{ nullptr };
 
 };
 

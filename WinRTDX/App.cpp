@@ -26,28 +26,28 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
 	void SetWindow(CoreWindow const& window)
 	{
-		m_window = window;
-		m_window.Closed({ this, &App::OnWindowClosed });
-		m_window.SizeChanged({ this, &App::OnWindowSizeChanged });
+		mWindow = window;
+		mWindow.Closed({ this, &App::OnWindowClosed });
+		mWindow.SizeChanged({ this, &App::OnWindowSizeChanged });
 	}
 
 	void Load(hstring const&)
 	{
-		if (!m_game)
+		if (!mGame)
 		{
-			m_game = std::make_unique<Game>(m_window);
-			m_game->Init();
+			mGame = std::make_unique<Game>(mWindow);
+			mGame->Init();
 		}
 	}
 
 	void Uninitialize()
 	{
-		m_game->Close();
+		mGame->Close();
 	}
 
 	void Run()
 	{
-		m_game->Run();
+		mGame->Run();
 	}
 
 #pragma region Events
@@ -60,25 +60,25 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
 	void OnWindowClosed(CoreWindow const& /* sender */, CoreWindowEventArgs const& /* args */)
 	{
-		m_game->Close();
+		mGame->Close();
 	}
 	
 	void OnWindowSizeChanged(CoreWindow const& /* window */, WindowSizeChangedEventArgs const& /* args */)
 	{
-		m_game->Resize();
+		mGame->Resize();
 	}
 
 	void OnDpiChanged(DisplayInformation const& /* sender */, IInspectable const& /* args */)
 	{
-		m_game->Resize();
+		mGame->Resize();
 	}
 
 	
 #pragma endregion
 
 private:
-	std::unique_ptr<Game>	m_game;
-	CoreWindow					m_window{ nullptr };
+	std::unique_ptr<Game>	mGame;
+	CoreWindow					mWindow{ nullptr };
 };
 
 int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)

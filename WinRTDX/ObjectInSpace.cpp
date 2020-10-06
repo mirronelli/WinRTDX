@@ -60,7 +60,6 @@ namespace Dx::Drawables
 	void ObjectInSpace::Transform(CXMMATRIX transform)
 	{
 		XMVECTOR translationVector;
-		XMVECTOR rotationVector;
 		XMVECTOR scaleVector;
 		
 		XMFLOAT3 translation;

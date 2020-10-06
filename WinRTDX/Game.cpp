@@ -13,16 +13,16 @@
 #include "Level9.h"
 
 Game::Game(CoreWindow const& window) :
-	m_window(window)
+	mWindow(window)
 {
 }
 
 void Game::Init()
 {
 	Dx::Graphics::CreateInstance();
-	Dx::Graphics::Instance->SetWindow(m_window);
-	m_keyboardInput = std::make_shared<Dx::KeyboardInput>(m_window);
-	m_mouseInput = std::make_shared<Dx::MouseInput>(m_window);
+	Dx::Graphics::Instance->SetWindow(mWindow);
+	mKeyboardInput = std::make_shared<Dx::KeyboardInput>(mWindow);
+	mMouseInput = std::make_shared<Dx::MouseInput>(mWindow);
 }
 
 void Game::LoadLevel(byte name)
@@ -31,54 +31,54 @@ void Game::LoadLevel(byte name)
 	//name = 4;
 	switch (name) {
 	case 1:
-		m_level = std::make_unique<Dx::Levels::Level1>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level1>(mKeyboardInput, mMouseInput);
 		break;
 	case 2:
-		m_level = std::make_unique<Dx::Levels::Level2>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level2>(mKeyboardInput, mMouseInput);
 		break;
 	case 3:
-		m_level = std::make_unique<Dx::Levels::Level3>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level3>(mKeyboardInput, mMouseInput);
 		break;
 	case 4:
-		m_level = std::make_unique<Dx::Levels::Level4>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level4>(mKeyboardInput, mMouseInput);
 		break;
 	case 5:
-		m_level = std::make_unique<Dx::Levels::Level5>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level5>(mKeyboardInput, mMouseInput);
 		break;
 	case 6:
-		m_level = std::make_unique<Dx::Levels::Level6>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level6>(mKeyboardInput, mMouseInput);
 		break;
 	case 7:
-		m_level = std::make_unique<Dx::Levels::Level7>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level7>(mKeyboardInput, mMouseInput);
 		break;
 	case 8:
-		m_level = std::make_unique<Dx::Levels::Level8>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level8>(mKeyboardInput, mMouseInput);
 		break;
 	case 9:
-		m_level = std::make_unique<Dx::Levels::Level9>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level9>(mKeyboardInput, mMouseInput);
 		break;
 	default:
-		m_level = std::make_unique<Dx::Levels::Level9>(m_keyboardInput, m_mouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level9>(mKeyboardInput, mMouseInput);
 		break;
 	}
 
-	concurrency::task<void> loading = m_level->Load();
+	concurrency::task<void> loading = mLevel->Load();
 	while (!loading.is_done()) {
 		ProcessEvents();
 	}
 
-	m_level->SetupModel();
+	mLevel->SetupModel();
 }
 
 void Game::Run()
 {
 	byte level = 0;
 
-	while (!m_isClosing)
+	while (!mIsClosing)
 	{
-		if (level != m_currentLevel)
+		if (level != mCurrentLevel)
 		{
-			level = m_currentLevel;
+			level = mCurrentLevel;
 			LoadLevel(level);
 		}
 
@@ -92,50 +92,50 @@ void Game::Run()
 
 void Game::ProcessKeyboard()
 {
-	if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Space, true))
+	if (mKeyboardInput->IsSet(Windows::System::VirtualKey::Space, true))
 	{
-		m_currentLevel++;
-		if (m_currentLevel > m_maxLevel)
-			m_currentLevel = 1;
-		m_stop = false;
+		mCurrentLevel++;
+		if (mCurrentLevel > mMaxLevel)
+			mCurrentLevel = 1;
+		mStop = false;
 	}
 
-	if (m_keyboardInput->IsSet(Windows::System::VirtualKey::P, true))
+	if (mKeyboardInput->IsSet(Windows::System::VirtualKey::P, true))
 	{
-		m_stop = !m_stop;
+		mStop = !mStop;
 	}
 }
 
 void Game::ProcessEvents()
 {
-	m_window.Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
+	mWindow.Dispatcher().ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
 }
 
 void Game::Update(Dx::StepTimer const& timer)
 {
 	float delta = float(timer.GetElapsedSeconds());
 
-	m_level->Update(delta);
+	mLevel->Update(delta);
 
 	std::wostringstream debug;
-	debug << "Frame: " << m_frame << " Delta: " << delta << " FPS: " << m_timer.GetFramesPerSecond() << "\n";
+	debug << "Frame: " << mFrame << " Delta: " << delta << " FPS: " << mTimer.GetFramesPerSecond() << "\n";
 	OutputDebugString(debug.str().c_str());
 }
 
 void Game::Tick()
 {
-	m_timer.Tick([&]()
+	mTimer.Tick([&]()
 		{
-			if (!m_stop)
-				Update(m_timer);
+			if (!mStop)
+				Update(mTimer);
 		}
 	);
-	m_frame++;
+	mFrame++;
 }
 
 void Game::Render()
 {
-	m_level->Render();
+	mLevel->Render();
 }
 
 void Game::Present()
@@ -145,7 +145,7 @@ void Game::Present()
 
 void Game::Close()
 {
-	m_isClosing = true;
+	mIsClosing = true;
 }
 
 void Game::Resize()

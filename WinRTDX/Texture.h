@@ -25,10 +25,10 @@ namespace Dx::Attachables
 		Texture(std::string key, std::wstring filename, UINT slot = 0)
 			: 
 			mKey(key),
-			m_slot(slot)
+			mSlot(slot)
 		{
-			m_rawDataBuffer = IO::ReadFile(filename);
-			DirectX::DDS_IMAGE* textureStruct = (DirectX::DDS_IMAGE*)m_rawDataBuffer.data();
+			mRawDataBuffer = IO::ReadFile(filename);
+			DirectX::DDS_IMAGE* textureStruct = (DirectX::DDS_IMAGE*)mRawDataBuffer.data();
 
 
 			// Texture
@@ -56,7 +56,7 @@ namespace Dx::Attachables
 			viewDesc.Texture2D.MipLevels = desc.MipLevels;
 			viewDesc.Texture2D.MostDetailedMip = 0;
 
-			Graphics::Device->CreateShaderResourceView(mTexture.get(), &viewDesc, m_textureView.put());
+			Graphics::Device->CreateShaderResourceView(mTexture.get(), &viewDesc, mTextureView.put());
 
 			// Sampler
 			D3D11_SAMPLER_DESC samplerDesc = {};
@@ -73,7 +73,7 @@ namespace Dx::Attachables
 			samplerDesc.BorderColor[2] = 0.0f;
 			samplerDesc.BorderColor[3] = 0.0f;
 
-			Graphics::Device->CreateSamplerState(&samplerDesc, m_sampler.put());
+			Graphics::Device->CreateSamplerState(&samplerDesc, mSampler.put());
 		}
 
 		void Attach()
@@ -81,20 +81,20 @@ namespace Dx::Attachables
 			if (mKey != mCurrentTexture)
 			{
 				mCurrentTexture = mKey;
-				ID3D11ShaderResourceView* textureViews[1] = { m_textureView.get() };
-				Graphics::Context->PSSetShaderResources(m_slot, 1, textureViews);
+				ID3D11ShaderResourceView* textureViews[1] = { mTextureView.get() };
+				Graphics::Context->PSSetShaderResources(mSlot, 1, textureViews);
 
-				ID3D11SamplerState* samplers[1] = { m_sampler.get() };
-				Graphics::Context->PSSetSamplers(m_slot, 1, samplers);
+				ID3D11SamplerState* samplers[1] = { mSampler.get() };
+				Graphics::Context->PSSetSamplers(mSlot, 1, samplers);
 			}
 		}
 
 	private:
-		IBuffer											m_rawDataBuffer;
+		IBuffer											mRawDataBuffer;
 		com_ptr<ID3D11Texture2D>					mTexture;
-		com_ptr<ID3D11ShaderResourceView>		m_textureView;
-		com_ptr<ID3D11SamplerState>				m_sampler;
-		UINT												m_slot;
+		com_ptr<ID3D11ShaderResourceView>		mTextureView;
+		com_ptr<ID3D11SamplerState>				mSampler;
+		UINT												mSlot;
 
 		std::string mKey;
 		inline static std::map < std::string, std::shared_ptr<Texture>> mMap;
