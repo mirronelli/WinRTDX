@@ -20,12 +20,12 @@ namespace Dx::Levels
 		void Update(float delta);
 
 	private:
-		std::vector<std::shared_ptr<Drawable>>								m_drawables;
+		std::vector<std::shared_ptr<Drawable>>								mDrawables;
 		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
 		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
-		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
-		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
-		std::shared_ptr<Texture>												m_texture;
+		std::shared_ptr<VertexShader>											mVertexShaderTextured;
+		std::shared_ptr<PixelShader>											mPixelShaderTextured;
+		std::shared_ptr<Texture>												mTexture;
 
 		float																			m_worldRotationX{ 0 };
 		float																			m_worldRotationY{ 0 };

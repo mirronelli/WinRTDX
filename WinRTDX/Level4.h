@@ -22,7 +22,7 @@ namespace Dx::Levels
 		void Update(float delta);
 
 	private:
-		std::vector<std::shared_ptr<Drawable>>								m_drawables;
+		std::vector<std::shared_ptr<Drawable>>								mDrawables;
 		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
 		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
 

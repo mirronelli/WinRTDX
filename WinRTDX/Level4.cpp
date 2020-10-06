@@ -49,10 +49,10 @@ void Dx::Levels::Level4::SetupModel()
 		cube->ScaleZ(scale(generator));
 		cube->Init();
 
-		m_drawables.push_back(std::move(cube));
+		mDrawables.push_back(std::move(cube));
 	}
 
-	for (auto d : m_drawables) {
+	for (auto d : mDrawables) {
 		d->RegisterResources();
 	}
 
@@ -82,7 +82,7 @@ void Dx::Levels::Level4::Update(float delta)
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 
-	for (auto d : m_drawables)
+	for (auto d : mDrawables)
 		d->Update(delta, DirectX::XMMatrixIdentity());
 }
 
@@ -91,6 +91,6 @@ void Dx::Levels::Level4::Render()
 	float color[4]{ .2f, .2f, .3f, .2f};
 	Graphics::Instance->StartFrame(color);
 
-	for (auto d : m_drawables)
+	for (auto d : mDrawables)
 		d->Draw();
 }

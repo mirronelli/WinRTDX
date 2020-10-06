@@ -18,19 +18,19 @@ namespace Dx::Drawables
 	void MeshColored::RegisterResources()
 	{
 		id++;
-		m_vertexBuffer =		VertexBuffer<VertexSimpleWithNormal>	::Get("mesh:" + mName, mVertices);
-		m_indexBuffer =		IndexBuffer										::Get("mesh:" + mName, mIndices);
-		m_inputLayout =		InputLayout										::Get(VertexType::SimpleWithNormal);
-		m_vsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
-		m_psConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
-		m_indicesCount = (UINT)mIndices.size();
+		mVertexBuffer =		VertexBuffer<VertexSimpleWithNormal>	::Get("mesh:" + mName, mVertices);
+		mIndexBuffer =		IndexBuffer										::Get("mesh:" + mName, mIndices);
+		mInputLayout =		InputLayout										::Get(VertexType::SimpleWithNormal);
+		mVsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
+		mPsConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
+		mIndicesCount = (UINT)mIndices.size();
 	}
 
 	void MeshColored::UpdateConstants(DirectX::CXMMATRIX worldTransform)
 	{
 		mVertexPerInstanceConstants.worldTransform = worldTransform;
 
-		std::static_pointer_cast<VSConstantBuffer<WorldTransform>>		(m_vsConstantBuffer)->Update(mVertexPerInstanceConstants);
-		std::static_pointer_cast<PSConstantBuffer<ColorSpecular>>		(m_psConstantBuffer)->Update(mPixelPerInstanceConstants);
+		std::static_pointer_cast<VSConstantBuffer<WorldTransform>>		(mVsConstantBuffer)->Update(mVertexPerInstanceConstants);
+		std::static_pointer_cast<PSConstantBuffer<ColorSpecular>>		(mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
 	}
 }

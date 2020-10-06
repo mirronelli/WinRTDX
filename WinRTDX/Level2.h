@@ -31,11 +31,11 @@ namespace Dx::Levels
 		void Update(float delta);
 
 	private:
-		std::shared_ptr<Dx::Attachables::VertexShader>		m_vertexShader;
-		std::shared_ptr<Dx::Attachables::PixelShader>		m_pixelShader;
+		std::shared_ptr<Dx::Attachables::VertexShader>		mVertexShader;
+		std::shared_ptr<Dx::Attachables::PixelShader>		mPixelShader;
 
-		com_ptr<ID3D11Buffer>	m_vertexBuffer;
-		com_ptr<ID3D11Buffer>	m_indexBuffer;
+		com_ptr<ID3D11Buffer>	mVertexBuffer;
+		com_ptr<ID3D11Buffer>	mIndexBuffer;
 		com_ptr<ID3D11Buffer>	m_constantBuffer;
 
 		float							m_elapsedTime{ 0 };

@@ -22,10 +22,10 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
-					m_pixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
+					mVertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
+					mPixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
 
-					m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
+					mTexture = Texture::Preload("karin", L"Assets\\karin3.dds");
 				}
 			);
 		}
@@ -42,7 +42,7 @@ namespace Dx::Levels
 
 			for (int i = 0; i <= 5000; i++)
 			{
-				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured);
+				auto cube = std::make_unique<CubeTextured>(mVertexShaderTextured, mPixelShaderTextured);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -64,13 +64,13 @@ namespace Dx::Levels
 				cube->ScaleY(scale(generator));
 				cube->ScaleZ(scale(generator));
 
-				cube->Texture(m_texture);
+				cube->Texture(mTexture);
 				cube->Init();
 
-				m_drawables.push_back(std::move(cube));
+				mDrawables.push_back(std::move(cube));
 			}
 
-			for (auto d : m_drawables) {
+			for (auto d : mDrawables) {
 				d->RegisterResources();
 			}
 
@@ -82,16 +82,16 @@ namespace Dx::Levels
 		void ProcessInput()
 		{
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
-				m_camera.MoveForward(m_cameraMovementSpeed);
+				mCamera.MoveForward(mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
-				m_camera.MoveForward(-m_cameraMovementSpeed);
+				mCamera.MoveForward(-mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
-				m_camera.Strafe(-m_cameraMovementSpeed);
+				mCamera.Strafe(-mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
-				m_camera.Strafe(m_cameraMovementSpeed);
+				mCamera.Strafe(mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
 				m_mouseInput->RelativeTrackingEnter();
@@ -100,9 +100,9 @@ namespace Dx::Levels
 				m_mouseInput->RelativeTrackingExit();
 
 			//m_camera.Rotate(0, 0.01, 0);
-			m_camera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity,
-				m_mouseInput->RelativeDeltaX() * m_mouseSensitivity
+			mCamera.Rotate(
+				-m_mouseInput->RelativeDeltaY() * mMouseSensitivity,
+				m_mouseInput->RelativeDeltaX() * mMouseSensitivity
 			);
 		}
 
@@ -124,11 +124,11 @@ namespace Dx::Levels
 			if (m_worldRotationY != 0)
 				m_worldViewTransform *= DirectX::XMMatrixRotationY(m_worldRotationY);
 
-			m_worldViewTransform *= m_camera.GetMatrix();
+			m_worldViewTransform *= mCamera.GetMatrix();
 			m_worldViewTransform *= DirectX::XMMatrixPerspectiveFovLH(1.2f, Dx::Graphics::Instance->Width() / Dx::Graphics::Instance->Height(), .1f, 1000.0f);
 			m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
-			for (auto d : m_drawables)
+			for (auto d : mDrawables)
 				d->Update(delta, XMMatrixIdentity());
 		}
 
@@ -137,17 +137,17 @@ namespace Dx::Levels
 			float color[4]{ 0.3f, .0f, .1f, .2f };
 			Graphics::Instance->StartFrame(color);
 
-			for (auto d : m_drawables)
+			for (auto d : mDrawables)
 				d->Draw();
 		}
 
 	private:
-		std::vector<std::shared_ptr<Drawable>>								m_drawables;
+		std::vector<std::shared_ptr<Drawable>>								mDrawables;
 		std::shared_ptr<VertexShader>											m_vertexShaderSimple;
 		std::shared_ptr<PixelShader>											m_pixelShaderSimple;
-		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
-		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
-		std::shared_ptr<Texture>												m_texture;
+		std::shared_ptr<VertexShader>											mVertexShaderTextured;
+		std::shared_ptr<PixelShader>											mPixelShaderTextured;
+		std::shared_ptr<Texture>												mTexture;
 
 		float																			m_worldRotationX{ 0 };
 		float																			m_worldRotationY{ 0 };
@@ -159,11 +159,11 @@ namespace Dx::Levels
 
 		DirectX::XMMATRIX															m_worldViewTransform{};
 		std::shared_ptr<VSConstantBuffer<DirectX::XMMATRIX>>			m_worldViewTransformConstantBuffer;
-		Camera																		m_camera;
+		Camera																		mCamera;
 
-		float																			m_cameraMovementSpeed = 1;
+		float																			mCameraMovementSpeed = 1;
 		float																			m_cameraRotationSpeed = .03f;
-		float																			m_mouseSensitivity = .0006f;
+		float																			mMouseSensitivity = .0006f;
 	};
 }
 

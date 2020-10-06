@@ -16,7 +16,7 @@ namespace Dx::Attachables
 		void Attach();
 
 	private:
-		com_ptr<ID3D11InputLayout>	m_inputLayout;
+		com_ptr<ID3D11InputLayout>	mInputLayout;
 
 		Dx::Drawables::VertexType mKey;
 		inline static std::map < Dx::Drawables::VertexType, std::shared_ptr<InputLayout>> mMap;

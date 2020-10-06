@@ -47,7 +47,7 @@ namespace Dx::Attachables
 			srd.pSysMem = &textureStruct->data;
 			srd.SysMemPitch = textureStruct->header.pitchOrLinearSize;
 		
-			Graphics::Device->CreateTexture2D(&desc, &srd, m_texture.put());
+			Graphics::Device->CreateTexture2D(&desc, &srd, mTexture.put());
 
 			// Texture view
 			D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc = {};
@@ -56,7 +56,7 @@ namespace Dx::Attachables
 			viewDesc.Texture2D.MipLevels = desc.MipLevels;
 			viewDesc.Texture2D.MostDetailedMip = 0;
 
-			Graphics::Device->CreateShaderResourceView(m_texture.get(), &viewDesc, m_textureView.put());
+			Graphics::Device->CreateShaderResourceView(mTexture.get(), &viewDesc, m_textureView.put());
 
 			// Sampler
 			D3D11_SAMPLER_DESC samplerDesc = {};
@@ -91,7 +91,7 @@ namespace Dx::Attachables
 
 	private:
 		IBuffer											m_rawDataBuffer;
-		com_ptr<ID3D11Texture2D>					m_texture;
+		com_ptr<ID3D11Texture2D>					mTexture;
 		com_ptr<ID3D11ShaderResourceView>		m_textureView;
 		com_ptr<ID3D11SamplerState>				m_sampler;
 		UINT												m_slot;

@@ -62,7 +62,7 @@ namespace Dx::Attachables
 			static_cast<UINT>(ieds->size()),
 			vertexShader->Data(),
 			vertexShader->Length(),
-			m_inputLayout.put()
+			mInputLayout.put()
 		);
 	}
 
@@ -71,7 +71,7 @@ namespace Dx::Attachables
 		if (mKey != mCurrentInputLayout)
 		{
 			mCurrentInputLayout = mKey;
-			Graphics::Context->IASetInputLayout(m_inputLayout.get());
+			Graphics::Context->IASetInputLayout(mInputLayout.get());
 		}
 	}
 }

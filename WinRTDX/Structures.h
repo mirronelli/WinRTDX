@@ -35,7 +35,13 @@ namespace Dx::Drawables
 	{
 		DirectX::XMFLOAT2 textureCoordinates;
 	};
-	struct VertexTexturedWithNormal : VertexSimpleWithNormal, VertexTextured  {};
+	
+	struct VertexTexturedWithNormal
+	{
+		DirectX::XMFLOAT3	position;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 textureCoordinates;
+	};
 
 	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsSimple = {
 		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 }

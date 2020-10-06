@@ -27,15 +27,15 @@ namespace Dx::Levels
 		{
 			return concurrency::create_task([this]
 				{
-					m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader7Textured.cso");
-					m_vertexShaderColored = VertexShader::Preload(VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
-					m_vertexShaderStatic = VertexShader::Preload(VertexType::Colored, L"9_VertexColored.cso");
+					mVertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader7Textured.cso");
+					mVertexShaderColored = VertexShader::Preload(VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
+					mVertexShaderStatic = VertexShader::Preload(VertexType::Colored, L"9_VertexColored.cso");
 
-					m_pixelShaderTextured	= PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader7Textured.cso");
-					m_pixelShaderColored = PixelShader::Preload(VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
-					m_pixelShaderStatic = PixelShader::Preload(VertexType::Colored, L"9_PixelColored.cso");
+					mPixelShaderTextured	= PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader7Textured.cso");
+					mPixelShaderColored = PixelShader::Preload(VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
+					mPixelShaderStatic = PixelShader::Preload(VertexType::Colored, L"9_PixelColored.cso");
 
-					m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
+					mTexture = Texture::Preload("karin", L"Assets\\karin3.dds");
 				}
 			);
 		}
@@ -50,16 +50,16 @@ namespace Dx::Levels
 			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(mPixelPerFrameConstants, ResourceSlots::PerFrame);
 			mPixelPerFrameConstantsBuffer->Attach();
 
-			m_light.lightPosition				= { 0, 0, 0, 0 };
-			m_light.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
-			m_light.ambientLight					= { 0.1f, 0.1f, 0.1f, 0.0f };
-			m_light.diffuseIntensity			= 1.0f;
-			m_light.attenuationQuadratic		= 0.00001f;
-			m_light.attenuationLinear			= 0.01f;
-			m_light.attenuationConstant		= 0.f;
+			mLight.lightPosition				= { 0, 0, 0, 0 };
+			mLight.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
+			mLight.ambientLight					= { 0.1f, 0.1f, 0.1f, 0.0f };
+			mLight.diffuseIntensity			= 1.0f;
+			mLight.attenuationQuadratic		= 0.00001f;
+			mLight.attenuationLinear			= 0.01f;
+			mLight.attenuationConstant		= 0.f;
 
-			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(m_light, ResourceSlots::PerLevel);
-			m_lightConstantBuffer->Attach();
+			mLightConstantBuffer = PSConstantBuffer<PSConstants>::Create(mLight, ResourceSlots::PerLevel);
+			mLightConstantBuffer->Attach();
 
 			m_mouseInput->RelativeTrackingEnter();
 		}
@@ -78,7 +78,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured);
+				auto cube = std::make_unique<CubeTextured>(mVertexShaderTextured, mPixelShaderTextured);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -100,16 +100,16 @@ namespace Dx::Levels
 				cube->ScaleY(radius);
 				cube->ScaleZ(radius);
 
-				cube->Texture(m_texture);
+				cube->Texture(mTexture);
 				cube->Init();
 
-				m_drawables.push_back(std::move(cube));
+				mDrawables.push_back(std::move(cube));
 			}
 
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeColored>(m_vertexShaderColored, m_pixelShaderColored);
+				auto cube = std::make_unique<CubeColored>(mVertexShaderColored, mPixelShaderColored);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -132,7 +132,7 @@ namespace Dx::Levels
 				cube->ScaleZ(radius);
 				cube->Init();
 
-				m_drawables.push_back(std::move(cube));
+				mDrawables.push_back(std::move(cube));
 			}
 
 			for (int i = 0; i <= 100; i++)
@@ -164,7 +164,7 @@ namespace Dx::Levels
 
 				sphere->Init();
 
-				m_drawables.push_back(std::move(sphere));
+				mDrawables.push_back(std::move(sphere));
 			}
 
 			auto theSun = std::make_unique<SphereColored>(40);
@@ -175,9 +175,9 @@ namespace Dx::Levels
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Init();
 
-			m_drawables.push_back(std::move(theSun));
+			mDrawables.push_back(std::move(theSun));
 
-			for (auto d : m_drawables) {
+			for (auto d : mDrawables) {
 				d->RegisterResources();
 			}
 		}
@@ -185,16 +185,16 @@ namespace Dx::Levels
 		void ProcessInput()
 		{
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
-				m_camera.MoveForward(m_cameraMovementSpeed);
+				mCamera.MoveForward(mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
-				m_camera.MoveForward(-m_cameraMovementSpeed);
+				mCamera.MoveForward(-mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
-				m_camera.Strafe(-m_cameraMovementSpeed);
+				mCamera.Strafe(-mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
-				m_camera.Strafe(m_cameraMovementSpeed);
+				mCamera.Strafe(mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
 				m_mouseInput->RelativeTrackingEnter();
@@ -202,9 +202,9 @@ namespace Dx::Levels
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
 				m_mouseInput->RelativeTrackingExit();
 
-			m_camera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity, 
-				m_mouseInput->RelativeDeltaX() * m_mouseSensitivity
+			mCamera.Rotate(
+				-m_mouseInput->RelativeDeltaY() * mMouseSensitivity, 
+				m_mouseInput->RelativeDeltaX() * mMouseSensitivity
 			);
 		}
 
@@ -213,15 +213,15 @@ namespace Dx::Levels
 			ProcessInput();
 
 			mVertexPerFrameConstants.worldViewTransform = 
-				m_camera.GetMatrix()
+				mCamera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
 			
-			mPixelPerFrameConstants.cameraPosition = m_camera.Position();
+			mPixelPerFrameConstants.cameraPosition = mCamera.Position();
 
 			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
 			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
 
-			for (auto d : m_drawables)
+			for (auto d : mDrawables)
 				d->Update(delta, XMMatrixIdentity());
 		}
 
@@ -230,7 +230,7 @@ namespace Dx::Levels
 			float color[4]{ 0.0f, .0f, .02f, .0f };
 			Graphics::Instance->StartFrame(color);
 
-			for (auto d : m_drawables)
+			for (auto d : mDrawables)
 				d->Draw();
 		}
 
@@ -256,29 +256,29 @@ namespace Dx::Levels
 			float		attenuationConstant;
 		} ;
 
-		std::vector<std::shared_ptr<Drawable>>								m_drawables;
+		std::vector<std::shared_ptr<Drawable>>								mDrawables;
 
-		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
-		std::shared_ptr<VertexShader>											m_vertexShaderColored;
-		std::shared_ptr<VertexShader>											m_vertexShaderStatic;
-		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
-		std::shared_ptr<PixelShader>											m_pixelShaderColored;
-		std::shared_ptr<PixelShader>											m_pixelShaderStatic;
+		std::shared_ptr<VertexShader>											mVertexShaderTextured;
+		std::shared_ptr<VertexShader>											mVertexShaderColored;
+		std::shared_ptr<VertexShader>											mVertexShaderStatic;
+		std::shared_ptr<PixelShader>											mPixelShaderTextured;
+		std::shared_ptr<PixelShader>											mPixelShaderColored;
+		std::shared_ptr<PixelShader>											mPixelShaderStatic;
 
-		std::shared_ptr<Texture>												m_texture;
+		std::shared_ptr<Texture>												mTexture;
 
 		VertexPerFrameConstants													mVertexPerFrameConstants;
 		std::shared_ptr<VSConstantBuffer<VertexPerFrameConstants>>	mVertexPerFrameConstantsBuffer;
 		PixelPerFrameConstants													mPixelPerFrameConstants;
 		std::shared_ptr<PSConstantBuffer<PixelPerFrameConstants>>	mPixelPerFrameConstantsBuffer;
 
-		PSConstants																	m_light;
-		std::shared_ptr<PSConstantBuffer<PSConstants>>					m_lightConstantBuffer;
+		PSConstants																	mLight;
+		std::shared_ptr<PSConstantBuffer<PSConstants>>					mLightConstantBuffer;
 
-		Camera																		m_camera = Camera(DirectX::XMVectorSet(0,0,-120,0), XMVectorSet(0,0,1,0), XMVectorSet(0,1,0,0));
+		Camera																		mCamera = Camera(DirectX::XMVectorSet(0,0,-120,0), XMVectorSet(0,0,1,0), XMVectorSet(0,1,0,0));
 
-		float																			m_cameraMovementSpeed = 1;
-		float																			m_mouseSensitivity = .0006f;
+		float																			mCameraMovementSpeed = 1;
+		float																			mMouseSensitivity = .0006f;
 	};
 }
 

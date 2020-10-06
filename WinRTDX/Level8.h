@@ -109,9 +109,9 @@ namespace Dx::Levels
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Init();
 
-			m_drawables.push_back(std::move(theSun));
+			mDrawables.push_back(std::move(theSun));
 
-			for (auto d : m_drawables) {
+			for (auto d : mDrawables) {
 				d->RegisterResources();
 			}
 		}
@@ -119,16 +119,16 @@ namespace Dx::Levels
 		void ProcessInput()
 		{
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Up) || m_keyboardInput->IsSet(Windows::System::VirtualKey::W))
-				m_camera.MoveForward(m_cameraMovementSpeed);
+				mCamera.MoveForward(mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Down) || m_keyboardInput->IsSet(Windows::System::VirtualKey::S))
-				m_camera.MoveForward(-m_cameraMovementSpeed);
+				mCamera.MoveForward(-mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Left) || m_keyboardInput->IsSet(Windows::System::VirtualKey::A))
-				m_camera.Strafe(-m_cameraMovementSpeed);
+				mCamera.Strafe(-mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Right) || m_keyboardInput->IsSet(Windows::System::VirtualKey::D))
-				m_camera.Strafe(m_cameraMovementSpeed);
+				mCamera.Strafe(mCameraMovementSpeed);
 
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::X, true))
 				m_mouseInput->RelativeTrackingEnter();
@@ -136,9 +136,9 @@ namespace Dx::Levels
 			if (m_keyboardInput->IsSet(Windows::System::VirtualKey::Escape, true))
 				m_mouseInput->RelativeTrackingExit();
 
-			m_camera.Rotate(
-				-m_mouseInput->RelativeDeltaY() * m_mouseSensitivity,
-				m_mouseInput->RelativeDeltaX() * m_mouseSensitivity
+			mCamera.Rotate(
+				-m_mouseInput->RelativeDeltaY() * mMouseSensitivity,
+				m_mouseInput->RelativeDeltaX() * mMouseSensitivity
 			);
 		}
 
@@ -147,15 +147,15 @@ namespace Dx::Levels
 			ProcessInput();
 
 			m_vertexPerFrameConstants.worldViewTransform =
-				m_camera.GetMatrix()
+				mCamera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
 
-			m_pixelPerFrameConstants.cameraPosition = m_camera.Position();
+			m_pixelPerFrameConstants.cameraPosition = mCamera.Position();
 
 			m_vertexPerFrameConstantsBuffer->Update(m_vertexPerFrameConstants);
 			m_pixelPerFrameConstantsBuffer->Update(m_pixelPerFrameConstants);
 
-			for (auto d : m_drawables)
+			for (auto d : mDrawables)
 				d->Update(delta, XMMatrixIdentity());
 		}
 
@@ -164,7 +164,7 @@ namespace Dx::Levels
 			float color[4]{ 0.0f, .0f, .02f, .0f };
 			Graphics::Instance->StartFrame(color);
 
-			for (auto d : m_drawables)
+			for (auto d : mDrawables)
 				d->Draw();
 		}
 
@@ -190,7 +190,7 @@ namespace Dx::Levels
 			float		attenuationConstant;
 		};
 
-		std::vector<std::shared_ptr<Dx::Drawables::Drawable>>			m_drawables;
+		std::vector<std::shared_ptr<Dx::Drawables::Drawable>>			mDrawables;
 
 		std::shared_ptr<VertexShader>											m_vertexShaderWithColor;
 		std::shared_ptr<VertexShader>											m_vertexShaderWithNormal;
@@ -206,9 +206,9 @@ namespace Dx::Levels
 		PixelPerLevelConstants													m_pixelPerLevelConstants;
 		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	m_pixelPerLevelConstantsBuffer;
 
-		Camera																		m_camera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
-		float																			m_cameraMovementSpeed = 1;
-		float																			m_mouseSensitivity = .0006f;
+		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
+		float																			mCameraMovementSpeed = 1;
+		float																			mMouseSensitivity = .0006f;
 	};
 }
 

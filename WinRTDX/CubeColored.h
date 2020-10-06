@@ -84,20 +84,20 @@ namespace Dx::Drawables
 		};
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube", Vertices);
-			m_indexBuffer =		IndexBuffer::							Get("cube", Indices);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(m_vsConstants, ResourceSlots::PerInstance);
-			m_inputLayout =		InputLayout::							Get(VertexType::ColoredWithNormal);
-			m_indicesCount =		(UINT)Indices.size();
+			mVertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube", Vertices);
+			mIndexBuffer =		IndexBuffer::								Get("cube", Indices);
+			mVsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(mVsConstants, ResourceSlots::PerInstance);
+			mInputLayout =		InputLayout::								Get(VertexType::ColoredWithNormal);
+			mIndicesCount =		(UINT)Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
-			m_vsConstants.matrix = matrix;			
-			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer)->Update(m_vsConstants);
+			mVsConstants.matrix = matrix;			
+			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (mVsConstantBuffer)->Update(mVsConstants);
 		}
 
 	private:
-		VSConstants															m_vsConstants = {};
+		VSConstants															mVsConstants = {};
 	};
 }

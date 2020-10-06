@@ -14,24 +14,8 @@ namespace Dx::Drawables
 	{
 	public:
 		using Drawable::Drawable;
-	
-		struct VertexSimple {
-			DirectX::XMFLOAT3	position;
-			DirectX::XMFLOAT3 normal;
-			DirectX::XMFLOAT2	textureCoordinates;
-		};
 
-		typedef struct {
-			DirectX::XMMATRIX matrix;
-		} VSConstants;
-
-		inline static std::vector<D3D11_INPUT_ELEMENT_DESC> Ieds {
-			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,		0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-
-		inline static std::vector<VertexSimple> Vertices  {
+		inline static std::vector<VertexTexturedWithNormal> Vertices  {
 			{ XMFLOAT3( -1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.0f, 0.0f )},  // 0
 			{ XMFLOAT3(  1.0f,	 1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f,  .0f )},  // 1
 			{ XMFLOAT3(  1.0f,	-1.0f, -1.0f ), XMFLOAT3(  0.0f,  0.0f, -1.0f ), XMFLOAT2(  0.5f,  .5f )},  // 2
@@ -92,22 +76,22 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube:texturedWithNormal", Vertices);
-			m_indexBuffer =		IndexBuffer::							Get("cube:texturedWithNormal", Indices);
-			m_inputLayout =		InputLayout::							Get(VertexType::TexturedWithNormal);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(m_vsConstants, ResourceSlots::PerInstance);
-			m_psConstantBuffer =	PSConstantBuffer<Specular>::		Create(m_psConstants, ResourceSlots::PerInstance);
-			m_indicesCount =		(UINT)Indices.size();
+			mVertexBuffer =		VertexBuffer<VertexTexturedWithNormal>::		Get("cube:texturedWithNormal", Vertices);
+			mIndexBuffer =		IndexBuffer::											Get("cube:texturedWithNormal", Indices);
+			mInputLayout =		InputLayout::											Get(VertexType::TexturedWithNormal);
+			mVsConstantBuffer =	VSConstantBuffer<WorldTransform>::				Create(mVsConstants, ResourceSlots::PerInstance);
+			mPsConstantBuffer =	PSConstantBuffer<Specular>::						Create(m_psConstants, ResourceSlots::PerInstance);
+			mIndicesCount =		(UINT)Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX viewPerspectiveTransform)
 		{
-			m_vsConstants.matrix = viewPerspectiveTransform;			
-			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer)->Update(m_vsConstants);
+			mVsConstants.worldTransform = viewPerspectiveTransform;
+			std::static_pointer_cast<VSConstantBuffer<WorldTransform >> (mVsConstantBuffer)->Update(mVsConstants);
 		}
 
 	private:
-		VSConstants							m_vsConstants = {};
+		WorldTransform						mVsConstants = {};
 		Specular								m_psConstants = {};
 	};
 }

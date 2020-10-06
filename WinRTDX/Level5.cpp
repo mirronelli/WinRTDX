@@ -9,10 +9,10 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 {
 	return concurrency::create_task([this]
 		{
-			m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
-			m_pixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
+			mVertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
+			mPixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
 
-			m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
+			mTexture = Texture::Preload("karin", L"Assets\\karin3.dds");
 		}
 	);
 }
@@ -29,7 +29,7 @@ void Dx::Levels::Level5::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured);
+		auto cube = std::make_unique<CubeTextured>(mVertexShaderTextured, mPixelShaderTextured);
 
 		cube->X(location(generator));
 		cube->Y(location(generator));
@@ -51,13 +51,13 @@ void Dx::Levels::Level5::SetupModel()
 		cube->ScaleY(scale(generator));
 		cube->ScaleZ(scale(generator));
 
-		cube->Texture(m_texture);
+		cube->Texture(mTexture);
 		cube->Init();
 
-		m_drawables.push_back(std::move(cube)); 
+		mDrawables.push_back(std::move(cube)); 
 	}
 
-	for (auto d : m_drawables) {
+	for (auto d : mDrawables) {
 		d->RegisterResources();
 	}
 
@@ -87,7 +87,7 @@ void Dx::Levels::Level5::Update(float delta)
 	m_worldViewTransformConstantBuffer->Update(m_worldViewTransform);
 
 
-	for (auto d : m_drawables)
+	for (auto d : mDrawables)
 		d->Update(delta, XMMatrixIdentity());
 }
 
@@ -96,6 +96,6 @@ void Dx::Levels::Level5::Render()
 	float color[4]{ .2f, .3f, .1f, .2f };
 	Graphics::Instance->StartFrame(color);
 
-	for (auto d : m_drawables)
+	for (auto d : mDrawables)
 		d->Draw();
 }

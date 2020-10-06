@@ -20,7 +20,7 @@ namespace Dx::Drawables
 				VertexShader::Get(VertexType::Colored), 
 				PixelShader::Get(VertexType::Colored)
 			),
-			m_steps(steps)
+			mSteps(steps)
 		{}
 
 		void Init()
@@ -31,29 +31,29 @@ namespace Dx::Drawables
 
 		void Color(XMFLOAT3 value)
 		{
-			m_color = value;
-			m_useRandomColor = false;
+			mColor = value;
+			mUseRandomColor = false;
 		}
 
 		void ColorRanges(XMFLOAT3 minValue, XMFLOAT3 maxValue)
 		{
-			m_colorMin = minValue;
-			m_colorMax = maxValue;
-			m_useRandomColor = true;
+			mColorMin = minValue;
+			mColorMax = maxValue;
+			mUseRandomColor = true;
 		}
 
 		void RegisterResources() {
-			m_vertexBuffer =			VertexBuffer<VertexColored>::			Get(MAKEID("sphere:colored:", m_steps), mVertices);
-			m_indexBuffer =			IndexBuffer::								Get(MAKEID("sphere:colored:", m_steps), mIndices);
-			m_inputLayout =			InputLayout::								Get(VertexType::Colored);
-			m_vsConstantBuffer =		VSConstantBuffer<WorldTransform>::	Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
-			m_indicesCount = (int)mIndices.size();
+			mVertexBuffer =			VertexBuffer<VertexColored>::			Get(MAKEID("sphere:colored:", mSteps), mVertices);
+			mIndexBuffer =			IndexBuffer::								Get(MAKEID("sphere:colored:", mSteps), mIndices);
+			mInputLayout =			InputLayout::								Get(VertexType::Colored);
+			mVsConstantBuffer =		VSConstantBuffer<WorldTransform>::	Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
+			mIndicesCount = (int)mIndices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
 			mVertexPerInstanceConstants.worldTransform = matrix;
-			std::static_pointer_cast<VSConstantBuffer<WorldTransform >> (m_vsConstantBuffer)->Update(mVertexPerInstanceConstants);
+			std::static_pointer_cast<VSConstantBuffer<WorldTransform >> (mVsConstantBuffer)->Update(mVertexPerInstanceConstants);
 		}
 
 	private:
@@ -62,15 +62,15 @@ namespace Dx::Drawables
 			std::random_device rd;  //Will be used to obtain a seed for the random number engine
 			std::mt19937 generator(rd());
 
-			std::uniform_real_distribution<float> randomRed(m_colorMin.x, m_colorMax.x);
-			std::uniform_real_distribution<float> randomGreen(m_colorMin.y, m_colorMax.y);
-			std::uniform_real_distribution<float> randomBlue(m_colorMin.z, m_colorMax.z);
+			std::uniform_real_distribution<float> randomRed(mColorMin.x, mColorMax.x);
+			std::uniform_real_distribution<float> randomGreen(mColorMin.y, mColorMax.y);
+			std::uniform_real_distribution<float> randomBlue(mColorMin.z, mColorMax.z);
 
-			float step = DirectX::XM_PI / m_steps;
-			int meridians = m_steps * 2;
+			float step = DirectX::XM_PI / mSteps;
+			int meridians = mSteps * 2;
 
 			int northPole = 0;
-			int southPole = meridians * (m_steps - 1) + 1;
+			int southPole = meridians * (mSteps - 1) + 1;
 			XMVECTOR vector = XMVectorSet(0, 1, 0, 0);
 
 			int counter = 1;
@@ -79,12 +79,12 @@ namespace Dx::Drawables
 			mVertices.push_back(
 				{
 					XMFLOAT3(0, 1, 0),
-					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color
+					mUseRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : mColor
 				}
 			);
 
 			// rotate vector to each parallel
-			for (int i = 1; i < m_steps; i++)
+			for (int i = 1; i < mSteps; i++)
 			{
 				// rotate vector to each meridian of the parallel
 				for (int j = 0; j < meridians; j++)
@@ -94,7 +94,7 @@ namespace Dx::Drawables
 					mVertices.push_back(
 						{
 							vertex,
-							m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color
+							mUseRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : mColor
 						}
 					);
 
@@ -116,7 +116,7 @@ namespace Dx::Drawables
 			mVertices.push_back(
 				{
 					XMFLOAT3(0, -1, 0),
-					m_useRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : m_color
+					mUseRandomColor ? XMFLOAT3(randomRed(generator), randomGreen(generator), randomBlue(generator)) : mColor
 				}
 			);
 
@@ -154,11 +154,11 @@ namespace Dx::Drawables
 			}
 		}
 
-		int	m_steps;
-		XMFLOAT3 m_color = { 1,1,1 };
-		XMFLOAT3 m_colorMin;
-		XMFLOAT3 m_colorMax;
-		bool m_useRandomColor = false;
+		int	mSteps;
+		XMFLOAT3 mColor = { 1,1,1 };
+		XMFLOAT3 mColorMin;
+		XMFLOAT3 mColorMax;
+		bool mUseRandomColor = false;
 
 		WorldTransform					mVertexPerInstanceConstants;
 

@@ -15,14 +15,6 @@ namespace Dx::Drawables
 			DirectX::XMFLOAT4 colors[6]; 
 		} PSConstants;
 
-		typedef struct {
-			DirectX::XMMATRIX matrix;
-		} VSConstants;
-
-		inline static std::vector<D3D11_INPUT_ELEMENT_DESC> Ieds {
-			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-
 		inline static std::vector<Dx::Drawables::VertexSimple> Vertices {
 			{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	-1.0f) },
 			{ DirectX::XMFLOAT3(1.0f,	 1.0f,	-1.0f) },
@@ -50,7 +42,7 @@ namespace Dx::Drawables
 		};
 
 		void RegisterResources() {
-			m_psConstants = {
+			mPsConstants = {
 					DirectX::XMFLOAT4(1.f, 0.5f, 0.5f, 1.f),
 					DirectX::XMFLOAT4(0.5f, 1.f, 0.5f, 1.f),
 					DirectX::XMFLOAT4(0.5f, 0.5f, 1.f, 1.f),
@@ -59,22 +51,22 @@ namespace Dx::Drawables
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			m_vertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube", Vertices);
-			m_indexBuffer =		IndexBuffer::							Get("cube", Indices);
-			m_psConstantBuffer =	PSConstantBuffer<PSConstants>::	Create(m_psConstants, ResourceSlots::PerInstance);
-			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(m_vsConstants, ResourceSlots::PerInstance);
-			m_inputLayout =		InputLayout::							Get(VertexType::Simple);
-			m_indicesCount =		(UINT)Indices.size();
+			mVertexBuffer =		VertexBuffer<VertexSimple>::			Get("cube", Vertices);
+			mIndexBuffer =		IndexBuffer::								Get("cube", Indices);
+			mPsConstantBuffer =	PSConstantBuffer<PSConstants>::		Create(mPsConstants, ResourceSlots::PerInstance);
+			mVsConstantBuffer =	VSConstantBuffer<WorldTransform>::	Create(mVsConstants, ResourceSlots::PerInstance);
+			mInputLayout =		InputLayout::								Get(VertexType::Simple);
+			mIndicesCount =		(UINT)Indices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
-			m_vsConstants.matrix = matrix;			
-			std::static_pointer_cast<VSConstantBuffer<VSConstants >> (m_vsConstantBuffer)->Update(m_vsConstants);
+			mVsConstants.worldTransform = matrix;			
+			std::static_pointer_cast<VSConstantBuffer<WorldTransform >> (mVsConstantBuffer)->Update(mVsConstants);
 		}
 
 	private:
-		PSConstants															m_psConstants = {};
-		VSConstants															m_vsConstants = {};
+		PSConstants															mPsConstants = {};
+		WorldTransform														mVsConstants = {};
 	};
 }
