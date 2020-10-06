@@ -84,11 +84,19 @@ namespace Dx::Drawables
 			23, 22, 21
 		};
 
+		void Init()
+		{
+			m_psConstants.reflectiveness = 1;
+			m_psConstants.reflectionPower = 16;
+			Drawable::Init();
+		}
+
 		void RegisterResources() {
 			m_vertexBuffer =		VertexBuffer<VertexSimple>::		Get("cube:texturedWithNormal", Vertices);
 			m_indexBuffer =		IndexBuffer::							Get("cube:texturedWithNormal", Indices);
 			m_inputLayout =		InputLayout::							Get(VertexType::TexturedWithNormal);
 			m_vsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(m_vsConstants, ResourceSlots::PerInstance);
+			m_psConstantBuffer =	PSConstantBuffer<Specular>::		Create(m_psConstants, ResourceSlots::PerInstance);
 			m_indicesCount =		(UINT)Indices.size();
 		}
 
@@ -100,5 +108,6 @@ namespace Dx::Drawables
 
 	private:
 		VSConstants							m_vsConstants = {};
+		Specular								m_psConstants = {};
 	};
 }
