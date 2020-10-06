@@ -10,7 +10,7 @@ cbuffer light : register(b0)
 
 cbuffer level : register(b1)
 {
-    LevelBuffer level;
+    PixelPerFrameBuffer level;
 };
 
 // once per drawable

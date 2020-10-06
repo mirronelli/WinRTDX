@@ -5,7 +5,7 @@
 // once per frame
 cbuffer level : register(b1)
 {
-    LevelBuffer level;
+    VertexPerFrameBuffer level;
 };
 
 // once per drawable

@@ -12,6 +12,7 @@
 #include "IO.h"
 #include "Camera.h"
 #include <DirectXMath.h>
+#include "Structures.h"
 
 using namespace Dx::Attachables;
 
@@ -43,11 +44,11 @@ namespace Dx::Levels
 		{
 			GenerateDrawables();
 
-			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(m_sharedConstants, ResourceSlots::PerFrame);
-			m_sharedConstantVSBuffer->Attach();
+			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(mVertexPerFrameConstants, ResourceSlots::PerFrame);
+			mVertexPerFrameConstantsBuffer->Attach();
 
-			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(m_sharedConstants, ResourceSlots::PerFrame);
-			m_sharedConstantPSBuffer->Attach();
+			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(mPixelPerFrameConstants, ResourceSlots::PerFrame);
+			mPixelPerFrameConstantsBuffer->Attach();
 
 			m_light.lightPosition				= { 0, 0, 0, 0 };
 			m_light.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
@@ -211,14 +212,14 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
-			m_sharedConstants.worldViewTransform = 
+			mVertexPerFrameConstants.worldViewTransform = 
 				m_camera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
 			
-			m_sharedConstants.cameraPosition = m_camera.Position();
+			mPixelPerFrameConstants.cameraPosition = m_camera.Position();
 
-			m_sharedConstantVSBuffer->Update(m_sharedConstants);
-			m_sharedConstantPSBuffer->Update(m_sharedConstants);
+			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
+			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
 
 			for (auto d : m_drawables)
 				d->Update(delta, XMMatrixIdentity());
@@ -234,9 +235,13 @@ namespace Dx::Levels
 		}
 
 	private:
-		struct SharedConstants
+		struct VertexPerFrameConstants
 		{
 			DirectX::XMMATRIX worldViewTransform;
+		};
+
+		struct PixelPerFrameConstants
+		{
 			DirectX::XMVECTOR	cameraPosition;
 		};
 
@@ -262,9 +267,10 @@ namespace Dx::Levels
 
 		std::shared_ptr<Texture>												m_texture;
 
-		SharedConstants															m_sharedConstants;
-		std::shared_ptr<PSConstantBuffer<SharedConstants>>				m_sharedConstantPSBuffer;
-		std::shared_ptr<VSConstantBuffer<SharedConstants>>				m_sharedConstantVSBuffer;
+		VertexPerFrameConstants													mVertexPerFrameConstants;
+		std::shared_ptr<VSConstantBuffer<VertexPerFrameConstants>>	mVertexPerFrameConstantsBuffer;
+		PixelPerFrameConstants													mPixelPerFrameConstants;
+		std::shared_ptr<PSConstantBuffer<PixelPerFrameConstants>>	mPixelPerFrameConstantsBuffer;
 
 		PSConstants																	m_light;
 		std::shared_ptr<PSConstantBuffer<PSConstants>>					m_lightConstantBuffer;

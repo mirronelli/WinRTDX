@@ -18,18 +18,16 @@ export float3 mLightIntensity(
     float distanceToLight = length(vectorToLight);
     
     float3 normalizedNormal = normalize(pixelNormal);
-    float3 normalizedvectorToLight = normalize(vectorToLight);  
+    float3 normalizedvectorToLight = normalize(vectorToLight);
     float angleCoefficient = max(0.0f, dot(normalizedvectorToLight, normalizedNormal));
     
-    float attenuation = 1.0f / (attenuationConstant + attenuationLinear*distanceToLight + attenuationQuadratic * distanceToLight * distanceToLight);
+    float attenuation = 1.0f / (attenuationConstant + attenuationLinear * distanceToLight + attenuationQuadratic * distanceToLight * distanceToLight);
     float3 diffusedLight = pointLight * diffusionIntensity * attenuation * angleCoefficient;
     
     float3 reflectionVector = 2.0 * normalizedNormal * dot(normalizedvectorToLight, normalizedNormal) - normalizedvectorToLight;
     float3 specularLight = pow(saturate(dot(reflectionVector, normalize(vectorToCamera))), reflectivePower) * reflectiveness;
-    
-    float3 result = saturate(diffusedLight + ambientLight + specularLight * attenuation);
 
-    return result;
+    return saturate(diffusedLight + ambientLight + saturate(specularLight * attenuation));
 }
 
 struct VsColorInput
@@ -84,8 +82,12 @@ struct DrawableVertexBuffer
     row_major matrix worldTransform;
 };
 
-struct LevelBuffer  // TODO: rename to frame buffer since this is used per frame
+struct VertexPerFrameBuffer  // TODO: rename to frame buffer since this is used per frame
 {
     row_major matrix viewPerspectiveTransform;
+};
+
+struct PixelPerFrameBuffer  // TODO: rename to frame buffer since this is used per frame
+{
     float3 cameraPosition;
 };
