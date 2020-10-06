@@ -9,6 +9,7 @@ namespace Dx::Attachables
 	class PixelShader : public Attachable
 	{
 	public:
+		static void Reset() { mMap.clear(); }
 		static std::shared_ptr<PixelShader> Preload(Dx::Drawables::VertexType key, std::wstring fileName)
 		{
 			mMap[key] = std::make_shared<PixelShader>(key, fileName);
@@ -44,8 +45,8 @@ namespace Dx::Attachables
 			return m_rawDataBuffer.Length();
 		}
 
-		void AttachPrivate(bool force) {
-			if (force || mKey != mCurrentPixelShader)
+		void Attach() {
+			if (mKey != mCurrentPixelShader)
 			{
 				mCurrentPixelShader = mKey;
 				Graphics::Context->PSSetShader(m_compiledShader.get(), nullptr, 0);

@@ -7,7 +7,8 @@ using Dx::Drawables::VertexType;
 
 namespace Dx::Attachables
 {
-	 std::shared_ptr<InputLayout> InputLayout::Get(Dx::Drawables::VertexType key)
+	void InputLayout::Reset() { mMap.clear(); }
+	std::shared_ptr<InputLayout> InputLayout::Get(Dx::Drawables::VertexType key)
 	{
 		std::shared_ptr<InputLayout> instance = mMap[key];
 		if (!instance)
@@ -65,9 +66,9 @@ namespace Dx::Attachables
 		);
 	}
 
-	void InputLayout::AttachPrivate(bool force)
+	void InputLayout::Attach()
 	{
-		if (force || mKey != mCurrentInputLayout)
+		if (mKey != mCurrentInputLayout)
 		{
 			mCurrentInputLayout = mKey;
 			Graphics::Context->IASetInputLayout(m_inputLayout.get());

@@ -42,7 +42,7 @@ namespace Dx::Levels
 
 			for (int i = 0; i <= 5000; i++)
 			{
-				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured, 1u);
+				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -75,7 +75,7 @@ namespace Dx::Levels
 			}
 
 			m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel);
-			m_worldViewTransformConstantBuffer->Attach(false);
+			m_worldViewTransformConstantBuffer->Attach();
 			m_worldRotationSpeedY = 0.f;
 		}
 

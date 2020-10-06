@@ -9,6 +9,7 @@ namespace Dx::Attachables
 	class Texture : public Attachable
 	{
 	public:
+		static void Reset() { mMap.clear(); }
 		static std::shared_ptr<Texture> Preload(std::string key, std::wstring filename)
 		{
 			std::shared_ptr<Texture> instance = std::make_shared<Texture>(key, filename);
@@ -23,6 +24,7 @@ namespace Dx::Attachables
 
 		Texture(std::string key, std::wstring filename, UINT slot = 0)
 			: 
+			mKey(key),
 			m_slot(slot)
 		{
 			m_rawDataBuffer = IO::ReadFile(filename);
@@ -74,9 +76,9 @@ namespace Dx::Attachables
 			Graphics::Device->CreateSamplerState(&samplerDesc, m_sampler.put());
 		}
 
-		void AttachPrivate(bool force)
+		void Attach()
 		{
-			if (force || mKey != mCurrentTexture)
+			if (mKey != mCurrentTexture)
 			{
 				mCurrentTexture = mKey;
 				ID3D11ShaderResourceView* textureViews[1] = { m_textureView.get() };

@@ -16,7 +16,7 @@ cbuffer level : register(b1)
 // once per drawable
 cbuffer drawable : register(b2)
 {
-    DrawableBuffer drawable;
+    DrawablePixelBuffer drawable;
 };
 
 float4 main(VsColorOutput input) : SV_TARGET

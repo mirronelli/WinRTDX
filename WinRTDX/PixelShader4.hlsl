@@ -1,4 +1,5 @@
-cbuffer constantData {
+cbuffer constantData : register(b2)
+{
 	float4 colors[6];
 };
 

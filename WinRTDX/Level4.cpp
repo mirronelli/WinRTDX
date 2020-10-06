@@ -8,12 +8,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 {
 	return concurrency::create_task([this]
 		{
-			//m_vertexShaderSimple = VertexShader::Load(1, false, L"VertexShader4.cso");
-			//m_pixelShaderSimple = PixelShader::Load(1, false, L"PixelShader4.cso");
-			VertexShader::Preload(VertexType::Simple, L"VertexShader4.cso");
-			PixelShader::Preload(VertexType::Simple, L"PixelShader4.cso");
-			m_vertexShaderSimple = VertexShader::Get(VertexType::Simple);
-			m_pixelShaderSimple = PixelShader::Get(VertexType::Simple);
+			m_vertexShaderSimple = VertexShader::Preload(VertexType::Simple, L"VertexShader4.cso");
+			m_pixelShaderSimple = PixelShader::Preload(VertexType::Simple, L"PixelShader4.cso");
 		}
 	);
 }
@@ -30,7 +26,7 @@ void Dx::Levels::Level4::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		auto cube = std::make_unique<Cube>(m_vertexShaderSimple, m_pixelShaderSimple, 1);
+		auto cube = std::make_unique<Cube>(m_vertexShaderSimple, m_pixelShaderSimple);
 
 		cube->X(location(generator));
 		cube->Y(location(generator));
@@ -61,7 +57,7 @@ void Dx::Levels::Level4::SetupModel()
 	}
 
 	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel, false);
-	m_worldViewTransformConstantBuffer->Attach(false);
+	m_worldViewTransformConstantBuffer->Attach();
 
 	m_worldRotationSpeedY = 0.01f;
 }

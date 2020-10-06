@@ -18,14 +18,14 @@ cbuffer levelData : register(b1)
 // once per drawable
 cbuffer drawable : register(b2)
 {
-    DrawableBuffer drawable;
+    DrawablePixelBuffer drawable;
 };
 
 float4 main(VsTextureOutput input) : SV_TARGET
 {
     const float3 materialColor = (float3)inTexture.Sample(inSampler, input.textureCoordinates);
     const float3 light = mLightIntensity(
-        (float) lightBuffer.ambientLight,
+        (float3) lightBuffer.ambientLight,
         (float3) lightBuffer.lightColor,
         (float3) lightBuffer.lightPosition,
         input.worldPosition,

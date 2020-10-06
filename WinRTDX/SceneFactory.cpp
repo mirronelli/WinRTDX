@@ -67,7 +67,7 @@ namespace Dx::Levels
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
 
-			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader, 7);
+			std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(vertexShader, pixelShader);
 			newMesh->mName = std::string(sourceMesh->mName.C_Str());
 			newMesh->mVertices.reserve(sourceMesh->mNumVertices);
 

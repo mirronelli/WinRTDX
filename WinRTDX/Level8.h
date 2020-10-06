@@ -50,9 +50,9 @@ namespace Dx::Levels
 			m_pixelPerFrameConstantsBuffer	= PSConstantBuffer<PixelPerFrameConstants>::	Create(m_pixelPerFrameConstants, ResourceSlots::PerFrame);
 			m_vertexPerFrameConstantsBuffer	= VSConstantBuffer<VertexPerFrameConstants>::Create(m_vertexPerFrameConstants, ResourceSlots::PerFrame);
 
-			m_pixelPerLevelConstantsBuffer->Attach(false);
-			m_pixelPerFrameConstantsBuffer->Attach(false);
-			m_vertexPerFrameConstantsBuffer->Attach(false);
+			m_pixelPerLevelConstantsBuffer->Attach();
+			m_pixelPerFrameConstantsBuffer->Attach();
+			m_vertexPerFrameConstantsBuffer->Attach();
 			m_mouseInput->RelativeTrackingEnter();
 		}
 

@@ -31,7 +31,7 @@ namespace Dx::Attachables
 			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
-		void AttachPrivate(bool force)
+		void Attach()
 		{
 			ID3D11Buffer* VSConstantBuffers[1] = { m_buffer.get() };
 			Graphics::Context->VSSetConstantBuffers(m_slot, 1, VSConstantBuffers);

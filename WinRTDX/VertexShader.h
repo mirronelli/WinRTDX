@@ -9,7 +9,7 @@ namespace Dx::Attachables
 	class VertexShader : public Attachable
 	{
 	public:
-
+		static void Reset() { mMap.clear(); }
 		static std::shared_ptr<VertexShader> Preload(Dx::Drawables::VertexType key, std::wstring fileName)
 		{
 			mMap[key] = std::make_shared<VertexShader>(key, fileName);
@@ -45,9 +45,9 @@ namespace Dx::Attachables
 			return m_rawDataBuffer.Length();
 		}
 
-		void AttachPrivate(bool force)
+		void Attach()
 		{
-			if (force || mKey != mCurrentVertexShader)
+			if (mKey != mCurrentVertexShader)
 			{
 				mCurrentVertexShader = mKey;
 				Graphics::Context->VSSetShader(m_compiledShader.get(), nullptr, 0);

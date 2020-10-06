@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Structures.h"
 
+
 namespace Dx::Attachables
 {
 	enum class ResourceSlots
@@ -15,13 +16,17 @@ namespace Dx::Attachables
 	{
 	public:
 		Attachable(){};
-		Attachable(int key) : m_key(key){};
-		void Attach(bool force = false) { AttachPrivate(force); };
-
+		virtual void Attach() = 0;
+		static void Reset()
+		{
+			mCurrentIndexBuffer = "";
+			mCurrentVertexBuffer = "";
+			mCurrentTexture = "";
+			mCurrentInputLayout = Dx::Drawables::VertexType::None;
+			mCurrentPixelShader = Dx::Drawables::VertexType::None;
+			mCurrentVertexShader = Dx::Drawables::VertexType::None;
+		}
 	protected:
-		virtual void AttachPrivate(bool force) = 0;
-		int m_key;
-
 		static inline std::string mCurrentVertexBuffer;
 		static inline std::string mCurrentIndexBuffer;
 		static inline std::string mCurrentTexture;

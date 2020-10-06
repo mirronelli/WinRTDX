@@ -7,6 +7,7 @@ namespace Dx::Attachables
 	class IndexBuffer : public Attachable
 	{
 	public:
+		static void Reset() { mMap.clear(); }
 		static std::shared_ptr<IndexBuffer> Get(std::string key, std::vector<UINT>& indices)
 		{
 			std::shared_ptr<IndexBuffer> instance = mMap[key];
@@ -34,9 +35,9 @@ namespace Dx::Attachables
 			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
-		void AttachPrivate(bool force)
+		void Attach()
 		{
-			if (force || mKey != mCurrentIndexBuffer)
+			if (mKey != mCurrentIndexBuffer)
 			{
 				mCurrentIndexBuffer = mKey;
 				Graphics::Context->IASetIndexBuffer(m_buffer.get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);

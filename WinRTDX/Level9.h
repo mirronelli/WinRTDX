@@ -75,9 +75,9 @@ namespace Dx::Levels
 			mPixelPerFrameConstantsBuffer = PSConstantBuffer<PixelPerFrameConstants>::Create(mPixelPerFrameConstants, ResourceSlots::PerFrame, true);
 			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(mVertexPerFrameConstants, ResourceSlots::PerFrame, true);
 
-			mPixelPerLevelConstantsBuffer->Attach(false);
-			mPixelPerFrameConstantsBuffer->Attach(false);
-			mVertexPerFrameConstantsBuffer->Attach(false);
+			mPixelPerLevelConstantsBuffer->Attach();
+			mPixelPerFrameConstantsBuffer->Attach();
+			mVertexPerFrameConstantsBuffer->Attach();
 
 			//mRootScene.RotationSpeedY(.05f);
 

@@ -9,13 +9,8 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 {
 	return concurrency::create_task([this]
 		{
-			//m_vertexShaderTextured = VertexShader::Load(2, false, L"VertexShader5_6.cso");
-			//m_pixelShaderTextured = PixelShader::Load(2, false, L"PixelShader5_6.cso");
-
-			VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
-			PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
-			m_vertexShaderSimple = VertexShader::Get(VertexType::Simple);
-			m_pixelShaderSimple = PixelShader::Get(VertexType::Simple);
+			m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
+			m_pixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
 
 			m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
 		}
@@ -34,7 +29,7 @@ void Dx::Levels::Level5::SetupModel()
 
 	for (int i = 0; i <= 5000; i++)
 	{
-		auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured, 1);
+		auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured);
 
 		cube->X(location(generator));
 		cube->Y(location(generator));
@@ -67,7 +62,7 @@ void Dx::Levels::Level5::SetupModel()
 	}
 
 	m_worldViewTransformConstantBuffer = VSConstantBuffer<DirectX::XMMATRIX>::Create(m_worldViewTransform, ResourceSlots::PerLevel, false);
-	m_worldViewTransformConstantBuffer->Attach(false);
+	m_worldViewTransformConstantBuffer->Attach();
 
 	m_worldRotationSpeedY = 0.1f;
 }

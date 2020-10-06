@@ -22,12 +22,10 @@ namespace Dx::Drawables
 	public:
 		Drawable(
 			std::shared_ptr<VertexShader> vertexShader,
-			std::shared_ptr<PixelShader> pixelShader,
-			int resourceCacheID
+			std::shared_ptr<PixelShader> pixelShader
 		) :
 			m_vertexShader(vertexShader),
-			m_pixelShader(pixelShader),
-			m_resourceCacheID(resourceCacheID)
+			m_pixelShader(pixelShader)
 		{};
 
 		virtual ~Drawable() {};
@@ -35,30 +33,30 @@ namespace Dx::Drawables
 		virtual void RegisterResources() = 0;
 		virtual void UpdateConstants(DirectX::CXMMATRIX) = 0;
 
-		void AttachResources(bool force) {
+		void AttachResources(bool ){
 			if (m_vertexBuffer != nullptr)
-				m_vertexBuffer->Attach(force);
+				m_vertexBuffer->Attach();
 
 			if (m_indexBuffer != nullptr)
-				m_indexBuffer->Attach(force);
+				m_indexBuffer->Attach();
 
 			if (m_inputLayout != nullptr)
-				m_inputLayout->Attach(force);
+				m_inputLayout->Attach();
 
 			if (m_psConstantBuffer != nullptr)
-				m_psConstantBuffer->Attach(force);
+				m_psConstantBuffer->Attach();
 
 			if (m_vsConstantBuffer != nullptr)
-				m_vsConstantBuffer->Attach(force);
+				m_vsConstantBuffer->Attach();
 
 			if (m_texture != nullptr)
-				m_texture->Attach(force);
+				m_texture->Attach();
 
 			if (m_vertexShader != nullptr)
-				m_vertexShader->Attach(force);
+				m_vertexShader->Attach();
 
 			if (m_pixelShader != nullptr)
-				m_pixelShader->Attach(force);
+				m_pixelShader->Attach();
 		}
 
 		void Draw() {

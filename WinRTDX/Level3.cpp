@@ -80,8 +80,8 @@ void Dx::Levels::Level3::CreateIndices()
 	D3D11_SUBRESOURCE_DATA srdIndices = { indices, 0, 0 };
 
 	Graphics::Device->CreateBuffer(&indexBufferDesc, &srdIndices, m_indexBuffer.put());
-	m_vertexShader->Attach(true);
-	m_pixelShader->Attach(true);
+	m_vertexShader->Attach();
+	m_pixelShader->Attach();
 }
 
 void Dx::Levels::Level3::CreateConstantData()

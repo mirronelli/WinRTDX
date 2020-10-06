@@ -26,8 +26,10 @@ export float3 mLightIntensity(
     
     float3 reflectionVector = 2.0 * normalizedNormal * dot(normalizedvectorToLight, normalizedNormal) - normalizedvectorToLight;
     float3 specularLight = pow(saturate(dot(reflectionVector, normalize(vectorToCamera))), reflectivePower) * reflectiveness;
+    
+    float3 result = saturate(diffusedLight + ambientLight + specularLight * attenuation);
 
-    return saturate(diffusedLight + ambientLight + specularLight*attenuation);
+    return result;
 }
 
 struct VsColorInput
@@ -71,11 +73,15 @@ struct LightBuffer
     float attenuationConstant;
 };
 
-struct DrawableBuffer
+struct DrawablePixelBuffer
 {
-    row_major matrix worldTransform;
     float reflectiveness;
     float reflectivePower;
+};
+
+struct DrawableVertexBuffer
+{
+    row_major matrix worldTransform;
 };
 
 struct LevelBuffer  // TODO: rename to frame buffer since this is used per frame

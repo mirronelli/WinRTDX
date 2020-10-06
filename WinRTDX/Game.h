@@ -29,10 +29,12 @@ private:
 	ULONG64													m_frame = 0;
 
 	byte														m_maxLevel = 9;
-	byte														m_currentLevel = m_maxLevel;
+	byte														m_currentLevel = 7;
+	//byte														m_currentLevel = m_maxLevel;
 	bool														m_stop = false;
 
 	std::shared_ptr<Dx::KeyboardInput>				m_keyboardInput{ nullptr };
 	std::shared_ptr<Dx::MouseInput>					m_mouseInput{ nullptr };
+
 };
 

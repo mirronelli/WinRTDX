@@ -11,10 +11,6 @@ namespace Dx::Drawables
 		using Drawable::Drawable;
 
 	public:
-		struct VertexSimple {
-			float	x, y, z, w;
-		};
-
 		typedef struct {
 			DirectX::XMFLOAT4 colors[6]; 
 		} PSConstants;
@@ -24,18 +20,18 @@ namespace Dx::Drawables
 		} VSConstants;
 
 		inline static std::vector<D3D11_INPUT_ELEMENT_DESC> Ieds {
-			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32A32_FLOAT,	0, 0,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
-		inline static std::vector<VertexSimple> Vertices  {
-			{ -1.0f,	 1.0f,	-1.0f,	 1.0f },
-			{ 1.0f,	 1.0f,	-1.0f,	 1.0f },
-			{ 1.0f,	-1.0f,	-1.0f,	 1.0f },
-			{ -1.0f,	-1.0f,	-1.0f,	 1.0f },
-			{ -1.0f,	 1.0f,	 1.0f,	 1.0f },
-			{ 1.0f,	 1.0f,	 1.0f,	 1.0f },
-			{ 1.0f,	-1.0f,	 1.0f,	 1.0f },
-			{ -1.0f,	-1.0f,	 1.0f,	 1.0f },
+		inline static std::vector<Dx::Drawables::VertexSimple> Vertices {
+			{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	-1.0f) },
+			{ DirectX::XMFLOAT3(1.0f,	 1.0f,	-1.0f) },
+			{ DirectX::XMFLOAT3(1.0f,	-1.0f,	-1.0f) },
+			{ DirectX::XMFLOAT3(-1.0f,	-1.0f,	-1.0f) },
+			{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	 1.0f) },
+			{ DirectX::XMFLOAT3(1.0f,	 1.0f,	 1.0f) },
+			{ DirectX::XMFLOAT3(1.0f,	-1.0f,	 1.0f) },
+			{ DirectX::XMFLOAT3(-1.0f,	-1.0f,	 1.0f) }
 		};
 
 		inline static 	std::vector<UINT> Indices = {

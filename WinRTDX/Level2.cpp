@@ -50,8 +50,8 @@ void Dx::Levels::Level2::CreateVertices()
 	D3D11_SUBRESOURCE_DATA srdVertices = { vertices, 0, 0 };
 
 	Graphics::Device->CreateBuffer(&vertexBufferDesc, &srdVertices, m_vertexBuffer.put());
-	m_vertexShader->Attach(true);
-	m_pixelShader->Attach(true);
+	m_vertexShader->Attach();
+	m_pixelShader->Attach();
 }
 
 void Dx::Levels::Level2::CreateIndices()

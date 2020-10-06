@@ -18,8 +18,8 @@ namespace Dx::Drawables
 		) :
 			Drawable(
 				VertexShader::Get(VertexType::Colored), 
-				PixelShader::Get(VertexType::Colored),
-				200),
+				PixelShader::Get(VertexType::Colored)
+			),
 			m_steps(steps)
 		{}
 

@@ -27,11 +27,12 @@ namespace Dx::Levels
 			return concurrency::create_task([this]
 				{
 					m_vertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader7Textured.cso");
-					m_vertexShaderColored = VertexShader::Preload(VertexType::ColoredWithNormal, L"VertexShader7Colored.cso");
+					m_vertexShaderColored = VertexShader::Preload(VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
+					m_vertexShaderStatic = VertexShader::Preload(VertexType::Colored, L"9_VertexColored.cso");
 
 					m_pixelShaderTextured	= PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader7Textured.cso");
-					m_pixelShaderColored = PixelShader::Preload(VertexType::ColoredWithNormal, L"PixelShader7Colored.cso");
-					m_pixelShaderStatic = PixelShader::Preload(VertexType::Colored, L"PixelShader7Static.cso");
+					m_pixelShaderColored = PixelShader::Preload(VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
+					m_pixelShaderStatic = PixelShader::Preload(VertexType::Colored, L"9_PixelColored.cso");
 
 					m_texture = Texture::Preload("karin", L"Assets\\karin3.dds");
 				}
@@ -43,10 +44,10 @@ namespace Dx::Levels
 			GenerateDrawables();
 
 			m_sharedConstantVSBuffer = VSConstantBuffer<SharedConstants>::Create(m_sharedConstants, ResourceSlots::PerFrame);
-			m_sharedConstantVSBuffer->Attach(false);
+			m_sharedConstantVSBuffer->Attach();
 
 			m_sharedConstantPSBuffer = PSConstantBuffer<SharedConstants>::Create(m_sharedConstants, ResourceSlots::PerFrame);
-			m_sharedConstantPSBuffer->Attach(false);
+			m_sharedConstantPSBuffer->Attach();
 
 			m_light.lightPosition				= { 0, 0, 0, 0 };
 			m_light.lightColor					= { 1.0f, 1.0f, 1.0, 0.0f };
@@ -57,7 +58,7 @@ namespace Dx::Levels
 			m_light.attenuationConstant		= 0.f;
 
 			m_lightConstantBuffer = PSConstantBuffer<PSConstants>::Create(m_light, ResourceSlots::PerLevel);
-			m_lightConstantBuffer->Attach(false);
+			m_lightConstantBuffer->Attach();
 
 			m_mouseInput->RelativeTrackingEnter();
 		}
@@ -76,7 +77,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured, 1u);
+				auto cube = std::make_unique<CubeTextured>(m_vertexShaderTextured, m_pixelShaderTextured);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -107,7 +108,7 @@ namespace Dx::Levels
 			for (int i = 0; i <= 100; i++)
 			{
 				float radius = scale(generator);
-				auto cube = std::make_unique<CubeColored>(m_vertexShaderColored, m_pixelShaderColored, 2u);
+				auto cube = std::make_unique<CubeColored>(m_vertexShaderColored, m_pixelShaderColored);
 
 				cube->X(location(generator));
 				cube->Y(location(generator));
@@ -165,7 +166,7 @@ namespace Dx::Levels
 				m_drawables.push_back(std::move(sphere));
 			}
 
-			auto theSun = std::make_unique<SphereColoredWithNormal>(40);
+			auto theSun = std::make_unique<SphereColored>(40);
 
 			theSun->ScaleX(10);
 			theSun->ScaleY(10);
@@ -254,6 +255,7 @@ namespace Dx::Levels
 
 		std::shared_ptr<VertexShader>											m_vertexShaderTextured;
 		std::shared_ptr<VertexShader>											m_vertexShaderColored;
+		std::shared_ptr<VertexShader>											m_vertexShaderStatic;
 		std::shared_ptr<PixelShader>											m_pixelShaderTextured;
 		std::shared_ptr<PixelShader>											m_pixelShaderColored;
 		std::shared_ptr<PixelShader>											m_pixelShaderStatic;

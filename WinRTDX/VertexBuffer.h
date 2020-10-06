@@ -8,6 +8,7 @@ namespace Dx::Attachables
 	class VertexBuffer : public Attachable
 	{
 	public:
+		static void Reset() { mMap.clear(); }
 		static std::shared_ptr<VertexBuffer<T>> Get(std::string key, std::vector<T>& vertices, UINT slot = 0)
 		{
 			std::shared_ptr<VertexBuffer<T>> instance = mMap[key];
@@ -34,9 +35,9 @@ namespace Dx::Attachables
 			Graphics::Device->CreateBuffer(&desc, &srd, m_buffer.put());
 		}
 
-		void AttachPrivate(bool force)
+		void Attach()
 		{
-			if (force || mKey != mCurrentVertexBuffer)
+			if (mKey != mCurrentVertexBuffer)
 			{
 				mCurrentVertexBuffer = mKey;
 				UINT strideVertices = sizeof(T);

@@ -10,9 +10,10 @@ namespace Dx::Attachables
 	class InputLayout : public Dx::Attachables::Attachable
 	{
 	public:
+		static void InputLayout::Reset();
 		static std::shared_ptr<InputLayout> Get(Dx::Drawables::VertexType key);
 		InputLayout(Dx::Drawables::VertexType key);
-		void AttachPrivate(bool force);
+		void Attach();
 
 	private:
 		com_ptr<ID3D11InputLayout>	m_inputLayout;

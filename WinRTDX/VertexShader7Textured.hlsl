@@ -11,7 +11,7 @@ cbuffer level : register(b1)
 // once per drawable
 cbuffer drawable : register(b2)
 {
-    DrawableBuffer drawable;
+    DrawableVertexBuffer drawable;
 };
 
 VsTextureOutput main(VsTextureInput input)
