@@ -69,39 +69,21 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> reflectiveness(0.f, 1.0f);
 			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
 
-			//for (int i = 0; i < 100; i++)
-			//{
-			//	std::unique_ptr<MeshColored> mesh = std::make_unique<MeshColored>(
-			//		m_vertexShaderWithNormal,
-			//		m_pixelShaderWithNormal,
-			//		5u
-			//	);
 
-			//	mesh->X(location(generator));
-			//	mesh->Y(location(generator));
-			//	mesh->Z(location(generator));
+			for (int i = 0; i < 100; i++)
+			{
+				std::unique_ptr<Scene> importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
+				importedScene->Transform(
+					XMMatrixScaling(10, 10, 10)
+					* XMMatrixTranslation(location(generator), location(generator), location(generator)));
+				importedScene->RotationSpeedY(0.1f);
 
-			//	mesh->SpeedX(movementSpeed(generator));
-			//	mesh->SpeedY(movementSpeed(generator));
-			//	mesh->SpeedZ(movementSpeed(generator));
+				importedScene->RotationSpeedX(rotationSpeed(generator));
+				importedScene->RotationSpeedY(rotationSpeed(generator));
+				importedScene->RotationSpeedZ(rotationSpeed(generator));
 
-			//	mesh->RotationX(startAngle(generator));
-			//	mesh->RotationY(startAngle(generator));
-			//	mesh->RotationZ(startAngle(generator));
-
-			//	mesh->RotationSpeedX(rotationSpeed(generator));
-			//	mesh->RotationSpeedY(rotationSpeed(generator));
-			//	mesh->RotationSpeedZ(rotationSpeed(generator));
-
-			//	mesh->Color({ color(generator), color(generator), color(generator), 1 });
-			//	mesh->Specular(reflectiveness(generator), specularPower(generator) );
-			//	mesh->FileName("Assets\\suzanne.obj");
-			//	mesh->Scale(20);
-			//	mesh->Init();
-
-			//	m_drawables.push_back(std::move(mesh));
-
-			//}
+				mRootScene.AddScene(std::move(importedScene)); 
+			}
 
 			auto theSun = std::make_unique<SphereColoredWithNormal>(40);
 
@@ -109,11 +91,7 @@ namespace Dx::Levels
 			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
 			theSun->Init();
 
-			mDrawables.push_back(std::move(theSun));
-
-			for (auto d : mDrawables) {
-				d->RegisterResources();
-			}
+			mRootScene.AddDrawable(std::move(theSun));
 		}
 
 		void ProcessInput()
@@ -154,9 +132,8 @@ namespace Dx::Levels
 
 			mVertexPerFrameConstantsBuffer->Update(mVertexPerFrameConstants);
 			mPixelPerFrameConstantsBuffer->Update(mPixelPerFrameConstants);
-
-			for (auto d : mDrawables)
-				d->Update(delta, XMMatrixIdentity());
+			
+			mRootScene.Update(delta, XMMatrixIdentity());
 		}
 
 		void Render()
@@ -164,8 +141,7 @@ namespace Dx::Levels
 			float color[4]{ 0.0f, .0f, .02f, .0f };
 			Graphics::Instance->StartFrame(color);
 
-			for (auto d : mDrawables)
-				d->Draw();
+			mRootScene.Draw();
 		}
 
 	private:
@@ -209,6 +185,8 @@ namespace Dx::Levels
 		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, -120, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
 		float																			mCameraMovementSpeed = 1;
 		float																			mMouseSensitivity = .0006f;
+
+		Scene																			mRootScene;
 	};
 }
 

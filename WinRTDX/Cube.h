@@ -51,8 +51,8 @@ namespace Dx::Drawables
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			mVertexBuffer =		VertexBuffer<VertexSimple>::			Get("cube", Vertices);
-			mIndexBuffer =		IndexBuffer::								Get("cube", Indices);
+			//mVertexBuffer =		VertexBuffer<VertexSimple>::			Get("cube", Vertices);
+			//mIndexBuffer =		IndexBuffer::								Get("cube", Indices);
 			mPsConstantBuffer =	PSConstantBuffer<PSConstants>::		Create(mPsConstants, ResourceSlots::PerInstance);
 			mVsConstantBuffer =	VSConstantBuffer<WorldTransform>::	Create(mVsConstants, ResourceSlots::PerInstance);
 			mInputLayout =		InputLayout::								Get(VertexType::Simple);

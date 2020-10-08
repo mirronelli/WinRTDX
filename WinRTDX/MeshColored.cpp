@@ -18,8 +18,8 @@ namespace Dx::Drawables
 	void MeshColored::RegisterResources()
 	{
 		id++;
-		mVertexBuffer =		VertexBuffer<VertexSimpleWithNormal>	::Get("mesh:" + mName, mVertices);
-		mIndexBuffer =		IndexBuffer										::Get("mesh:" + mName, mIndices);
+		//mVertexBuffer =		VertexBuffer<VertexSimpleWithNormal>	::Get("mesh:" + mName, mVertices);
+		//mIndexBuffer =		IndexBuffer										::Get("mesh:" + mName, mIndices);
 		mInputLayout =		InputLayout										::Get(VertexType::SimpleWithNormal);
 		mVsConstantBuffer = VSConstantBuffer<WorldTransform>			::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 		mPsConstantBuffer = PSConstantBuffer<ColorSpecular>			::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);

@@ -23,15 +23,6 @@ namespace Dx::Drawables
 			mSteps(steps)
 		{}
 
-		void Init()
-		{
-			GenerateVerticesAndIndices();
-			mPixelPerInstanceConstants.reflectionPower = 16.0f;
-			mPixelPerInstanceConstants.reflectiveness = 1.f;
-
-			Drawable::Init();
-		}
-
 		void Color(XMFLOAT3 value) 
 		{
 			mColor = value; 
@@ -52,12 +43,27 @@ namespace Dx::Drawables
 		}
 
 		void RegisterResources() {
-			mVertexBuffer =		VertexBuffer<VertexColoredWithNormal>::		Get(MAKEID("sphere:coloredWithNormal:", mSteps), mVertices);
-			mIndexBuffer =		IndexBuffer::											Get(MAKEID("sphere:coloredWithNormal:", mSteps), mIndices);
+			mPixelPerInstanceConstants.reflectionPower = 160.0f;
+			mPixelPerInstanceConstants.reflectiveness = 1.f;
+			std::string uuid = MAKEID("sphere:coloredWithNormal:", mSteps);
+
+			if (nullptr == (mIndexBuffer = IndexBuffer::Get(uuid)))
+			{
+				std::unique_ptr<std::vector<UINT>> indices = std::make_unique<std::vector<unsigned int>>();
+				std::unique_ptr<std::vector<VertexColoredWithNormal>> vertices = std::make_unique<std::vector<VertexColoredWithNormal>>();
+
+				GenerateVerticesAndIndices(vertices, indices);
+				mIndexBuffer = IndexBuffer::Create(uuid, std::move(indices));
+				mVertexBuffer = VertexBuffer<VertexColoredWithNormal>::Create(uuid, std::move(vertices));
+			}
+			else
+			{
+				mVertexBuffer = VertexBuffer<VertexColoredWithNormal>::Get(uuid);
+			}
+			mIndicesCount = mIndexBuffer->Count();
 			mInputLayout =		InputLayout::											Get(VertexType::ColoredWithNormal);
 			mVsConstantBuffer = VSConstantBuffer<WorldTransform>::				Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 			mPsConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::	Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
-			mIndicesCount =		(int)mIndices.size();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
@@ -68,7 +74,7 @@ namespace Dx::Drawables
 		}
 
 	private:
-		void GenerateVerticesAndIndices()
+		void GenerateVerticesAndIndices(std::unique_ptr<std::vector<VertexColoredWithNormal>>& vertices, std::unique_ptr < std::vector< unsigned int> >& indices)
 		{
 			std::random_device rd;  //Will be used to obtain a seed for the random number engine
 			std::mt19937 generator(rd());
@@ -87,7 +93,7 @@ namespace Dx::Drawables
 			int counter = 1;
 
 			// north pole
-			mVertices.push_back(
+			vertices->push_back(
 				{ 
 					XMFLOAT3( 0, 1, 0 ), 
 					XMFLOAT3(0, 1, 0), 
@@ -103,7 +109,7 @@ namespace Dx::Drawables
 				{	
 					XMFLOAT3 vertex;
 					XMStoreFloat3(&vertex, XMVector3Rotate(vector, XMQuaternionRotationRollPitchYaw(i * step, j * step, 0)));
-					mVertices.push_back(
+					vertices->push_back(
 						{ 
 							vertex, 
 							vertex, 
@@ -114,19 +120,19 @@ namespace Dx::Drawables
 					// generate triangles of inner vertices within strips
 					if (counter > northPole && counter % meridians != 0 && counter < southPole - 1 - meridians)
 					{
-						mIndices.push_back(counter);
-						mIndices.push_back(counter + meridians);
-						mIndices.push_back(counter + 1);
+						indices->push_back(counter);
+						indices->push_back(counter + meridians);
+						indices->push_back(counter + 1);
 
-						mIndices.push_back(counter + 1);
-						mIndices.push_back(counter + meridians);
-						mIndices.push_back(counter + meridians + 1);
+						indices->push_back(counter + 1);
+						indices->push_back(counter + meridians);
+						indices->push_back(counter + meridians + 1);
 					}
 					counter++;
 				}
 			}
 			// south pole
-			mVertices.push_back(
+			vertices->push_back(
 				{ 
 					XMFLOAT3( 0, -1, 0 ), 
 					XMFLOAT3(0, -1, 0), 
@@ -137,34 +143,34 @@ namespace Dx::Drawables
 			// join poles with strips
 			for (int i = 1; i < meridians; i++)
 			{
-				mIndices.push_back(northPole);  // north pole
-				mIndices.push_back(northPole + i);
-				mIndices.push_back(northPole + i + 1);
+				indices->push_back(northPole);  // north pole
+				indices->push_back(northPole + i);
+				indices->push_back(northPole + i + 1);
 
-				mIndices.push_back(southPole);  // south pole
-				mIndices.push_back(southPole - i);
-				mIndices.push_back(southPole - i - 1);
+				indices->push_back(southPole);  // south pole
+				indices->push_back(southPole - i);
+				indices->push_back(southPole - i - 1);
 			}
 
 			// join poles with both strip ends
-			mIndices.push_back(northPole);
-			mIndices.push_back(northPole + meridians);
-			mIndices.push_back(northPole + 1);
+			indices->push_back(northPole);
+			indices->push_back(northPole + meridians);
+			indices->push_back(northPole + 1);
 			
-			mIndices.push_back(southPole);
-			mIndices.push_back(southPole - meridians);
-			mIndices.push_back(southPole -1);
+			indices->push_back(southPole);
+			indices->push_back(southPole - meridians);
+			indices->push_back(southPole -1);
 
 			//join strip ends
 			for (int i = northPole + 1; i < southPole - 1 - meridians; i += meridians)
 			{
-				mIndices.push_back(i);
-				mIndices.push_back(i + meridians - 1);
-				mIndices.push_back(i + meridians);
+				indices->push_back(i);
+				indices->push_back(i + meridians - 1);
+				indices->push_back(i + meridians);
 				
-				mIndices.push_back(i + meridians - 1);
-				mIndices.push_back(i + meridians - 1 + meridians);
-				mIndices.push_back(i + meridians);
+				indices->push_back(i + meridians - 1);
+				indices->push_back(i + meridians - 1 + meridians);
+				indices->push_back(i + meridians);
 			}
 		}
 
@@ -176,8 +182,5 @@ namespace Dx::Drawables
 
 		Dx::Drawables::Specular				mPixelPerInstanceConstants;
 		WorldTransform							mVertexPerInstanceConstants;
-
-		std::vector<VertexColoredWithNormal>	mVertices;
-		std::vector<UINT>								mIndices;
 	};
 }
