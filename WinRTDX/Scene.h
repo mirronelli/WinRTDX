@@ -15,10 +15,10 @@ namespace Dx::Drawables
 		void Update(float delta, DirectX::CXMMATRIX parentMatrix);
 		std::string Name();
 		std::unique_ptr<Scene> Clone();
-
-	private:
 		std::vector<std::unique_ptr<Scene>>			mScenes;
 		std::vector<std::unique_ptr<Drawable>>		mDrawables;
+
+	private:
 		std::string											mName;
 		static inline std::map<std::string, int>	mInstanceIndexes;
 	};

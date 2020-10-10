@@ -69,10 +69,9 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> scale(1.f, 6.0f);
 			std::uniform_real_distribution<float> color(0.f, 1.0f);
 			std::uniform_real_distribution<float> reflectiveness(0.f, 1.0f);
-			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
+			std::uniform_real_distribution<float> specularPower(0.f, 640.0f);
 
-
-			for (int i = 0; i < 1000; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				std::unique_ptr<Scene> importedScene = SceneFactory::Create("Assets\\suzanne.obj");
 				importedScene->Transform(
@@ -84,7 +83,29 @@ namespace Dx::Levels
 				importedScene->RotationSpeedY(rotationSpeed(generator));
 				importedScene->RotationSpeedZ(rotationSpeed(generator));
 
-				mRootScene.AddScene(std::move(importedScene)); 
+				static_cast<Mesh*>(importedScene->mScenes[0]->mDrawables[0].get())->Color({ color(generator), color(generator), color(generator), 1 });
+				static_cast<Mesh*>(importedScene->mScenes[0]->mDrawables[0].get())->Specular(reflectiveness(generator), specularPower(generator));
+				mRootScene.AddScene(std::move(importedScene));
+			}
+
+			for (int i = 0; i < 50; i++)
+			{
+				std::unique_ptr<Scene> importedScene = SceneFactory::Create("Assets\\nanosuit.obj");
+				importedScene->Transform(
+					XMMatrixScaling(2, 2, 2)
+					* XMMatrixTranslation(location(generator), location(generator), location(generator)));
+				importedScene->RotationSpeedY(0.1f);
+
+				importedScene->RotationSpeedX(rotationSpeed(generator));
+				importedScene->RotationSpeedY(rotationSpeed(generator));
+				importedScene->RotationSpeedZ(rotationSpeed(generator));
+
+				for (int i = 0; i < importedScene->mScenes.size(); i++)
+				{
+					static_cast<Mesh*>(importedScene->mScenes[i]->mDrawables[0].get())->Color({ color(generator), color(generator), color(generator), 1 });
+					static_cast<Mesh*>(importedScene->mScenes[i]->mDrawables[0].get())->Specular(reflectiveness(generator), specularPower(generator));
+				}
+				mRootScene.AddScene(std::move(importedScene));
 			}
 
 			auto theSun = std::make_unique<SphereColoredWithNormal>(40);

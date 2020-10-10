@@ -128,8 +128,8 @@ namespace Dx::Levels
 		);
 
 		srand(time(NULL));
-		newMesh->Color({ (rand() % 100) / 100.f, (rand() % 100) / 100.f, (rand() % 100) / 100.f, 0 });
-		newMesh->Specular(1, 10 * rand() % 50);
+		newMesh->Color({ 1,0,0,0 });
+		newMesh->Specular(0, 1);
 		newMesh->Init();
 
 		return newMesh;

@@ -45,7 +45,7 @@ namespace Dx::Drawables
 
 	std::unique_ptr<Scene> Scene::Clone()
 	{
-		std::string cloneName = MAKEID(mName, mInstanceIndexes[mName]++);
+		std::string cloneName = MAKEID(mName + ":", mInstanceIndexes[mName]++);
 		std::unique_ptr clone = std::make_unique<Scene>(cloneName);
 		clone->mInitialQuaternion = this->mInitialQuaternion;
 		clone->mTransform = this->mTransform;
