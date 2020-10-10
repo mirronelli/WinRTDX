@@ -2,7 +2,7 @@
 #include "StepTimer.h"
 #include "KeyboardInput.h"
 #include "MouseInput.h"
-#include "ILevel.h"
+#include "LevelBase.h"
 
 class Game
 {
@@ -22,14 +22,14 @@ private:
 	void Render();
 	void Present();
 
-	std::unique_ptr<Dx::Levels::ILevel>				mLevel{ nullptr };
+	std::unique_ptr<Dx::Levels::LevelBase>				mLevel{ nullptr };
 	CoreWindow												mWindow{ nullptr };
 	bool														mIsClosing = false;
 	Dx::StepTimer											mTimer;
 	ULONG64													mFrame = 0;
 
 	byte														mMaxLevel = 9;
-	byte														mCurrentLevel = 7;
+	byte														mCurrentLevel = 9;
 	//byte														mCurrentLevel = mMaxLevel;
 	bool														mStop = false;
 

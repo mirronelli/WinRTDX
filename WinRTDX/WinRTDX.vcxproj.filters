@@ -51,9 +51,6 @@
     <ClInclude Include="Level1.h">
       <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="ILevel.h">
-      <Filter>Dx\Game\Levels</Filter>
-    </ClInclude>
     <ClInclude Include="Level3.h">
       <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
@@ -162,6 +159,9 @@
     </ClInclude>
     <ClInclude Include="SphereColored.h">
       <Filter>Dx\Graphics\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBase.h">
+      <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

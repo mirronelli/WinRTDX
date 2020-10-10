@@ -20,6 +20,8 @@ concurrency::task<void> Dx::Levels::Level1::Load()
 
 void Dx::Levels::Level1::SetupModel()
 {
+	LevelBase::SetupModel();
+
 	VertexSimple vertices[] = {
 		{  -1.0f,  1.0f, 0.0f, 1.0f,		1.0f,  .0f,  .0f, 1.0f },
 		{  -0.6f,  0.5f, 0.0f, 1.0f,		 .0f, 1.0f,  .0f, 1.0f },

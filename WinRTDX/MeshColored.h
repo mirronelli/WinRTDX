@@ -2,17 +2,21 @@
 #include "pch.h"
 #include "Drawable.h"
 #include "Structures.h"
-#include "SceneFactory.h"
 
 namespace Dx::Drawables
 {
 
 	class MeshColored : public Drawable
 	{
-		friend class Dx::Levels::SceneFactory;
-
 	public:
-		using Drawable::Drawable;
+		MeshColored(
+			std::string name,
+			std::shared_ptr<Dx::Attachables::VertexBuffer<VertexSimpleWithNormal>> vertexBuffer,
+			std::shared_ptr<Dx::Attachables::IndexBuffer> indexBuffer,
+			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader,
+			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader
+		);
+		
 		void Color(DirectX::XMFLOAT4 color);
 		void Specular(float reflectiveness, float reflectionPower);
 
@@ -23,8 +27,6 @@ namespace Dx::Drawables
 	private:
 		ColorSpecular									mPixelPerInstanceConstants;
 		WorldTransform									mVertexPerInstanceConstants;
-		std::vector<VertexSimpleWithNormal>		mVertices;
-		std::vector<UINT>								mIndices;
 		std::string										mName;
 
 		static inline int id;

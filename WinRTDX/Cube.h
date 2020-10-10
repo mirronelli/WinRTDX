@@ -15,32 +15,6 @@ namespace Dx::Drawables
 			DirectX::XMFLOAT4 colors[6]; 
 		} PSConstants;
 
-		inline static std::vector<Dx::Drawables::VertexSimple> Vertices {
-			{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	-1.0f) },
-			{ DirectX::XMFLOAT3(1.0f,	 1.0f,	-1.0f) },
-			{ DirectX::XMFLOAT3(1.0f,	-1.0f,	-1.0f) },
-			{ DirectX::XMFLOAT3(-1.0f,	-1.0f,	-1.0f) },
-			{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	 1.0f) },
-			{ DirectX::XMFLOAT3(1.0f,	 1.0f,	 1.0f) },
-			{ DirectX::XMFLOAT3(1.0f,	-1.0f,	 1.0f) },
-			{ DirectX::XMFLOAT3(-1.0f,	-1.0f,	 1.0f) }
-		};
-
-		inline static 	std::vector<UINT> Indices = {
-			0, 1, 2,  // front
-			0, 2, 3,
-			1, 5, 2,  // right
-			5, 6, 2,
-			0, 7, 4,  // left
-			0, 3, 7,
-			0,	5, 1,  // top
-			0, 4, 5,
-			3, 2, 7,  // bottom
-			2, 6, 7,
-			4, 6, 5,  // back
-			4, 7, 6
-		};
-
 		void RegisterResources() {
 			mPsConstants = {
 					DirectX::XMFLOAT4(1.f, 0.5f, 0.5f, 1.f),
@@ -51,12 +25,26 @@ namespace Dx::Drawables
 					DirectX::XMFLOAT4(1.f, 1.f, 0.5f, 1.f),
 			};
 
-			//mVertexBuffer =		VertexBuffer<VertexSimple>::			Get("cube", Vertices);
-			//mIndexBuffer =		IndexBuffer::								Get("cube", Indices);
+			std::string uuid = "cube:simple";
+
+			if (nullptr == (mIndexBuffer = IndexBuffer::Get(uuid)))
+			{
+				std::unique_ptr<std::vector<UINT>> indices = std::make_unique<std::vector<unsigned int>>();
+				std::unique_ptr<std::vector<VertexSimple>> vertices = std::make_unique<std::vector<VertexSimple>>();
+
+				GenerateVerticesAndIndices(vertices, indices);
+				mIndexBuffer = IndexBuffer::Create(uuid, std::move(indices));
+				mVertexBuffer = VertexBuffer<VertexSimple>::Create(uuid, std::move(vertices));
+			}
+			else
+			{
+				mVertexBuffer = VertexBuffer<VertexSimple>::Get(uuid);
+			}
+
 			mPsConstantBuffer =	PSConstantBuffer<PSConstants>::		Create(mPsConstants, ResourceSlots::PerInstance);
 			mVsConstantBuffer =	VSConstantBuffer<WorldTransform>::	Create(mVsConstants, ResourceSlots::PerInstance);
 			mInputLayout =		InputLayout::								Get(VertexType::Simple);
-			mIndicesCount =		(UINT)Indices.size();
+			mIndicesCount =	mIndexBuffer->Count();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
@@ -66,6 +54,41 @@ namespace Dx::Drawables
 		}
 
 	private:
+		void GenerateVerticesAndIndices(std::unique_ptr<std::vector<VertexSimple>>& vertices, std::unique_ptr <std::vector<unsigned int>>& indices)
+		{
+			vertices->insert(
+				vertices->begin(),
+				{
+					{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	-1.0f) },
+					{ DirectX::XMFLOAT3(1.0f,	 1.0f,	-1.0f) },
+					{ DirectX::XMFLOAT3(1.0f,	-1.0f,	-1.0f) },
+					{ DirectX::XMFLOAT3(-1.0f,	-1.0f,	-1.0f) },
+					{ DirectX::XMFLOAT3(-1.0f,	 1.0f,	 1.0f) },
+					{ DirectX::XMFLOAT3(1.0f,	 1.0f,	 1.0f) },
+					{ DirectX::XMFLOAT3(1.0f,	-1.0f,	 1.0f) },
+					{ DirectX::XMFLOAT3(-1.0f,	-1.0f,	 1.0f) }
+				}
+			);
+
+			indices->insert(
+				indices->begin(),
+				{
+					0, 1, 2,  // front
+					0, 2, 3,
+					1, 5, 2,  // right
+					5, 6, 2,
+					0, 7, 4,  // left
+					0, 3, 7,
+					0,	5, 1,  // top
+					0, 4, 5,
+					3, 2, 7,  // bottom
+					2, 6, 7,
+					4, 6, 5,  // back
+					4, 7, 6
+				}
+			);
+		}
+
 		PSConstants															mPsConstants = {};
 		WorldTransform														mVsConstants = {};
 	};

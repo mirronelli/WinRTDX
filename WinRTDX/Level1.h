@@ -1,12 +1,12 @@
 #pragma once
 #include "pch.h"
-#include "ILevel.h"
+#include "LevelBase.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
 namespace Dx::Levels
 {
-	class Level1 : public ILevel
+	class Level1 : public LevelBase
 	{
 
 		struct VertexSimple
@@ -16,7 +16,7 @@ namespace Dx::Levels
 		};
 
 	public:
-		using ILevel::ILevel;
+		using LevelBase::LevelBase;
 		concurrency::task<void> Load();
 		void SetupModel();
 		void Render();

@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "ILevel.h"
+#include "LevelBase.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -8,9 +8,9 @@
 namespace Dx::Levels
 {
 
-	class Level2 : public ILevel
+	class Level2 : public LevelBase
 	{
-		using ILevel::ILevel;
+		using LevelBase::LevelBase;
 
 		struct VertexSimple
 		{

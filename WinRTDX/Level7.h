@@ -8,7 +8,7 @@
 #include "SphereColored.h"
 #include "SphereColoredWithNormal.h"
 #include "CubeTextured.h"
-#include "ILevel.h"
+#include "LevelBase.h"
 #include "IO.h"
 #include "Camera.h"
 #include <DirectXMath.h>
@@ -19,10 +19,10 @@ using namespace Dx::Attachables;
 namespace Dx::Levels
 {
 
-	class Level7 : public ILevel
+	class Level7 : public LevelBase
 	{
 	public:
-		using ILevel::ILevel;
+		using LevelBase::LevelBase;
 		concurrency::task<void> Load()
 		{
 			return concurrency::create_task([this]
@@ -42,6 +42,8 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
+			LevelBase::SetupModel();
+
 			GenerateDrawables();
 
 			mVertexPerFrameConstantsBuffer = VSConstantBuffer<VertexPerFrameConstants>::Create(mVertexPerFrameConstants, ResourceSlots::PerFrame);

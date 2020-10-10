@@ -1,24 +1,30 @@
 #pragma once
 #include "KeyboardInput.h"
 #include "MouseInput.h"
+#include "Attachable.h"
 
 namespace Dx::Levels
 {
 
-	class ILevel
+	class LevelBase
 	{
 	public:
-		ILevel(std::shared_ptr<KeyboardInput> keyboardInput, std::shared_ptr<MouseInput> mouseInput) :
+		LevelBase(std::shared_ptr<KeyboardInput> keyboardInput, std::shared_ptr<MouseInput> mouseInput) :
 			mKeyboardInput(keyboardInput),
 			mMouseInput(mouseInput)
 		{};
 
 		virtual concurrency::task<void> Load() = 0;
-		virtual void SetupModel() = 0;
 		virtual void Render() = 0;
 		virtual void Update(float delta) = 0;
 
-		virtual ~ILevel() {}
+		virtual void SetupModel() 
+		{
+			Dx::Attachables::Attachable::Reset();
+		};
+
+
+		virtual ~LevelBase() {}
 	protected:
 		std::shared_ptr<KeyboardInput>   mKeyboardInput;
 		std::shared_ptr<MouseInput>      mMouseInput;

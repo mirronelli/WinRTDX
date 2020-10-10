@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "ILevel.h"
+#include "LevelBase.h"
 #include "Drawable.h"
 #include "VertexShader.h"
 
@@ -10,9 +10,9 @@ using namespace Dx::Drawables;
 namespace Dx::Levels
 {
 
-	class Level4 : public ILevel
+	class Level4 : public LevelBase
 	{
-		using ILevel::ILevel;
+		using LevelBase::LevelBase;
 
 	public:
 		concurrency::task<void> Load();

@@ -16,6 +16,7 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 
 void Dx::Levels::Level4::SetupModel()
 {
+	LevelBase::SetupModel();
 	std::random_device rd;  //Will be used to obtain a seed for the random number engine
 	std::mt19937 generator(rd());
 	std::uniform_real_distribution<float> location(-140.0f, 140.0f);

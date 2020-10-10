@@ -3,7 +3,7 @@
 
 #include <random>
 
-#include "ILevel.h"
+#include "LevelBase.h"
 #include "Drawable.h"
 #include "IO.h"
 #include "Camera.h"
@@ -17,10 +17,10 @@ using namespace Dx::Attachables;
 namespace Dx::Levels
 {
 
-	class Level9 : public ILevel
+	class Level9 : public LevelBase
 	{
 	public:
-		using ILevel::ILevel;
+		using LevelBase::LevelBase;
 		concurrency::task<void> Load()
 		{
 			return concurrency::create_task(
@@ -39,6 +39,7 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
+			LevelBase::SetupModel();
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
 			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");

@@ -102,6 +102,7 @@ void Dx::Levels::Level2::RegisterBuffers()
 
 void Dx::Levels::Level2::SetupModel()
 {
+	LevelBase::SetupModel();
 	CreateVertices();
 	CreateIndices();
 	CreateConstantData();

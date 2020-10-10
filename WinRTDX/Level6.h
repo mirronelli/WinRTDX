@@ -5,7 +5,7 @@
 
 #include "Drawable.h"
 #include "CubeTextured.h"
-#include "ILevel.h"
+#include "LevelBase.h"
 #include "IO.h"
 #include "Camera.h"
 
@@ -14,10 +14,10 @@ using namespace Dx::Attachables;
 namespace Dx::Levels
 {
 
-	class Level6 : public ILevel
+	class Level6 : public LevelBase
 	{
 	public:
-		using ILevel::ILevel;
+		using LevelBase::LevelBase;
 		concurrency::task<void> Load()
 		{
 			return concurrency::create_task([this]
@@ -32,6 +32,7 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
+			LevelBase::SetupModel();
 			std::random_device rd;  //Will be used to obtain a seed for the random number engine
 			std::mt19937 generator(rd());
 			std::uniform_real_distribution<float> location(-240.0f, 240.0f);
