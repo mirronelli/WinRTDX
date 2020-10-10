@@ -36,11 +36,11 @@
     <ClCompile Include="SceneFactory.cpp">
       <Filter>Dx\Game\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="MeshColored.cpp">
-      <Filter>Dx\Graphics\Drawables</Filter>
-    </ClCompile>
     <ClCompile Include="InputLayout.cpp">
       <Filter>Dx\Graphics\Attachables</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Dx\Graphics\Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +151,6 @@
     <ClInclude Include="SceneFactory.h">
       <Filter>Dx\Game\Levels</Filter>
     </ClInclude>
-    <ClInclude Include="MeshColored.h">
-      <Filter>Dx\Graphics\Drawables</Filter>
-    </ClInclude>
     <ClInclude Include="SphereColoredWithNormal.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
@@ -162,6 +159,9 @@
     </ClInclude>
     <ClInclude Include="LevelBase.h">
       <Filter>Dx\Game\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

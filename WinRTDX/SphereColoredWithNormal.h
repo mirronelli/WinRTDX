@@ -60,7 +60,6 @@ namespace Dx::Drawables
 			{
 				mVertexBuffer = VertexBuffer<VertexColoredWithNormal>::Get(uuid);
 			}
-			mIndicesCount = mIndexBuffer->Count();
 			mInputLayout =		InputLayout::											Get(VertexType::ColoredWithNormal);
 			mVsConstantBuffer = VSConstantBuffer<WorldTransform>::				Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 			mPsConstantBuffer = PSConstantBuffer<Dx::Drawables::Specular>::	Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);

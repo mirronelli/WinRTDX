@@ -44,7 +44,6 @@ namespace Dx::Drawables
 			mPsConstantBuffer =	PSConstantBuffer<PSConstants>::		Create(mPsConstants, ResourceSlots::PerInstance);
 			mVsConstantBuffer =	VSConstantBuffer<WorldTransform>::	Create(mVsConstants, ResourceSlots::PerInstance);
 			mInputLayout =		InputLayout::								Get(VertexType::Simple);
-			mIndicesCount =	mIndexBuffer->Count();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)

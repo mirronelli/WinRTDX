@@ -4,7 +4,6 @@
 #include <assimp/postprocess.h>
 
 #include "SceneFactory.h"
-#include "MeshColored.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -15,8 +14,13 @@ using namespace DirectX;
 namespace Dx::Levels
 {
 
-	std::unique_ptr<Scene> SceneFactory::LoadFromFile(std::string fileName)
+	std::unique_ptr<Scene> SceneFactory::Create(std::string fileName)
 	{
+		if (mScenes[fileName] != nullptr)
+		{
+			return mScenes[fileName]->Clone();
+		}
+
 		Assimp::Importer importer;
 		const aiScene* sourceScene = importer.ReadFile(fileName,
 			aiProcess_CalcTangentSpace |
@@ -24,12 +28,13 @@ namespace Dx::Levels
 			aiProcess_JoinIdenticalVertices |
 			aiProcess_SortByPType);
 
-
 		if (sourceScene != nullptr && sourceScene->HasMeshes())
 		{
-			std::unique_ptr<Scene> newScene = std::make_unique<Scene>(fileName);
+			std::shared_ptr<Scene> newScene = std::make_shared<Scene>(fileName);
 			SceneFactory::ProcessNode(newScene.get(), sourceScene->mRootNode, sourceScene, fileName);
-			return newScene;
+			mScenes[fileName] = newScene;
+			
+			return newScene->Clone();
 		}
 		else
 		{
@@ -65,14 +70,15 @@ namespace Dx::Levels
 		{
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
-			std::unique_ptr<MeshColored> newMesh = CreateMeshColored(sourceMesh, baseName);
+			std::unique_ptr<Mesh> newMesh = CreateMeshColored(sourceMesh, baseName);
 			parentScene->AddDrawable(std::move(newMesh));
 		}
 	}
 
-	std::unique_ptr <MeshColored> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, std::string baseName)
+	std::unique_ptr <Mesh> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, std::string baseName)
 	{
 		std::string name = baseName + ":" + std::string(sourceMesh->mName.C_Str());
+		std::shared_ptr<InputLayout>		inputLayout = InputLayout::Get(VertexType::SimpleWithNormal);
 		std::shared_ptr<VertexShader>		vertexShader = VertexShader::Get(VertexType::SimpleWithNormal);
 		std::shared_ptr<PixelShader>		pixelShader = PixelShader::Get(VertexType::SimpleWithNormal);
 		std::shared_ptr<IndexBuffer>		indexBuffer = IndexBuffer::Get(name);
@@ -112,16 +118,18 @@ namespace Dx::Levels
 			indexBuffer = IndexBuffer::Create(name, std::move(indices));
 		}
 
-		std::unique_ptr<MeshColored> newMesh = std::make_unique<MeshColored>(
-			name, 
-			std::move(vertexBuffer), 
-			std::move(indexBuffer), 
+		std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>(
+			name,
+			inputLayout,
+			vertexBuffer, 
+			indexBuffer, 
 			vertexShader, 
 			pixelShader
 		);
 
-		newMesh->Color({ 1,0,0,0 });
-		newMesh->Specular(1, 32);
+		srand(time(NULL));
+		newMesh->Color({ (rand() % 100) / 100.f, (rand() % 100) / 100.f, (rand() % 100) / 100.f, 0 });
+		newMesh->Specular(1, 10 * rand() % 50);
 		newMesh->Init();
 
 		return newMesh;

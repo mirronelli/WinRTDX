@@ -38,7 +38,6 @@ namespace Dx::Drawables
 			mInputLayout =		InputLayout::											Get(VertexType::TexturedWithNormal);
 			mVsConstantBuffer =	VSConstantBuffer<WorldTransform>::				Create(mVsConstants, ResourceSlots::PerInstance);
 			mPsConstantBuffer =	PSConstantBuffer<Specular>::						Create(mPsConstants, ResourceSlots::PerInstance);
-			mIndicesCount =		mIndexBuffer->Count();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX viewPerspectiveTransform)

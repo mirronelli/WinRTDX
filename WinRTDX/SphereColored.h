@@ -51,7 +51,7 @@ namespace Dx::Drawables
 			else
 			{
 				mVertexBuffer = VertexBuffer<VertexColored>::Get(uuid);
-			}			mIndicesCount = mIndexBuffer->Count();
+			}			
 			mInputLayout =			InputLayout::								Get(VertexType::Colored);
 			mVsConstantBuffer =		VSConstantBuffer<WorldTransform>::	Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 		}

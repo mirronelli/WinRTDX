@@ -42,7 +42,6 @@ namespace Dx::Drawables
 			}
 			mVsConstantBuffer =	VSConstantBuffer<VSConstants>::	Create(mVsConstants, ResourceSlots::PerInstance);
 			mInputLayout =		InputLayout::								Get(VertexType::ColoredWithNormal);
-			mIndicesCount =		mIndexBuffer->Count();
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)

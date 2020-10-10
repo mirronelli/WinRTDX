@@ -42,21 +42,21 @@ namespace Dx::Levels
 			LevelBase::SetupModel();
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
+			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
 			importedScene->Transform(
 				XMMatrixScaling(10, 10, 10)
 				* XMMatrixTranslation(-50, 0, 0));
 			importedScene->RotationSpeedY(0.1f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
+			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
 			importedScene->Transform(
 				XMMatrixScaling(10, 10, 10)
 				* XMMatrixTranslation(50, 0, 0));
 			importedScene->RotationSpeedY(-0.1f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			importedScene = SceneFactory::LoadFromFile("Assets\\nanosuit.obj");
+			importedScene = SceneFactory::Create("Assets\\nanosuit.obj");
 			importedScene->Transform(
 				XMMatrixTranslation(0, -10, 100));
 			importedScene->RotationSpeedY(-0.1f);

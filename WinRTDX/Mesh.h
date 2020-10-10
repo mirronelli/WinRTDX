@@ -6,12 +6,13 @@
 namespace Dx::Drawables
 {
 
-	class MeshColored : public Drawable
+	class Mesh : public Drawable
 	{
 	public:
-		MeshColored(
+		Mesh(
 			std::string name,
-			std::shared_ptr<Dx::Attachables::VertexBuffer<VertexSimpleWithNormal>> vertexBuffer,
+			std::shared_ptr<InputLayout> inputLayout,
+			std::shared_ptr<Dx::Attachables::Attachable> vertexBuffer,
 			std::shared_ptr<Dx::Attachables::IndexBuffer> indexBuffer,
 			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader,
 			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader
@@ -19,6 +20,7 @@ namespace Dx::Drawables
 		
 		void Color(DirectX::XMFLOAT4 color);
 		void Specular(float reflectiveness, float reflectionPower);
+		std::unique_ptr<Dx::Drawables::Drawable> Clone();
 
 	protected:
 		void RegisterResources();

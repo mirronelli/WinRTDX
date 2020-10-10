@@ -8,7 +8,7 @@
 #include "CubeColored.h"
 #include "SphereColored.h"
 #include "CubeTextured.h"
-#include "MeshColored.h"
+#include "Mesh.h"
 #include "IO.h"
 #include "Camera.h"
 #include "SceneFactory.h"
@@ -72,9 +72,9 @@ namespace Dx::Levels
 			std::uniform_real_distribution<float> specularPower(0.f, 64.0f);
 
 
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 1000; i++)
 			{
-				std::unique_ptr<Scene> importedScene = SceneFactory::LoadFromFile("Assets\\suzanne.obj");
+				std::unique_ptr<Scene> importedScene = SceneFactory::Create("Assets\\suzanne.obj");
 				importedScene->Transform(
 					XMMatrixScaling(10, 10, 10)
 					* XMMatrixTranslation(location(generator), location(generator), location(generator)));

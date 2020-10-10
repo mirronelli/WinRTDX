@@ -2,14 +2,15 @@
 #include "Scene.h"
 #include "assimp\scene.h"
 #include "Attachable.h"
-#include "MeshColored.h"
+#include "Mesh.h"
+#include <map>
 
 namespace Dx::Levels
 {
 	class SceneFactory
 	{
 	public:
-		static std::unique_ptr<Dx::Drawables::Scene> LoadFromFile(
+		static std::unique_ptr<Dx::Drawables::Scene> Create(
 			std::string fileName
 		);
 
@@ -28,11 +29,12 @@ namespace Dx::Levels
 			std::string baseName
 		);
 
-		static std::unique_ptr<Dx::Drawables::MeshColored> CreateMeshColored(
+		static std::unique_ptr<Dx::Drawables::Mesh> CreateMeshColored(
 			aiMesh* sourceMesh, 
 			std::string baseName
 		);
 
 		static DirectX::XMMATRIX ConvertMatrix(aiMatrix4x4& source);
+		static inline std::map<std::string, std::shared_ptr<Dx::Drawables::Scene>> mScenes;
 	};
 }

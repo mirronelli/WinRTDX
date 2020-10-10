@@ -32,6 +32,7 @@ namespace Dx::Drawables
 		virtual void Init() { RegisterResources(); mInitialized = true; };
 		virtual void RegisterResources() = 0;
 		virtual void UpdateConstants(DirectX::CXMMATRIX) = 0;
+		virtual std::unique_ptr<Drawable> Clone() { return nullptr; };
 
 		void AttachResources(bool ){
 			if (mVertexBuffer != nullptr)
@@ -65,7 +66,7 @@ namespace Dx::Drawables
 			UpdateConstants(mTransform);
 			AttachResources(false);
 			Graphics::Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			Graphics::Context->DrawIndexed(mIndicesCount, 0, 0);
+			Graphics::Context->DrawIndexed(mIndexBuffer->Count(), 0, 0);
 		};
 
 		void Texture(std::shared_ptr<Attachables::Texture> value) { mTexture = value; }
@@ -82,7 +83,6 @@ namespace Dx::Drawables
 		std::shared_ptr<Attachable>					mPsConstantBuffer;
 		std::shared_ptr<Attachable>					mVsConstantBuffer;
 
-		UINT mIndicesCount = 0;
 		bool mInitialized = false;
 	};
 }
