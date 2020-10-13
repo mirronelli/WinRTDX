@@ -29,11 +29,7 @@ namespace Dx::Levels
 			std::string baseName
 		);
 
-		static std::unique_ptr<Dx::Drawables::Mesh> CreateMeshColored(
-			aiMesh* sourceMesh, 
-			std::string baseName
-		);
-
+		static std::unique_ptr<Dx::Drawables::Mesh> CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName);
 		static DirectX::XMMATRIX ConvertMatrix(aiMatrix4x4& source);
 		static inline std::map<std::string, std::shared_ptr<Dx::Drawables::Scene>> mScenes;
 	};

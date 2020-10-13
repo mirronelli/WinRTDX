@@ -14,6 +14,8 @@ concurrency::task<void> Dx::Levels::Level1::Load()
 			PixelShader::Preload(VertexType::Colored, L"PixelShader.cso");
 			mVertexShader = VertexShader::Get(VertexType::Colored);
 			mPixelShader = PixelShader::Get(VertexType::Colored);
+
+			SetupModel();
 		}
 	);
 }

@@ -4,13 +4,18 @@
 #include <map>
 #include "IO.h"
 #include "dds.h"
+#include "WICTextureLoader.h"
+#include "DDSTextureLoader.h"
+#include "DxTools.h"
+#include <winerror.h>
+
 namespace Dx::Attachables
 {
 	class Texture : public Attachable
 	{
 	public:
 		static void Reset() { mMap.clear(); }
-		static std::shared_ptr<Texture> Preload(std::string key, std::wstring filename)
+		static std::shared_ptr<Texture> Preload(std::string key, hstring filename)
 		{
 			std::shared_ptr<Texture> instance = std::make_shared<Texture>(key, filename);
 			mMap[key] = instance;
@@ -22,41 +27,55 @@ namespace Dx::Attachables
 			return mMap[key];
 		}
 
-		Texture(std::string key, std::wstring filename, UINT slot = 0)
+		Texture(std::string key, hstring filename, UINT slot = 0)
 			: 
 			mKey(key),
 			mSlot(slot)
 		{
-			mRawDataBuffer = IO::ReadFile(filename);
-			DirectX::DDS_IMAGE* textureStruct = (DirectX::DDS_IMAGE*)mRawDataBuffer.data();
+			if (Dx::Tools::ends_with(filename, L".dds"))
+			{
+				Dx::Tools::ThrowIfFailed(
+					DirectX::CreateDDSTextureFromFile(Graphics::Device.get(), filename.c_str(), mTextureWic.put(), mTextureView.put())
+				);
+			}
+			else
+			{
+				Dx::Tools::ThrowIfFailed(
+					DirectX::CreateWICTextureFromFile(Graphics::Device.get(), filename.c_str(), mTextureWic.put(), mTextureView.put())
+				);
+			}
+			mTexture = mTextureWic.as< ID3D11Texture2D>();
+
+			//mRawDataBuffer = IO::ReadFile(filename.c_str());
+			//DirectX::DDS_IMAGE* textureStruct = (DirectX::DDS_IMAGE*)mRawDataBuffer.data();
 
 
-			// Texture
-			D3D11_TEXTURE2D_DESC desc = {};
-			desc.Width = textureStruct->header.width;
-			desc.Height = textureStruct->header.height;
-			desc.MipLevels = desc.ArraySize = textureStruct->header.mipMapCount;
-			desc.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
-			desc.SampleDesc.Count = 1;
-			desc.Usage = D3D11_USAGE_DEFAULT;
-			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-			desc.CPUAccessFlags = 0;
-			desc.MiscFlags = 0;
+			//// Texture
+			//D3D11_TEXTURE2D_DESC desc = {};
+			//desc.Width = textureStruct->header.width;
+			//desc.Height = textureStruct->header.height;
+			//desc.MipLevels = desc.ArraySize = textureStruct->header.mipMapCount;
+			//desc.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+			//desc.SampleDesc.Count = 1;
+			//desc.Usage = D3D11_USAGE_DEFAULT;
+			//desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+			//desc.CPUAccessFlags = 0;
+			//desc.MiscFlags = 0;
 
-			D3D11_SUBRESOURCE_DATA srd = {};
-			srd.pSysMem = &textureStruct->data;
-			srd.SysMemPitch = textureStruct->header.pitchOrLinearSize;
+			//D3D11_SUBRESOURCE_DATA srd = {};
+			//srd.pSysMem = &textureStruct->data;
+			//srd.SysMemPitch = textureStruct->header.pitchOrLinearSize;
 		
-			Graphics::Device->CreateTexture2D(&desc, &srd, mTexture.put());
+			//Graphics::Device->CreateTexture2D(&desc, &srd, mTexture.put());
 
-			// Texture view
-			D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc = {};
-			viewDesc.Format = desc.Format;
-			viewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-			viewDesc.Texture2D.MipLevels = desc.MipLevels;
-			viewDesc.Texture2D.MostDetailedMip = 0;
+			//// Texture view
+			//D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc = {};
+			//viewDesc.Format = desc.Format;
+			//viewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			//viewDesc.Texture2D.MipLevels = desc.MipLevels;
+			//viewDesc.Texture2D.MostDetailedMip = 0;
 
-			Graphics::Device->CreateShaderResourceView(mTexture.get(), &viewDesc, mTextureView.put());
+			//Graphics::Device->CreateShaderResourceView(mTexture.get(), &viewDesc, mTextureView.put());
 
 			// Sampler
 			D3D11_SAMPLER_DESC samplerDesc = {};
@@ -92,6 +111,7 @@ namespace Dx::Attachables
 	private:
 		IBuffer											mRawDataBuffer;
 		com_ptr<ID3D11Texture2D>					mTexture;
+		com_ptr<ID3D11Resource>						mTextureWic;
 		com_ptr<ID3D11ShaderResourceView>		mTextureView;
 		com_ptr<ID3D11SamplerState>				mSampler;
 		UINT												mSlot;

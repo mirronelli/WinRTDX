@@ -195,6 +195,39 @@
     <Image Include="Assets\karin3.dds">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\nano_textured\arm_dif.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\arm_showroom_spec.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\body_dif.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\body_showroom_spec.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\glass_dif.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\hand_dif.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\hand_showroom_spec.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\helmet_diff.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\helmet_showroom_spec.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\leg_dif.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\leg_showroom_spec.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -349,5 +382,16 @@
     <Media Include="Assets\nanosuit.obj">
       <Filter>Assets</Filter>
     </Media>
+    <Media Include="Assets\nano_textured\nanosuit.obj">
+      <Filter>Assets</Filter>
+    </Media>
+    <Media Include="Assets\nano_textured\nanosuit.mtl">
+      <Filter>Assets</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\nano_textured\LICENSE.txt">
+      <Filter>Assets</Filter>
+    </Text>
   </ItemGroup>
 </Project>

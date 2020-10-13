@@ -31,6 +31,8 @@ namespace Dx::Levels
 					mVertexShaderWithColor = VertexShader::Preload(VertexType::ColoredWithNormal, L"8_VertexWithColor.cso");
 					mPixelShaderWithNormal = PixelShader::Preload(VertexType::SimpleWithNormal, L"8_PixelWithNormal.cso");
 					mPixelShaderWithColor = PixelShader::Preload(VertexType::ColoredWithNormal, L"8_PixelWithColor.cso");
+
+					SetupModel();
 				}
 			);
 		}
@@ -100,10 +102,10 @@ namespace Dx::Levels
 				importedScene->RotationSpeedY(rotationSpeed(generator));
 				importedScene->RotationSpeedZ(rotationSpeed(generator));
 
-				for (int i = 0; i < importedScene->mScenes.size(); i++)
+				for (int j = 0; j < importedScene->mScenes.size(); j++)
 				{
-					static_cast<Mesh*>(importedScene->mScenes[i]->mDrawables[0].get())->Color({ color(generator), color(generator), color(generator), 1 });
-					static_cast<Mesh*>(importedScene->mScenes[i]->mDrawables[0].get())->Specular(reflectiveness(generator), specularPower(generator));
+					static_cast<Mesh*>(importedScene->mScenes[j]->mDrawables[0].get())->Color({ color(generator), color(generator), color(generator), 1 });
+					static_cast<Mesh*>(importedScene->mScenes[j]->mDrawables[0].get())->Specular(reflectiveness(generator), specularPower(generator));
 				}
 				mRootScene.AddScene(std::move(importedScene));
 			}

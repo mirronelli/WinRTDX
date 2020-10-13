@@ -67,7 +67,7 @@ void Game::LoadLevel(byte name)
 		ProcessEvents();
 	}
 
-	mLevel->SetupModel();
+	//mLevel->SetupModel();
 }
 
 void Game::Run()
@@ -117,9 +117,9 @@ void Game::Update(Dx::StepTimer const& timer)
 
 	mLevel->Update(delta);
 
-	std::wostringstream debug;
-	debug << "Frame: " << mFrame << " Delta: " << delta << " FPS: " << mTimer.GetFramesPerSecond() << "\n";
-	OutputDebugString(debug.str().c_str());
+	//std::wostringstream debug;
+	//debug << "Frame: " << mFrame << " Delta: " << delta << " FPS: " << mTimer.GetFramesPerSecond() << "\n";
+	//OutputDebugString(debug.str().c_str());
 }
 
 void Game::Tick()

@@ -6,6 +6,7 @@
 #include "SceneFactory.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include <fmt/core.h>
 
 //using Dx::Drawables::Mesh;
 using namespace Dx::Drawables;
@@ -70,12 +71,12 @@ namespace Dx::Levels
 		{
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
-			std::unique_ptr<Mesh> newMesh = CreateMeshColored(sourceMesh, baseName);
+			std::unique_ptr<Mesh> newMesh = CreateMeshColored(sourceMesh, sourceScene, baseName);
 			parentScene->AddDrawable(std::move(newMesh));
 		}
 	}
 
-	std::unique_ptr <Mesh> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, std::string baseName)
+	std::unique_ptr <Mesh> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName)
 	{
 		std::string name = baseName + ":" + std::string(sourceMesh->mName.C_Str());
 		std::shared_ptr<InputLayout>		inputLayout = InputLayout::Get(VertexType::SimpleWithNormal);
@@ -83,6 +84,32 @@ namespace Dx::Levels
 		std::shared_ptr<PixelShader>		pixelShader = PixelShader::Get(VertexType::SimpleWithNormal);
 		std::shared_ptr<IndexBuffer>		indexBuffer = IndexBuffer::Get(name);
 		std::shared_ptr<VertexBuffer<VertexSimpleWithNormal>> vertexBuffer = VertexBuffer<VertexSimpleWithNormal>::Get(name);
+
+		aiMaterial* material = sourceScene->mMaterials[sourceMesh->mMaterialIndex];
+
+		std::string prop = fmt::format("------------------- Object: {}\n", name);
+		OutputDebugStringA(prop.c_str());
+
+		for (int i = 0; i < material->mNumProperties; i++)
+		{
+			auto property = material->mProperties[i];
+			if (property->mDataLength > 0)
+			{
+				std::string prop = fmt::format("Property: {}, \tValue: {}\n", material->mProperties[i]->mKey.C_Str(), material->mProperties[i]->mDataLength);
+				OutputDebugStringA(prop.c_str());
+			}
+		}
+
+		aiString texFileName;
+		std::shared_ptr<Texture> texture;
+		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
+		{
+			std::string textureFileName(texFileName.C_Str());
+			texture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
+		};
+
+		aiColor3D aiDiffuseColor;
+		material->Get(AI_MATKEY_COLOR_TRANSPARENT, aiDiffuseColor);
 
 		if (vertexBuffer == nullptr)
 		{
@@ -127,8 +154,7 @@ namespace Dx::Levels
 			pixelShader
 		);
 
-		srand(time(NULL));
-		newMesh->Color({ 1,0,0,0 });
+		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });
 		newMesh->Specular(0, 1);
 		newMesh->Init();
 

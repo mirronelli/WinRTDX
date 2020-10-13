@@ -36,6 +36,8 @@ namespace Dx::Levels
 					mPixelShaderStatic = PixelShader::Preload(VertexType::Colored, L"9_PixelColored.cso");
 
 					mTexture = Texture::Preload("karin", L"Assets\\karin3.dds");
+
+					SetupModel();
 				}
 			);
 		}

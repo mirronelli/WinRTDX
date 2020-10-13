@@ -26,6 +26,8 @@ namespace Dx::Levels
 					mPixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
 
 					mTexture = Texture::Preload("karin", L"Assets\\karin3.dds");
+
+					SetupModel();
 				}
 			);
 		}

@@ -33,6 +33,8 @@ namespace Dx::Levels
 					PixelShader::Preload(Dx::Drawables::VertexType::Colored, L"9_PixelColored.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_PixelSimpleWithNormal.cso");
+
+					SetupModel();
 				}
 			);
 		}
@@ -42,9 +44,9 @@ namespace Dx::Levels
 			LevelBase::SetupModel();
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
+			importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
 			importedScene->Transform(
-				XMMatrixScaling(10, 10, 10)
+				XMMatrixScaling(2, 2, 2)
 				* XMMatrixTranslation(-50, 0, 0));
 			importedScene->RotationSpeedY(0.1f);
 			mRootScene.AddScene(std::move(importedScene));
@@ -56,11 +58,11 @@ namespace Dx::Levels
 			importedScene->RotationSpeedY(-0.1f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			importedScene = SceneFactory::Create("Assets\\nanosuit.obj");
-			importedScene->Transform(
-				XMMatrixTranslation(0, -10, 100));
-			importedScene->RotationSpeedY(-0.1f);
-			mRootScene.AddScene(std::move(importedScene));
+			//importedScene = SceneFactory::Create("Assets\\nanosuit.obj");
+			//importedScene->Transform(
+			//	XMMatrixTranslation(0, -10, -50));
+			//importedScene->RotationSpeedY(-0.1f);
+			//mRootScene.AddScene(std::move(importedScene));
 
 			AddSun();
 
@@ -82,7 +84,7 @@ namespace Dx::Levels
 
 			//mRootScene.RotationSpeedY(.05f);
 
-			mMouseInput->RelativeTrackingEnter();
+//			mMouseInput->RelativeTrackingEnter();
 		}
 
 		void AddSun()

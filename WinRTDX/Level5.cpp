@@ -11,8 +11,9 @@ concurrency::task<void> Dx::Levels::Level5::Load()
 		{
 			mVertexShaderTextured = VertexShader::Preload(VertexType::TexturedWithNormal, L"VertexShader5_6.cso");
 			mPixelShaderTextured = PixelShader::Preload(VertexType::TexturedWithNormal, L"PixelShader5_6.cso");
-
 			mTexture = Texture::Preload("karin", L"Assets\\karin3.dds");
+
+			SetupModel();
 		}
 	);
 }

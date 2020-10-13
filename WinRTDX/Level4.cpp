@@ -10,6 +10,8 @@ concurrency::task<void> Dx::Levels::Level4::Load()
 		{
 			mVertexShaderSimple = VertexShader::Preload(VertexType::Simple, L"VertexShader4.cso");
 			mPixelShaderSimple = PixelShader::Preload(VertexType::Simple, L"PixelShader4.cso");
+
+			SetupModel();
 		}
 	);
 }

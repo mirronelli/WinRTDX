@@ -29,7 +29,7 @@ private:
 	ULONG64													mFrame = 0;
 
 	byte														mMaxLevel = 9;
-	byte														mCurrentLevel = 8;
+	byte														mCurrentLevel = 5;
 	//byte														mCurrentLevel = mMaxLevel;
 	bool														mStop = false;
 

@@ -13,7 +13,10 @@ concurrency::task<void> Dx::Levels::Level3::Load()
 			VertexShader::Preload(VertexType::Simple, L"VertexShader3.cso");
 			PixelShader::Preload(VertexType::Simple, L"PixelShader3.cso");
 			mVertexShader = VertexShader::Get(VertexType::Simple);
-			mPixelShader = PixelShader::Get(VertexType::Simple);			}
+			mPixelShader = PixelShader::Get(VertexType::Simple);			
+
+			SetupModel();
+		}
 	);
 }
 

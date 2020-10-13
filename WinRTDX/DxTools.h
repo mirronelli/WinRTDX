@@ -3,7 +3,7 @@
 namespace Dx::Tools
 {
 	// Check for SDK Layer support.
-	inline bool SdkLayersAvailable()
+	static inline bool SdkLayersAvailable()
 	{
 		HRESULT hr = S_OK;
 		try 
@@ -26,7 +26,7 @@ namespace Dx::Tools
 		return SUCCEEDED(hr);
 	}
 
-	winrt::com_ptr<IDXGIAdapter4> GetPreferredAdapter(winrt::com_ptr<IDXGIFactory7> dxgiFactory)
+	static winrt::com_ptr<IDXGIAdapter4> GetPreferredAdapter(winrt::com_ptr<IDXGIFactory7> dxgiFactory)
 	{
 		winrt::com_ptr<IDXGIAdapter4> adapter;
 		dxgiFactory->EnumAdapterByGpuPreference(0, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, __uuidof(IDXGIAdapter4), adapter.put_void());
@@ -34,7 +34,7 @@ namespace Dx::Tools
 		return adapter;
 	}
 
-	void DisplayAdapterDetails(winrt::com_ptr<IDXGIAdapter> adapter)
+	static void DisplayAdapterDetails(winrt::com_ptr<IDXGIAdapter> adapter)
 	{
 		DXGI_ADAPTER_DESC adapterDesc;
 		adapter->GetDesc(&adapterDesc);
@@ -42,6 +42,39 @@ namespace Dx::Tools
 		std::wostringstream debug;
 		debug << "Found adapter:\t" << adapterDesc.Description << "\n";
 		OutputDebugStringW(debug.str().c_str());
+	}
+
+	// Helper class for COM exceptions
+	class com_exception : public std::exception
+	{
+	public:
+		com_exception(HRESULT hr) : result(hr) {}
+
+		const char* what() const override
+		{
+			static char s_str[64] = {};
+			sprintf_s(s_str, "Failure with HRESULT of %08X",
+				static_cast<unsigned int>(result));
+			return s_str;
+		}
+
+	private:
+		HRESULT result;
+	};
+
+	// Helper utility converts D3D API failures into exceptions.
+	static inline void ThrowIfFailed(HRESULT hr)
+	{
+		if (FAILED(hr))
+		{
+			throw com_exception(hr);
+		}
+	}
+
+	static inline bool ends_with(hstring const& value, hstring const& ending)
+	{
+		if (ending.size() > value.size()) return false;
+		return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 	}
 }
 
