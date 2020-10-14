@@ -53,14 +53,14 @@ namespace Dx::Levels
 			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::Create("Assets\\suzanne.obj");
-			//importedScene->Transform(
-			//	XMMatrixScaling(10, 10, 10)
-			//	* XMMatrixTranslation(50, 0, 0));
-			//importedScene->RotationSpeedY(-0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(50, 0, 0));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
-			//AddSun();
+			AddSun();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
