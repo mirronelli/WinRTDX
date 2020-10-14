@@ -41,14 +41,19 @@ namespace Dx::Levels
 			);
 		}
 
+		void Start()
+		{
+			mMouseInput->RelativeTrackingEnter();
+		}
+
 		void SetupModel()
 		{
-			LevelBase::SetupModel();
+			Dx::Attachables::Attachable::Reset();
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
 			importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
 			importedScene->Transform(
-				XMMatrixScaling(10, 10, 10)
+				XMMatrixScaling(7, 7, 7)
 				* XMMatrixTranslation(-100, -50, 0));
 			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
@@ -60,7 +65,7 @@ namespace Dx::Levels
 			importedScene->RotationSpeedY(-0.1f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			AddSun();
+			AddSuns();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
@@ -78,12 +83,11 @@ namespace Dx::Levels
 			mPixelPerFrameConstantsBuffer->Attach();
 			mVertexPerFrameConstantsBuffer->Attach();
 
-			//mRootScene.RotationSpeedY(.05f);
 
 //			mMouseInput->RelativeTrackingEnter();
 		}
 
-		void AddSun()
+		void AddSuns()
 		{
 			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(40);
 
@@ -93,14 +97,14 @@ namespace Dx::Levels
 
 			mRootScene.AddDrawable(std::move(theSun));
 
-			auto theSun2 = std::make_unique<Dx::Drawables::SphereColored>(40);
+			//auto theSun2 = std::make_unique<Dx::Drawables::SphereColored>(40);
 
-			theSun2->Scale(10);
-			theSun2->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
-			theSun2->X(-120);
-			theSun2->Init();
+			//theSun2->Scale(10);
+			//theSun2->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
+			//theSun2->X(-120);
+			//theSun2->Init();
 
-			mRootScene.AddDrawable(std::move(theSun2));
+			//mRootScene.AddDrawable(std::move(theSun2));
 
 			auto theSun3 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
 

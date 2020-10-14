@@ -34,7 +34,7 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			LevelBase::SetupModel();
+			Dx::Attachables::Attachable::Reset();
 			std::random_device rd;  //Will be used to obtain a seed for the random number engine
 			std::mt19937 generator(rd());
 			std::uniform_real_distribution<float> location(-240.0f, 240.0f);

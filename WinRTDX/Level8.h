@@ -39,7 +39,7 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			LevelBase::SetupModel();
+			Dx::Attachables::Attachable::Reset();
 			GenerateDrawables();
 
 			mPixelPerLevelConstants.lightPosition				= { 0, 0, 0, 0 };
@@ -57,6 +57,10 @@ namespace Dx::Levels
 			mPixelPerLevelConstantsBuffer->Attach();
 			mPixelPerFrameConstantsBuffer->Attach();
 			mVertexPerFrameConstantsBuffer->Attach();
+		}
+
+		void Start()
+		{
 			mMouseInput->RelativeTrackingEnter();
 		}
 

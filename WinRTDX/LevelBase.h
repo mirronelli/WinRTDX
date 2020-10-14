@@ -18,11 +18,7 @@ namespace Dx::Levels
 		virtual void Render() = 0;
 		virtual void Update(float delta) = 0;
 
-		virtual void SetupModel() 
-		{
-			Dx::Attachables::Attachable::Reset();
-		};
-
+		virtual void Start() {};
 
 		virtual ~LevelBase() {}
 	protected:

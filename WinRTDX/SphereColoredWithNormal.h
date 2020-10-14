@@ -27,6 +27,7 @@ namespace Dx::Drawables
 		{
 			mColor = value; 
 			mUseRandomColor = false; 
+			mPixelPerInstanceConstants.specularColor = { 1,1,1,1 };
 		}
 
 		void ColorRanges(XMFLOAT3 minValue, XMFLOAT3 maxValue) 

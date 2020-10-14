@@ -22,7 +22,7 @@ private:
 	void Render();
 	void Present();
 
-	std::unique_ptr<Dx::Levels::LevelBase>				mLevel{ nullptr };
+	std::unique_ptr<Dx::Levels::LevelBase>			mLevel{ nullptr };
 	CoreWindow												mWindow{ nullptr };
 	bool														mIsClosing = false;
 	Dx::StepTimer											mTimer;

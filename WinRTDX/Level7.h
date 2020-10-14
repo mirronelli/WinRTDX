@@ -44,7 +44,7 @@ namespace Dx::Levels
 
 		void SetupModel()
 		{
-			LevelBase::SetupModel();
+			Dx::Attachables::Attachable::Reset();
 
 			GenerateDrawables();
 

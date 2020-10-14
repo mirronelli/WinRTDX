@@ -23,6 +23,7 @@ void Game::Init()
 	Dx::Graphics::Instance->SetWindow(mWindow);
 	mKeyboardInput = std::make_shared<Dx::KeyboardInput>(mWindow);
 	mMouseInput = std::make_shared<Dx::MouseInput>(mWindow);
+	mTimer.SetTargetElapsedTicks(20'000'000);
 }
 
 void Game::LoadLevel(byte name)
@@ -64,6 +65,7 @@ void Game::LoadLevel(byte name)
 	while (!loading.is_done()) {
 		ProcessEvents();
 	}
+	mLevel->Start();
 }
 
 void Game::Run()

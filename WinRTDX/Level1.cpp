@@ -22,7 +22,7 @@ concurrency::task<void> Dx::Levels::Level1::Load()
 
 void Dx::Levels::Level1::SetupModel()
 {
-	LevelBase::SetupModel();
+	Dx::Attachables::Attachable::Reset();
 
 	VertexSimple vertices[] = {
 		{  -1.0f,  1.0f, 0.0f, 1.0f,		1.0f,  .0f,  .0f, 1.0f },

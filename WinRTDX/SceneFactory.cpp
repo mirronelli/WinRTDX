@@ -184,7 +184,7 @@ namespace Dx::Levels
 		);
 
 		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });
-		newMesh->Specular({ aiSpecularColor.r, aiSpecularColor.g, aiSpecularColor.b, 1 }, 1, 16);
+		newMesh->Specular({ aiSpecularColor.r, aiSpecularColor.g, aiSpecularColor.b, 1 }, 1, 128);
 		newMesh->Init();
 
 		return newMesh;
