@@ -25,15 +25,6 @@ namespace Dx::Tools
 
 		return SUCCEEDED(hr);
 	}
-
-	static winrt::com_ptr<IDXGIAdapter4> GetPreferredAdapter(winrt::com_ptr<IDXGIFactory7> dxgiFactory)
-	{
-		winrt::com_ptr<IDXGIAdapter4> adapter;
-		dxgiFactory->EnumAdapterByGpuPreference(0, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, __uuidof(IDXGIAdapter4), adapter.put_void());
-
-		return adapter;
-	}
-
 	static void DisplayAdapterDetails(winrt::com_ptr<IDXGIAdapter> adapter)
 	{
 		DXGI_ADAPTER_DESC adapterDesc;
@@ -43,6 +34,7 @@ namespace Dx::Tools
 		debug << "Found adapter:\t" << adapterDesc.Description << "\n";
 		OutputDebugStringW(debug.str().c_str());
 	}
+
 
 	// Helper class for COM exceptions
 	class com_exception : public std::exception

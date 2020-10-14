@@ -4,12 +4,44 @@
 
 namespace Dx::Attachables
 {
-	template<class T>
-	class VertexBuffer : public Attachable
+	class VertexBufferBase : public Attachable
 	{
 	public:
+		VertexBufferBase(std::string key, unsigned int slot, unsigned int strideSize) : mSlot(slot), mKey(key), mStrideSize(strideSize) {}
+
 		static void Reset() { mMap.clear(); }
 
+		void Attach()
+		{
+			if (mKey != mCurrentVertexBuffer)
+			{
+				mCurrentVertexBuffer = mKey;
+				UINT strideVertices = mStrideSize;
+				UINT offsetVertices = 0;
+				ID3D11Buffer* vertexBuffers[1] = { mBuffer.get() };
+				Graphics::Context->IASetVertexBuffers(mSlot, 1, vertexBuffers, &strideVertices, &offsetVertices);
+			}
+		}
+	
+		static std::shared_ptr<VertexBufferBase> Get(std::string key)
+		{
+			return mMap[key];
+		}
+
+		UINT							mSlot;
+		std::string					mKey;
+
+	protected:
+		com_ptr<ID3D11Buffer>	mBuffer;
+		UINT							mStrideSize;
+
+		inline static std::map < std::string, std::shared_ptr<VertexBufferBase>> mMap;
+	};
+
+	template <typename T>
+	class VertexBuffer : public VertexBufferBase
+	{
+	public:
 		static std::shared_ptr<VertexBuffer<T>> Create(std::string key, std::unique_ptr<std::vector<T>> vertices, UINT slot = 0)
 		{
 			std::shared_ptr<VertexBuffer<T>> instance = std::make_shared<VertexBuffer<T>>(key, std::move(vertices), slot);
@@ -17,14 +49,10 @@ namespace Dx::Attachables
 			return instance;
 		}
 
-		static std::shared_ptr<VertexBuffer<T>> Get(std::string key)
-		{
-			return mMap[key];
-		}
-
 		VertexBuffer(std::string key, std::unique_ptr<std::vector<T>> vertices, UINT slot)
-			: mSlot(slot), mKey(key)
+			: VertexBufferBase(key, slot, sizeof(T))
 		{
+			mStrideSize = sizeof(T);
 			mVertices = std::move(vertices);
 
 			D3D11_BUFFER_DESC desc = { 0 };
@@ -38,24 +66,7 @@ namespace Dx::Attachables
 			Graphics::Device->CreateBuffer(&desc, &srd, mBuffer.put());
 		}
 
-		void Attach()
-		{
-			if (mKey != mCurrentVertexBuffer)
-			{
-				mCurrentVertexBuffer = mKey;
-				UINT strideVertices = sizeof(T);
-				UINT offsetVertices = 0;
-				ID3D11Buffer* vertexBuffers[1] = { mBuffer.get() };
-				Graphics::Context->IASetVertexBuffers(mSlot, 1, vertexBuffers, &strideVertices, &offsetVertices);
-			}
-		}
-
 	private:
-		com_ptr<ID3D11Buffer>	mBuffer;
-		UINT							mSlot;
 		std::unique_ptr<std::vector<T>> mVertices;
-
-		std::string mKey;
-		inline static std::map < std::string, std::shared_ptr<VertexBuffer<T>>> mMap;
 	};
 }

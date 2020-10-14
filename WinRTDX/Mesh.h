@@ -12,10 +12,11 @@ namespace Dx::Drawables
 		Mesh(
 			std::string name,
 			std::shared_ptr<InputLayout> inputLayout,
-			std::shared_ptr<Dx::Attachables::Attachable> vertexBuffer,
+			std::shared_ptr<Dx::Attachables::VertexBufferBase> vertexBuffer,
 			std::shared_ptr<Dx::Attachables::IndexBuffer> indexBuffer,
 			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader,
-			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader
+			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
+			std::shared_ptr<Dx::Attachables::Texture> texture
 		);
 		
 		void Color(DirectX::XMFLOAT4 color);

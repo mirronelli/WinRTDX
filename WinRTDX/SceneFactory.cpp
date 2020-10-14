@@ -79,54 +79,75 @@ namespace Dx::Levels
 	std::unique_ptr <Mesh> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName)
 	{
 		std::string name = baseName + ":" + std::string(sourceMesh->mName.C_Str());
-		std::shared_ptr<InputLayout>		inputLayout = InputLayout::Get(VertexType::SimpleWithNormal);
-		std::shared_ptr<VertexShader>		vertexShader = VertexShader::Get(VertexType::SimpleWithNormal);
-		std::shared_ptr<PixelShader>		pixelShader = PixelShader::Get(VertexType::SimpleWithNormal);
-		std::shared_ptr<IndexBuffer>		indexBuffer = IndexBuffer::Get(name);
-		std::shared_ptr<VertexBuffer<VertexSimpleWithNormal>> vertexBuffer = VertexBuffer<VertexSimpleWithNormal>::Get(name);
-
 		aiMaterial* material = sourceScene->mMaterials[sourceMesh->mMaterialIndex];
+		VertexType vertexType;
 
-		std::string prop = fmt::format("------------------- Object: {}\n", name);
-		OutputDebugStringA(prop.c_str());
+		std::shared_ptr<InputLayout>	inputLayout;
+		std::shared_ptr<VertexShader> vertexShader;
+		std::shared_ptr<PixelShader>	pixelShader;
 
-		for (int i = 0; i < material->mNumProperties; i++)
+		std::shared_ptr<IndexBuffer>			indexBuffer;
+		std::shared_ptr<VertexBufferBase>	vertexBuffer;
+		std::shared_ptr<Texture>				texture;
+
+		// read cached buffers
+		indexBuffer = IndexBuffer::Get(name);
+		vertexBuffer = VertexBufferBase::Get(name);
+
+		// check texture presence
+		aiString aiTextureFileName;
+		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aiTextureFileName) == aiReturn_SUCCESS)
 		{
-			auto property = material->mProperties[i];
-			if (property->mDataLength > 0)
-			{
-				std::string prop = fmt::format("Property: {}, \tValue: {}\n", material->mProperties[i]->mKey.C_Str(), material->mProperties[i]->mDataLength);
-				OutputDebugStringA(prop.c_str());
-			}
+			vertexType = VertexType::TexturedWithNormal;
+
+			std::string textureFileName(aiTextureFileName.C_Str());
+			texture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
+		}
+		else
+		{
+			vertexType = VertexType::SimpleWithNormal;
 		}
 
-		aiString texFileName;
-		std::shared_ptr<Texture> texture;
-		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
-		{
-			std::string textureFileName(texFileName.C_Str());
-			texture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
-		};
-
 		aiColor3D aiDiffuseColor;
-		material->Get(AI_MATKEY_COLOR_TRANSPARENT, aiDiffuseColor);
+		material->Get(AI_MATKEY_COLOR_DIFFUSE, aiDiffuseColor);
 
 		if (vertexBuffer == nullptr)
 		{
-			std::unique_ptr<std::vector<VertexSimpleWithNormal>> vertices = std::make_unique<std::vector<VertexSimpleWithNormal>>();
-			vertices->reserve(sourceMesh->mNumVertices);
-
-			for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)
+			if (vertexType == VertexType::SimpleWithNormal)
 			{
-				aiVector3D& vertex = sourceMesh->mVertices[i];
-				aiVector3D& normal = sourceMesh->mNormals[i];
+				std::unique_ptr<std::vector<VertexSimpleWithNormal>> vertices = std::make_unique<std::vector<VertexSimpleWithNormal>>();
+				vertices->reserve(sourceMesh->mNumVertices);
 
-				vertices->push_back(
-					{ DirectX::XMFLOAT3{ vertex.x, vertex.y, vertex.z }, XMFLOAT3{ normal.x, normal.y, normal.z } }
-				);
+				for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)
+				{
+					aiVector3D& vertex = sourceMesh->mVertices[i];
+					aiVector3D& normal = sourceMesh->mNormals[i];
+
+					vertices->push_back(
+						{ DirectX::XMFLOAT3{ vertex.x, vertex.y, vertex.z }, XMFLOAT3{ normal.x, normal.y, normal.z } }
+					);
+				}
+
+				vertexBuffer = VertexBuffer<VertexSimpleWithNormal>::Create(name, std::move(vertices));
 			}
+			else if (vertexType == VertexType::TexturedWithNormal)
+			{
+				std::unique_ptr<std::vector<VertexTexturedWithNormal>> vertices = std::make_unique<std::vector<VertexTexturedWithNormal>>();
+				vertices->reserve(sourceMesh->mNumVertices);
 
-			vertexBuffer = VertexBuffer<VertexSimpleWithNormal>::Create(name, std::move(vertices));
+				for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)
+				{
+					aiVector3D& vertex = sourceMesh->mVertices[i];
+					aiVector3D& normal = sourceMesh->mNormals[i];
+					auto textureCoordinates = sourceMesh->mTextureCoords[0][i];
+
+					vertices->push_back(
+						{ DirectX::XMFLOAT3{ vertex.x, vertex.y, vertex.z }, XMFLOAT3{ normal.x, normal.y, normal.z }, XMFLOAT2{ textureCoordinates.x, textureCoordinates.y} }
+					);
+				}
+
+				vertexBuffer = VertexBuffer<VertexTexturedWithNormal>::Create(name, std::move(vertices));
+			}
 		}
 
 		if (indexBuffer == nullptr)
@@ -145,13 +166,18 @@ namespace Dx::Levels
 			indexBuffer = IndexBuffer::Create(name, std::move(indices));
 		}
 
+		inputLayout = InputLayout::Get(vertexType);
+		vertexShader = VertexShader::Get(vertexType);
+		pixelShader = PixelShader::Get(vertexType);
+
 		std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>(
 			name,
 			inputLayout,
 			vertexBuffer, 
 			indexBuffer, 
 			vertexShader, 
-			pixelShader
+			pixelShader, 
+			texture
 		);
 
 		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });

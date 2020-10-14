@@ -29,10 +29,12 @@ namespace Dx::Levels
 					VertexShader::Preload(Dx::Drawables::VertexType::Colored, L"9_VertexColored.cso");
 					VertexShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
 					VertexShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_VertexSimpleWithNormal.cso");
+					VertexShader::Preload(Dx::Drawables::VertexType::TexturedWithNormal, L"9_VertexTexturedWithNormal.cso");
 					
 					PixelShader::Preload(Dx::Drawables::VertexType::Colored, L"9_PixelColored.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_PixelSimpleWithNormal.cso");
+					PixelShader::Preload(Dx::Drawables::VertexType::TexturedWithNormal, L"9_PixelTexturedWithNormal.cso");
 
 					SetupModel();
 				}

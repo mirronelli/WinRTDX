@@ -27,8 +27,6 @@ void Game::Init()
 
 void Game::LoadLevel(byte name)
 {
-	//ResourceManager::ClearCache();
-	//name = 4;
 	switch (name) {
 	case 1:
 		mLevel = std::make_unique<Dx::Levels::Level1>(mKeyboardInput, mMouseInput);
@@ -66,8 +64,6 @@ void Game::LoadLevel(byte name)
 	while (!loading.is_done()) {
 		ProcessEvents();
 	}
-
-	//mLevel->SetupModel();
 }
 
 void Game::Run()
@@ -117,9 +113,9 @@ void Game::Update(Dx::StepTimer const& timer)
 
 	mLevel->Update(delta);
 
-	//std::wostringstream debug;
-	//debug << "Frame: " << mFrame << " Delta: " << delta << " FPS: " << mTimer.GetFramesPerSecond() << "\n";
-	//OutputDebugString(debug.str().c_str());
+	std::wostringstream debug;
+	debug << "Frame: " << mFrame << " Delta: " << delta << " FPS: " << mTimer.GetFramesPerSecond() << "\n";
+	OutputDebugString(debug.str().c_str());
 }
 
 void Game::Tick()

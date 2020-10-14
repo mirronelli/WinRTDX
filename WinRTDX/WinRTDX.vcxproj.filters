@@ -371,6 +371,12 @@
     <FxCompile Include="9_PixelColored.hlsl">
       <Filter>Dx\Graphics\Shaders\9</Filter>
     </FxCompile>
+    <FxCompile Include="9_VertexTexturedWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_PixelTexturedWithNormal.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinRTDX.rc" />

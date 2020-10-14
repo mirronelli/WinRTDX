@@ -7,10 +7,11 @@ namespace Dx::Drawables
 	Mesh::Mesh(
 		std::string name, 
 		std::shared_ptr<InputLayout> inputLayout, 
-		std::shared_ptr<Dx::Attachables::Attachable> vertexBuffer, 
+		std::shared_ptr<Dx::Attachables::VertexBufferBase> vertexBuffer, 
 		std::shared_ptr<Dx::Attachables::IndexBuffer> indexBuffer, 
 		std::shared_ptr<Dx::Attachables::VertexShader> vertexShader, 
-		std::shared_ptr<Dx::Attachables::PixelShader> pixelShader
+		std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
+		std::shared_ptr<Dx::Attachables::Texture> texture
 	)
 	: 
 		mName(name), Drawable(vertexShader, pixelShader)
@@ -18,6 +19,8 @@ namespace Dx::Drawables
 		mVertexBuffer = vertexBuffer;
 		mIndexBuffer = indexBuffer;
 		mInputLayout = inputLayout;
+		mTexture = texture;
+
 		mVsConstantBuffer = VSConstantBuffer<WorldTransform>		::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 		mPsConstantBuffer = PSConstantBuffer<ColorSpecular>		::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
 	}
@@ -35,7 +38,7 @@ namespace Dx::Drawables
 
 	std::unique_ptr<Dx::Drawables::Drawable> Mesh::Clone()
 	{
-		std::unique_ptr<Mesh> clone = std::make_unique<Mesh>(mName, mInputLayout, mVertexBuffer, mIndexBuffer, mVertexShader, mPixelShader);
+		std::unique_ptr<Mesh> clone = std::make_unique<Mesh>(mName, mInputLayout, mVertexBuffer, mIndexBuffer, mVertexShader, mPixelShader, mTexture);
 		clone->mPixelPerInstanceConstants = this->mPixelPerInstanceConstants;
 		clone->mVertexPerInstanceConstants = this->mVertexPerInstanceConstants;
 		clone->mInitialized = this->mInitialized;

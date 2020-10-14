@@ -13,14 +13,14 @@ cbuffer instance : register(b2)
     VertexPerInstanceTransformBuffer instance;
 };
 
-PixelColoredWithNormal main(VertexColoredWithNormal input)
+PixelTexturedWithNormal main(VertexTexturedWithNormal input)
 {
-    PixelColoredWithNormal output;
+    PixelTexturedWithNormal output;
     
     output.worldPosition = (float3) mul(float4(input.position, 1.0f), instance.worldTransform);
     output.position = mul(float4(output.worldPosition, 1.0f), frame.viewPerspectiveTransform);
     output.normal = mul(input.normal, (float3x3) instance.worldTransform);
-    output.color = input.color;
+    output.textureCoordinates = input.textureCoordinates;
     
     return output;
 }

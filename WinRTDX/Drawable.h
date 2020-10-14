@@ -74,7 +74,7 @@ namespace Dx::Drawables
 	protected:
 		std::shared_ptr<PixelShader>					mPixelShader;
 		std::shared_ptr<VertexShader>					mVertexShader;
-		std::shared_ptr<Attachable>					mVertexBuffer;
+		std::shared_ptr<VertexBufferBase>			mVertexBuffer;
 		std::shared_ptr<IndexBuffer>					mIndexBuffer;
 		std::shared_ptr<InputLayout>					mInputLayout;
 
