@@ -113,4 +113,16 @@ namespace Dx::Drawables
 		float padding2;
 		DirectX::XMFLOAT4 padding3;
 	};
+
+	struct AllColors
+	{
+		DirectX::XMFLOAT4  diffuseColor;
+		DirectX::XMFLOAT4  specularColor;
+		DirectX::XMFLOAT4  ambientColor;
+		DirectX::XMFLOAT4  emmisiveColor;
+		float	reflectiveness;
+		float reflectionPower;
+		float padding1;
+		float padding2;
+	};
 }

@@ -111,6 +111,9 @@ namespace Dx::Levels
 		aiColor3D aiDiffuseColor;
 		material->Get(AI_MATKEY_COLOR_DIFFUSE, aiDiffuseColor);
 
+		aiColor3D aiSpecularColor;
+		material->Get(AI_MATKEY_COLOR_SPECULAR, aiSpecularColor);
+
 		if (vertexBuffer == nullptr)
 		{
 			if (vertexType == VertexType::SimpleWithNormal)
@@ -181,7 +184,7 @@ namespace Dx::Levels
 		);
 
 		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });
-		newMesh->Specular(0, 1);
+		newMesh->Specular({ aiSpecularColor.r, aiSpecularColor.g, aiSpecularColor.b, 1 }, 1, 16);
 		newMesh->Init();
 
 		return newMesh;

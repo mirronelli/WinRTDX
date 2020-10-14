@@ -20,17 +20,18 @@ namespace Dx::Drawables
 		mIndexBuffer = indexBuffer;
 		mInputLayout = inputLayout;
 		mTexture = texture;
+		mPixelPerInstanceConstants.specularColor = DirectX::XMFLOAT4 { 1.,1.,1.,1.};
 
 		mVsConstantBuffer = VSConstantBuffer<WorldTransform>		::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
-		mPsConstantBuffer = PSConstantBuffer<ColorSpecular>		::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
+		mPsConstantBuffer = PSConstantBuffer<AllColors>				::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
 	}
 
 	void Mesh::Color(DirectX::XMFLOAT4 color)
 	{
-		mPixelPerInstanceConstants.color = color;
+		mPixelPerInstanceConstants.diffuseColor = color;
 	}
 
-	void Mesh::Specular(float reflectiveness, float reflectionPower)
+	void Mesh::Specular(DirectX::XMFLOAT4 specularColor, float reflectiveness, float reflectionPower)
 	{
 		mPixelPerInstanceConstants.reflectiveness = reflectiveness;
 		mPixelPerInstanceConstants.reflectionPower = reflectionPower;
@@ -52,7 +53,7 @@ namespace Dx::Drawables
 	{
 		mVertexPerInstanceConstants.worldTransform = worldTransform;
 
-		std::static_pointer_cast<VSConstantBuffer<WorldTransform>>		(mVsConstantBuffer)->Update(mVertexPerInstanceConstants);
-		std::static_pointer_cast<PSConstantBuffer<ColorSpecular>>		(mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
+		std::static_pointer_cast<VSConstantBuffer<WorldTransform>>	(mVsConstantBuffer)->Update(mVertexPerInstanceConstants);
+		std::static_pointer_cast<PSConstantBuffer<AllColors>>			(mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
 	}
 }

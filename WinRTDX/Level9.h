@@ -48,25 +48,19 @@ namespace Dx::Levels
 
 			importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
 			importedScene->Transform(
-				XMMatrixScaling(2, 2, 2)
-				* XMMatrixTranslation(-50, 0, 0));
-			importedScene->RotationSpeedY(0.1f);
-			mRootScene.AddScene(std::move(importedScene));
-
-			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
-			importedScene->Transform(
 				XMMatrixScaling(10, 10, 10)
-				* XMMatrixTranslation(50, 0, 0));
-			importedScene->RotationSpeedY(-0.1f);
+				* XMMatrixTranslation(-100, -50, 0));
+			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::Create("Assets\\nanosuit.obj");
+			//importedScene = SceneFactory::Create("Assets\\suzanne.obj");
 			//importedScene->Transform(
-			//	XMMatrixTranslation(0, -10, -50));
+			//	XMMatrixScaling(10, 10, 10)
+			//	* XMMatrixTranslation(50, 0, 0));
 			//importedScene->RotationSpeedY(-0.1f);
 			//mRootScene.AddScene(std::move(importedScene));
 
-			AddSun();
+			//AddSun();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };

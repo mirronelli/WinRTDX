@@ -117,6 +117,17 @@ struct PixelPerInstanceColorSpecularBuffer
     float2 padding;
 };
 
+struct PixelPerInstanceAllColorsBuffer
+{
+    float4 diffuseColor;
+    float4 specularColor;
+    float4 ambientColor;
+    float4 emmisiveColor;
+    float reflectiveness;
+    float reflectivePower;
+    float2 padding;
+};
+
 struct PixelPerFrameCameraBuffer
 {
     float3 cameraPosition;

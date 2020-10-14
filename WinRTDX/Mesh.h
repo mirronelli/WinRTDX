@@ -20,7 +20,7 @@ namespace Dx::Drawables
 		);
 		
 		void Color(DirectX::XMFLOAT4 color);
-		void Specular(float reflectiveness, float reflectionPower);
+		void Specular(DirectX::XMFLOAT4 specularColor, float reflectiveness, float reflectionPower);
 		std::unique_ptr<Dx::Drawables::Drawable> Clone();
 
 	protected:
@@ -28,7 +28,7 @@ namespace Dx::Drawables
 		void UpdateConstants(DirectX::CXMMATRIX worldTransform);
 
 	private:
-		ColorSpecular									mPixelPerInstanceConstants;
+		AllColors										mPixelPerInstanceConstants;
 		WorldTransform									mVertexPerInstanceConstants;
 		std::string										mName;
 
