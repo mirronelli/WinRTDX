@@ -18,7 +18,8 @@ namespace Dx::Drawables
 			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
 			std::shared_ptr<Dx::Attachables::Texture> diffuseTexture,
 			std::shared_ptr<Dx::Attachables::Texture> specularTexture,
-			std::shared_ptr<Dx::Attachables::Texture> normalTexture
+			std::shared_ptr<Dx::Attachables::Texture> normalTexture,
+			std::shared_ptr<Dx::Attachables::Sampler> sampler
 		);
 		
 		void Color(DirectX::XMFLOAT4 color);

@@ -42,6 +42,7 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="Sampler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Mesh.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="Sampler.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

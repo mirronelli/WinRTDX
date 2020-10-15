@@ -16,6 +16,13 @@ namespace Dx::Drawables
 		TexturedWithNormal
 	};
 
+	enum class TextureType
+	{
+		Diffuse,
+		Specular,
+		Normal
+	};
+
 	struct VertexSimple
 	{
 		DirectX::XMFLOAT3	position;

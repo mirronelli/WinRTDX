@@ -8,6 +8,7 @@
 #include "PSConstantBuffer.h"
 #include "VSConstantBuffer.h"
 #include "Texture.h"
+#include "Sampler.h"
 #include "ObjectInSpace.h"
 
 using namespace Dx::Attachables;
@@ -51,19 +52,22 @@ namespace Dx::Drawables
 				mVsConstantBuffer->Attach();
 
 			if (mDiffuseTexture != nullptr)
-				mDiffuseTexture->Attach();
+				mDiffuseTexture->Attach(TextureType::Diffuse);
 
 			if (mSpecularTexture != nullptr)
-				mSpecularTexture->Attach();
+				mSpecularTexture->Attach(TextureType::Specular);
 
 			if (mNormalTexture != nullptr)
-				mNormalTexture->Attach();
+				mNormalTexture->Attach(TextureType::Normal);
 
 			if (mVertexShader != nullptr)
 				mVertexShader->Attach();
 
 			if (mPixelShader != nullptr)
 				mPixelShader->Attach();
+
+			if (mSampler != nullptr)
+				mSampler->Attach();
 		}
 
 		void Draw() {
@@ -89,6 +93,7 @@ namespace Dx::Drawables
 		std::shared_ptr<Texture>						mDiffuseTexture;
 		std::shared_ptr<Texture>						mSpecularTexture;
 		std::shared_ptr<Texture>						mNormalTexture;
+		std::shared_ptr<Sampler>						mSampler;
 
 		std::shared_ptr<Attachable>					mPsConstantBuffer;
 		std::shared_ptr<Attachable>					mVsConstantBuffer;

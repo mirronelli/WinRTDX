@@ -91,6 +91,7 @@ namespace Dx::Levels
 		std::shared_ptr<Texture>				diffuseTexture;
 		std::shared_ptr<Texture>				specularTexture;
 		std::shared_ptr<Texture>				normalTexture;
+		std::shared_ptr<Sampler>				sampler;
 
 		// read cached buffers
 		indexBuffer = IndexBuffer::Get(name);
@@ -104,6 +105,7 @@ namespace Dx::Levels
 
 			std::string textureFileName(aiTextureFileName.C_Str());
 			diffuseTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
+			sampler = Sampler::Create("wrapedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
 		}
 		else
 		{
@@ -184,7 +186,8 @@ namespace Dx::Levels
 			pixelShader, 
 			diffuseTexture,
 			specularTexture,
-			normalTexture
+			normalTexture,
+			sampler
 		);
 
 		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });

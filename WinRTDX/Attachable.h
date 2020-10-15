@@ -21,7 +21,9 @@ namespace Dx::Attachables
 		{
 			mCurrentIndexBuffer = "";
 			mCurrentVertexBuffer = "";
-			mCurrentTexture = "";
+			mCurrentTextures[Dx::Drawables::TextureType::Diffuse] = "";
+			mCurrentTextures[Dx::Drawables::TextureType::Specular] = "";
+			mCurrentTextures[Dx::Drawables::TextureType::Normal] = "";
 			mCurrentInputLayout = Dx::Drawables::VertexType::None;
 			mCurrentPixelShader = Dx::Drawables::VertexType::None;
 			mCurrentVertexShader = Dx::Drawables::VertexType::None;
@@ -29,7 +31,8 @@ namespace Dx::Attachables
 	protected:
 		static inline std::string mCurrentVertexBuffer;
 		static inline std::string mCurrentIndexBuffer;
-		static inline std::string mCurrentTexture;
+		static inline std::string mCurrentSampler;
+		static inline std::map < Dx::Drawables::TextureType, std::string> mCurrentTextures;
 		static inline Dx::Drawables::VertexType mCurrentInputLayout;
 		static inline Dx::Drawables::VertexType mCurrentVertexShader;
 		static inline Dx::Drawables::VertexType mCurrentPixelShader;
