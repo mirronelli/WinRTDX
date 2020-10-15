@@ -88,7 +88,9 @@ namespace Dx::Levels
 
 		std::shared_ptr<IndexBuffer>			indexBuffer;
 		std::shared_ptr<VertexBufferBase>	vertexBuffer;
-		std::shared_ptr<Texture>				texture;
+		std::shared_ptr<Texture>				diffuseTexture;
+		std::shared_ptr<Texture>				specularTexture;
+		std::shared_ptr<Texture>				normalTexture;
 
 		// read cached buffers
 		indexBuffer = IndexBuffer::Get(name);
@@ -101,7 +103,7 @@ namespace Dx::Levels
 			vertexType = VertexType::TexturedWithNormal;
 
 			std::string textureFileName(aiTextureFileName.C_Str());
-			texture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
+			diffuseTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
 		}
 		else
 		{
@@ -180,11 +182,13 @@ namespace Dx::Levels
 			indexBuffer, 
 			vertexShader, 
 			pixelShader, 
-			texture
+			diffuseTexture,
+			specularTexture,
+			normalTexture
 		);
 
 		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });
-		newMesh->Specular({ aiSpecularColor.r, aiSpecularColor.g, aiSpecularColor.b, 1 }, 1, 128);
+		newMesh->Specular({ aiSpecularColor.r, aiSpecularColor.g, aiSpecularColor.b, 1 }, 32);
 		newMesh->Init();
 
 		return newMesh;

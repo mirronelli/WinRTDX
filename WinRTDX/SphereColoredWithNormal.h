@@ -37,15 +37,16 @@ namespace Dx::Drawables
 			mUseRandomColor = true; 
 		}
 
-		void Specular(float reflectiveness, float reflectivePower)
+		void Specular(XMFLOAT4 specularColor, float specularPower)
 		{
-			mPixelPerInstanceConstants.reflectiveness = reflectiveness;
-			mPixelPerInstanceConstants.reflectionPower = reflectivePower;
+			mPixelPerInstanceConstants.specularColor = specularColor;
+			mPixelPerInstanceConstants.specularPower = specularPower;
 		}
 
 		void RegisterResources() {
-			mPixelPerInstanceConstants.reflectionPower = 160.0f;
-			mPixelPerInstanceConstants.reflectiveness = 1.f;
+			mPixelPerInstanceConstants.specularPower = 160.0f;
+			mPixelPerInstanceConstants.specularColor = { 1,1,1,1 };
+
 			std::string uuid = MAKEID("sphere:coloredWithNormal:", mSteps);
 
 			if (nullptr == (mIndexBuffer = IndexBuffer::Get(uuid)))

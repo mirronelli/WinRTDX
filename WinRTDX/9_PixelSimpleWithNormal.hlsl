@@ -14,12 +14,12 @@ cbuffer level : register(b1)
 // once per drawable
 cbuffer drawable : register(b2)
 {
-    PixelPerInstanceColorSpecularBuffer instance;
+    PixelPerInstanceAllColorsBuffer instance;
 };
 
 float4 main(PixelSimpleWithNormal input) : SV_TARGET
 {
-    const float3 materialColor = (float3) instance.color;
+    const float3 materialColor = (float3) instance.diffuseColor;
     const float3 light = mLightIntensity(
         materialColor,
         (float3) level_light.ambientLight,
@@ -27,13 +27,12 @@ float4 main(PixelSimpleWithNormal input) : SV_TARGET
         (float3) level_light.lightPosition,
         input.worldPosition,
         input.normal,
-        float3(1,1,1),
+        (float3) instance.specularColor,
         level_light.diffueseIntensity,
         level_light.attenuationQuadratic,
         level_light.attenuationLinear,
         level_light.attenuationConstant,
-        instance.reflectiveness,
-        instance.reflectivePower,
+        instance.specularPower,
         frame.cameraPosition
     );
         

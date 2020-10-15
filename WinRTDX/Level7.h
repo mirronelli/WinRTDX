@@ -104,7 +104,7 @@ namespace Dx::Levels
 				cube->ScaleY(radius);
 				cube->ScaleZ(radius);
 
-				cube->Texture(mTexture);
+				cube->DiffuseTexture(mTexture);
 				cube->Init();
 
 				mDrawables.push_back(std::move(cube));

@@ -90,7 +90,7 @@ namespace Dx::Levels
 				importedScene->RotationSpeedZ(rotationSpeed(generator));
 
 				static_cast<Mesh*>(importedScene->mScenes[0]->mDrawables[0].get())->Color({ color(generator), color(generator), color(generator), 1 });
-				static_cast<Mesh*>(importedScene->mScenes[0]->mDrawables[0].get())->Specular({1,1,1,1}, reflectiveness(generator), specularPower(generator));
+				static_cast<Mesh*>(importedScene->mScenes[0]->mDrawables[0].get())->Specular({ reflectiveness(generator),reflectiveness(generator),reflectiveness(generator),1}, specularPower(generator));
 				mRootScene.AddScene(std::move(importedScene));
 			}
 
@@ -108,8 +108,13 @@ namespace Dx::Levels
 
 				for (int j = 0; j < importedScene->mScenes.size(); j++)
 				{
-					static_cast<Mesh*>(importedScene->mScenes[j]->mDrawables[0].get())->Color({ color(generator), color(generator), color(generator), 1 });
-					static_cast<Mesh*>(importedScene->mScenes[j]->mDrawables[0].get())->Specular({ 1,1,1,1 }, reflectiveness(generator), specularPower(generator));
+					static_cast<Mesh*>(importedScene->mScenes[j]->mDrawables[0].get())->Color(
+						{ color(generator), color(generator), color(generator), 1 }
+					);
+					static_cast<Mesh*>(importedScene->mScenes[j]->mDrawables[0].get())->Specular(
+						{ reflectiveness(generator),reflectiveness(generator),reflectiveness(generator), 1 }, 
+						specularPower(generator)
+					);
 				}
 				mRootScene.AddScene(std::move(importedScene));
 			}

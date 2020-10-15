@@ -11,7 +11,9 @@ namespace Dx::Drawables
 		std::shared_ptr<Dx::Attachables::IndexBuffer> indexBuffer, 
 		std::shared_ptr<Dx::Attachables::VertexShader> vertexShader, 
 		std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
-		std::shared_ptr<Dx::Attachables::Texture> texture
+		std::shared_ptr<Dx::Attachables::Texture> diffuseTexture,
+		std::shared_ptr<Dx::Attachables::Texture> specularTexture,
+		std::shared_ptr<Dx::Attachables::Texture> normalTexture
 	)
 	: 
 		mName(name), Drawable(vertexShader, pixelShader)
@@ -19,11 +21,14 @@ namespace Dx::Drawables
 		mVertexBuffer = vertexBuffer;
 		mIndexBuffer = indexBuffer;
 		mInputLayout = inputLayout;
-		mTexture = texture;
-		mPixelPerInstanceConstants.specularColor = DirectX::XMFLOAT4 { 1.,1.,1.,1.};
+		mDiffuseTexture = diffuseTexture;
+		mSpecularTexture = specularTexture;
+		mNormalTexture = normalTexture;
 
 		mVsConstantBuffer = VSConstantBuffer<WorldTransform>		::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
 		mPsConstantBuffer = PSConstantBuffer<AllColors>				::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
+
+		mPixelPerInstanceConstants.specularColor = DirectX::XMFLOAT4 { 1.,1.,1.,1.};
 	}
 
 	void Mesh::Color(DirectX::XMFLOAT4 color)
@@ -31,15 +36,15 @@ namespace Dx::Drawables
 		mPixelPerInstanceConstants.diffuseColor = color;
 	}
 
-	void Mesh::Specular(DirectX::XMFLOAT4 specularColor, float reflectiveness, float reflectionPower)
+	void Mesh::Specular(DirectX::XMFLOAT4 specularColor, float specularPower)
 	{
-		mPixelPerInstanceConstants.reflectiveness = reflectiveness;
-		mPixelPerInstanceConstants.reflectionPower = reflectionPower;
+		mPixelPerInstanceConstants.specularColor = specularColor;
+		mPixelPerInstanceConstants.specularPower = specularPower;
 	}
 
 	std::unique_ptr<Dx::Drawables::Drawable> Mesh::Clone()
 	{
-		std::unique_ptr<Mesh> clone = std::make_unique<Mesh>(mName, mInputLayout, mVertexBuffer, mIndexBuffer, mVertexShader, mPixelShader, mTexture);
+		std::unique_ptr<Mesh> clone = std::make_unique<Mesh>(mName, mInputLayout, mVertexBuffer, mIndexBuffer, mVertexShader, mPixelShader, mDiffuseTexture, mSpecularTexture, mNormalTexture);
 		clone->mPixelPerInstanceConstants = this->mPixelPerInstanceConstants;
 		clone->mVertexPerInstanceConstants = this->mVertexPerInstanceConstants;
 		clone->mInitialized = this->mInitialized;

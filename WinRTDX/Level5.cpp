@@ -53,7 +53,7 @@ void Dx::Levels::Level5::SetupModel()
 		cube->ScaleY(scale(generator));
 		cube->ScaleZ(scale(generator));
 
-		cube->Texture(mTexture);
+		cube->DiffuseTexture(mTexture);
 		cube->Init();
 
 		mDrawables.push_back(std::move(cube)); 

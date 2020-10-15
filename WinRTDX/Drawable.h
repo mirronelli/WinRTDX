@@ -50,8 +50,14 @@ namespace Dx::Drawables
 			if (mVsConstantBuffer != nullptr)
 				mVsConstantBuffer->Attach();
 
-			if (mTexture != nullptr)
-				mTexture->Attach();
+			if (mDiffuseTexture != nullptr)
+				mDiffuseTexture->Attach();
+
+			if (mSpecularTexture != nullptr)
+				mSpecularTexture->Attach();
+
+			if (mNormalTexture != nullptr)
+				mNormalTexture->Attach();
 
 			if (mVertexShader != nullptr)
 				mVertexShader->Attach();
@@ -69,7 +75,9 @@ namespace Dx::Drawables
 			Graphics::Context->DrawIndexed(mIndexBuffer->Count(), 0, 0);
 		};
 
-		void Texture(std::shared_ptr<Attachables::Texture> value) { mTexture = value; }
+		void DiffuseTexture(std::shared_ptr<Attachables::Texture> value) { mDiffuseTexture = value; }
+		void SpecularTexture(std::shared_ptr<Attachables::Texture> value) { mSpecularTexture = value; }
+		void NormalTexture(std::shared_ptr<Attachables::Texture> value) { mNormalTexture = value; }
 
 	protected:
 		std::shared_ptr<PixelShader>					mPixelShader;
@@ -78,7 +86,9 @@ namespace Dx::Drawables
 		std::shared_ptr<IndexBuffer>					mIndexBuffer;
 		std::shared_ptr<InputLayout>					mInputLayout;
 
-		std::shared_ptr<Attachables::Texture>		mTexture;
+		std::shared_ptr<Texture>						mDiffuseTexture;
+		std::shared_ptr<Texture>						mSpecularTexture;
+		std::shared_ptr<Texture>						mNormalTexture;
 
 		std::shared_ptr<Attachable>					mPsConstantBuffer;
 		std::shared_ptr<Attachable>					mVsConstantBuffer;

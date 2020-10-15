@@ -120,9 +120,9 @@ namespace Dx::Drawables
 		DirectX::XMFLOAT4  specularColor;
 		DirectX::XMFLOAT4  ambientColor;
 		DirectX::XMFLOAT4  emmisiveColor;
-		float	reflectiveness;
-		float reflectionPower;
+		float specularPower;
 		float padding1;
 		float padding2;
+		float padding3;
 	};
 }

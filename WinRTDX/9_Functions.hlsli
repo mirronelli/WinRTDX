@@ -11,8 +11,7 @@ export float3 mLightIntensity(
     float attenuationQuadratic,
     float attenuationLinear,
     float attenuationConstant,
-    float reflectiveness,
-    float reflectivePower,
+    float specularPower,
     float3 cameraPosition
 )
 {
@@ -28,7 +27,8 @@ export float3 mLightIntensity(
     float3 diffusedLight = pointLight * diffusionIntensity * attenuation * angleCoefficient;
     
     float3 reflectionVector = 2.0 * normalizedNormal * dot(normalizedvectorToLight, normalizedNormal) - normalizedvectorToLight;
-    float3 specularLight = pow(saturate(dot(reflectionVector, normalize(vectorToCamera))), reflectivePower) * reflectiveness;
+    //float3 specularLight = pow(saturate(dot(reflectionVector, normalize(vectorToCamera))), reflectivePower) * reflectiveness;
+    float3 specularLight = pow(saturate(dot(reflectionVector, normalize(vectorToCamera))), specularPower) * specularColor;
 
-    return saturate(materialColor * (diffusedLight + ambientLight) + specularColor * specularLight * attenuation);
+    return saturate(materialColor * (diffusedLight + ambientLight) +  specularLight * attenuation);
 };

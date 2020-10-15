@@ -16,11 +16,13 @@ namespace Dx::Drawables
 			std::shared_ptr<Dx::Attachables::IndexBuffer> indexBuffer,
 			std::shared_ptr<Dx::Attachables::VertexShader> vertexShader,
 			std::shared_ptr<Dx::Attachables::PixelShader> pixelShader,
-			std::shared_ptr<Dx::Attachables::Texture> texture
+			std::shared_ptr<Dx::Attachables::Texture> diffuseTexture,
+			std::shared_ptr<Dx::Attachables::Texture> specularTexture,
+			std::shared_ptr<Dx::Attachables::Texture> normalTexture
 		);
 		
 		void Color(DirectX::XMFLOAT4 color);
-		void Specular(DirectX::XMFLOAT4 specularColor, float reflectiveness, float reflectionPower);
+		void Specular(DirectX::XMFLOAT4 specularColor, float reflectionPower);
 		std::unique_ptr<Dx::Drawables::Drawable> Clone();
 
 	protected:

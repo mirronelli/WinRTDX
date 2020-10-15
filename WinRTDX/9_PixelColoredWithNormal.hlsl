@@ -31,8 +31,7 @@ float4 main(PixelColoredWithNormal input) : SV_TARGET
         level_light.attenuationQuadratic,
         level_light.attenuationLinear,
         level_light.attenuationConstant,
-        instance.reflectiveness,
-        instance.reflectivePower,
+        instance.specularPower,
         frame.cameraPosition
     );
         
