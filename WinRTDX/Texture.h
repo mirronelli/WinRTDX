@@ -15,9 +15,9 @@ namespace Dx::Attachables
 	{
 	public:
 		static void Reset() { mMap.clear(); }
-		static std::shared_ptr<Texture> Preload(std::string key, hstring filename)
+		static std::shared_ptr<Texture> Preload(std::string key, hstring filename, unsigned int slot = 0)
 		{
-			std::shared_ptr<Texture> instance = std::make_shared<Texture>(key, filename);
+			std::shared_ptr<Texture> instance = std::make_shared<Texture>(key, filename, slot);
 			mMap[key] = instance;
 			return instance;
 		}
@@ -27,7 +27,7 @@ namespace Dx::Attachables
 			return mMap[key];
 		}
 
-		Texture(std::string key, hstring filename, UINT slot = 0)
+		Texture(std::string key, hstring filename, UINT slot)
 			: 
 			mKey(key),
 			mSlot(slot)

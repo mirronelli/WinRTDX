@@ -102,10 +102,16 @@ namespace Dx::Levels
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aiTextureFileName) == aiReturn_SUCCESS)
 		{
 			vertexType = VertexType::TexturedWithNormal;
+			sampler = Sampler::Create("wrapedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
 
 			std::string textureFileName(aiTextureFileName.C_Str());
-			diffuseTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName));
-			sampler = Sampler::Create("wrapedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
+			diffuseTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName), 0);
+
+			if (material->GetTexture(aiTextureType_SPECULAR, 0, &aiTextureFileName) == aiReturn_SUCCESS)
+			{
+				textureFileName = std::string(aiTextureFileName.C_Str());
+				specularTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName), 1);
+			}
 		}
 		else
 		{
