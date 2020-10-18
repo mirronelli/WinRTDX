@@ -28,9 +28,14 @@ namespace Dx::Drawables
 		mSampler = sampler;
 
 		mVsConstantBuffer = VSConstantBuffer<WorldTransform>		::Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
-		mPsConstantBuffer = PSConstantBuffer<AllColors>				::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
+		mPsConstantBuffer = PSConstantBuffer<PixelShaderInstanceConstants>				::Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
 
 		mPixelPerInstanceConstants.specularColor = DirectX::XMFLOAT4 { 1.,1.,1.,1.};
+	}
+
+	void Mesh::InstanceConstants(PixelShaderInstanceConstants value)
+	{
+		mPixelPerInstanceConstants = value;
 	}
 
 	void Mesh::Color(DirectX::XMFLOAT4 color)
@@ -73,6 +78,6 @@ namespace Dx::Drawables
 		mVertexPerInstanceConstants.worldTransform = worldTransform;
 
 		std::static_pointer_cast<VSConstantBuffer<WorldTransform>>	(mVsConstantBuffer)->Update(mVertexPerInstanceConstants);
-		std::static_pointer_cast<PSConstantBuffer<AllColors>>			(mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
+		std::static_pointer_cast<PSConstantBuffer<PixelShaderInstanceConstants>>			(mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
 	}
 }

@@ -123,8 +123,11 @@ struct PixelPerInstanceAllColorsBuffer
     float4 specularColor;
     float4 ambientColor;
     float4 emmisiveColor;
+    bool hasTextureMap;
+    bool hasSpecularMap;
+    bool hasSpecularAlpha;
+    bool hasNormalMap;
     float specularPower;
-    float3 padding;
 };
 
 struct PixelPerFrameCameraBuffer

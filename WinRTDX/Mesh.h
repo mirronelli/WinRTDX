@@ -22,6 +22,7 @@ namespace Dx::Drawables
 			std::shared_ptr<Dx::Attachables::Sampler> sampler
 		);
 		
+		void InstanceConstants(PixelShaderInstanceConstants	value);
 		void Color(DirectX::XMFLOAT4 color);
 		void Specular(DirectX::XMFLOAT4 specularColor, float reflectionPower);
 		std::unique_ptr<Dx::Drawables::Drawable> Clone();
@@ -31,7 +32,7 @@ namespace Dx::Drawables
 		void UpdateConstants(DirectX::CXMMATRIX worldTransform);
 
 	private:
-		AllColors										mPixelPerInstanceConstants;
+		PixelShaderInstanceConstants				mPixelPerInstanceConstants;
 		WorldTransform									mVertexPerInstanceConstants;
 		std::string										mName;
 

@@ -64,14 +64,14 @@ namespace Dx::Drawables
 			}
 			mInputLayout =		InputLayout::											Get(VertexType::ColoredWithNormal);
 			mVsConstantBuffer = VSConstantBuffer<WorldTransform>::				Create(mVertexPerInstanceConstants, ResourceSlots::PerInstance);
-			mPsConstantBuffer = PSConstantBuffer<Dx::Drawables::AllColors>::	Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
+			mPsConstantBuffer = PSConstantBuffer<Dx::Drawables::PixelShaderInstanceConstants>::	Create(mPixelPerInstanceConstants, ResourceSlots::PerInstance);
 		}
 
 		void UpdateConstants(DirectX::CXMMATRIX matrix)
 		{
 			mVertexPerInstanceConstants.worldTransform = matrix;
 			std::static_pointer_cast<VSConstantBuffer<WorldTransform >> (mVsConstantBuffer)->Update(mVertexPerInstanceConstants);
-			std::static_pointer_cast<PSConstantBuffer<Dx::Drawables::AllColors>> (mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
+			std::static_pointer_cast<PSConstantBuffer<PixelShaderInstanceConstants>> (mPsConstantBuffer)->Update(mPixelPerInstanceConstants);
 		}
 
 	private:
@@ -181,7 +181,7 @@ namespace Dx::Drawables
 		XMFLOAT3 mColorMax;
 		bool mUseRandomColor = false;
 
-		Dx::Drawables::AllColors			mPixelPerInstanceConstants;
+		PixelShaderInstanceConstants		mPixelPerInstanceConstants;
 		WorldTransform							mVertexPerInstanceConstants;
 	};
 }

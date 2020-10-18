@@ -93,6 +93,8 @@ namespace Dx::Levels
 		std::shared_ptr<Texture>				normalTexture;
 		std::shared_ptr<Sampler>				sampler;
 
+		PixelShaderInstanceConstants	constants = {};
+
 		// read cached buffers
 		indexBuffer = IndexBuffer::Get(name);
 		vertexBuffer = VertexBufferBase::Get(name);
@@ -101,22 +103,30 @@ namespace Dx::Levels
 		aiString aiTextureFileName;
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &aiTextureFileName) == aiReturn_SUCCESS)
 		{
+			constants.hasTextureMap = true;
 			vertexType = VertexType::TexturedWithNormal;
-			sampler = Sampler::Create("wrapedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
-
-			std::string textureFileName(aiTextureFileName.C_Str());
-			diffuseTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName), 0);
-
-			if (material->GetTexture(aiTextureType_SPECULAR, 0, &aiTextureFileName) == aiReturn_SUCCESS)
-			{
-				textureFileName = std::string(aiTextureFileName.C_Str());
-				specularTexture = Texture::Preload(textureFileName, to_hstring(std::string("Assets\\nano_textured\\") + textureFileName), 1);
-			}
+			diffuseTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 0);
 		}
 		else
 		{
 			vertexType = VertexType::SimpleWithNormal;
 		}
+
+		if (material->GetTexture(aiTextureType_SPECULAR, 0, &aiTextureFileName) == aiReturn_SUCCESS)
+		{
+			constants.hasSpecularMap = true;
+			specularTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 1);
+		}
+
+		if (material->GetTexture(aiTextureType_NORMALS, 0, &aiTextureFileName) == aiReturn_SUCCESS)
+		{
+			constants.hasNormalMap = true;
+			normalTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 2);
+		}
+
+		// create a sampler if it has at least 1 texture
+		if (constants.hasTextureMap || constants.hasSpecularMap || constants.hasNormalMap)
+			sampler = Sampler::Create("wrappedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
 
 		aiColor3D aiDiffuseColor;
 		material->Get(AI_MATKEY_COLOR_DIFFUSE, aiDiffuseColor);
@@ -196,8 +206,7 @@ namespace Dx::Levels
 			sampler
 		);
 
-		newMesh->Color({ aiDiffuseColor.r, aiDiffuseColor.g, aiDiffuseColor.b, 0 });
-		newMesh->Specular({ aiSpecularColor.r, aiSpecularColor.g, aiSpecularColor.b, 1 }, 32);
+		newMesh->InstanceConstants(constants);
 		newMesh->Init();
 
 		return newMesh;

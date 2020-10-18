@@ -3,6 +3,7 @@
 
 Texture2D inTextureDiffuse : register(t0);
 Texture2D inTextureSpecular : register(t1);
+Texture2D inNormalSpecular : register(t2);
 SamplerState inSampler;
 
 cbuffer light : register(b0)
@@ -23,8 +24,8 @@ cbuffer drawable : register(b2)
 
 float4 main(PixelTexturedWithNormal input) : SV_TARGET
 {
-    const float3 materialColor = (float3) inTextureDiffuse.Sample(inSampler, input.textureCoordinates);
-    const float3 specularColor = (float3) inTextureSpecular.Sample(inSampler, input.textureCoordinates);
+    const float3 materialColor = (float3) (instance.hasTextureMap ? inTextureDiffuse.Sample(inSampler, input.textureCoordinates) : instance.diffuseColor);
+    const float3 specularColor = (float3) (instance.hasSpecularMap ? inTextureSpecular.Sample(inSampler, input.textureCoordinates) : instance.specularColor);
     
     const float3 light = mLightIntensity(
         materialColor,

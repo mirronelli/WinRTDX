@@ -23,6 +23,12 @@ namespace Dx::Drawables
 		Normal
 	};
 
+	enum class SpecularMode
+	{
+		Constant = 0,
+		Texture = 1,
+	};
+
 	struct VertexSimple
 	{
 		DirectX::XMFLOAT3	position;
@@ -121,12 +127,28 @@ namespace Dx::Drawables
 		DirectX::XMFLOAT4 padding3;
 	};
 
-	struct AllColors
+	struct PixelShaderInstanceConstants
 	{
+		PixelShaderInstanceConstants() :
+			diffuseColor({1,.5,.5,1}),
+			specularColor({1,1,1,1}),
+			ambientColor({1,1,1,1}),
+			emmisiveColor({0,0,0,0}),
+			hasNormalMap(false), 
+			hasSpecularAlpha(false), 
+			hasSpecularMap(false), 
+			hasTextureMap(false),
+			specularPower(32)
+		{}
+
 		DirectX::XMFLOAT4  diffuseColor;
 		DirectX::XMFLOAT4  specularColor;
 		DirectX::XMFLOAT4  ambientColor;
 		DirectX::XMFLOAT4  emmisiveColor;
+		BOOL	hasTextureMap;
+		BOOL	hasSpecularMap;
+		BOOL	hasSpecularAlpha;
+		BOOL	hasNormalMap;
 		float specularPower;
 		float padding1;
 		float padding2;
