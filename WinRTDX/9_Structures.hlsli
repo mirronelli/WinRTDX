@@ -36,6 +36,15 @@ struct VertexTexturedWithNormal
     float2 textureCoordinates : TEXCOORD;
 };
 
+struct VertexTexturedWithNormalTangent
+{
+    float3 position : POSITION;
+    float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float3 bitangent : BITANGENT;
+    float2 textureCoordinates : TEXCOORD;
+};
+
 struct VertexPerInstanceTransformBuffer
 {
     row_major matrix worldTransform;
@@ -88,6 +97,16 @@ struct PixelTexturedWithNormal
     float3 worldPosition : POSITION;
     float4 position : SV_Position;
     float3 normal : NORMAL;
+    float2 textureCoordinates : TEXCOORD;
+};
+
+struct PixelTexturedWithNormalTangent
+{
+    float3 worldPosition : POSITION;
+    float4 position : SV_Position;
+    float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float3 bitangent : BITANGENT;
     float2 textureCoordinates : TEXCOORD;
 };
 

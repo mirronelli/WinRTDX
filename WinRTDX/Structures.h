@@ -13,7 +13,8 @@ namespace Dx::Drawables
 		ColoredWithNormal,
 
 		Textured,
-		TexturedWithNormal
+		TexturedWithNormal,
+		TexturedWithNormalTangent
 	};
 
 	enum class TextureType
@@ -56,6 +57,15 @@ namespace Dx::Drawables
 		DirectX::XMFLOAT2 textureCoordinates;
 	};
 
+	struct VertexTexturedWithNormalTangent
+	{
+		DirectX::XMFLOAT3	position;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT3 tangent;
+		DirectX::XMFLOAT3 bitangent;
+		DirectX::XMFLOAT2 textureCoordinates;
+	};
+
 	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsSimple = {
 		{ "POSITION",	0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
@@ -85,6 +95,14 @@ namespace Dx::Drawables
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,		0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> IedsTexturedWithNormalTangent = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	0, 0,		D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 12,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 24,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BITANGENT",		0,	DXGI_FORMAT_R32G32B32_FLOAT,	0, 36,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD",	0,	DXGI_FORMAT_R32G32_FLOAT,		0, 48,	D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	struct LightBuffer

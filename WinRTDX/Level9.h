@@ -30,11 +30,13 @@ namespace Dx::Levels
 					VertexShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_VertexColoredWithNormal.cso");
 					VertexShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_VertexSimpleWithNormal.cso");
 					VertexShader::Preload(Dx::Drawables::VertexType::TexturedWithNormal, L"9_VertexTexturedWithNormal.cso");
+					VertexShader::Preload(Dx::Drawables::VertexType::TexturedWithNormalTangent, L"9_VertexTexturedWithNormalTangent.cso");
 					
 					PixelShader::Preload(Dx::Drawables::VertexType::Colored, L"9_PixelColored.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::ColoredWithNormal, L"9_PixelColoredWithNormal.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::SimpleWithNormal, L"9_PixelSimpleWithNormal.cso");
 					PixelShader::Preload(Dx::Drawables::VertexType::TexturedWithNormal, L"9_PixelTexturedWithNormal.cso");
+					PixelShader::Preload(Dx::Drawables::VertexType::TexturedWithNormalTangent, L"9_PixelTexturedWithNormalTangent.cso");
 
 					SetupModel();
 				}
@@ -51,21 +53,29 @@ namespace Dx::Levels
 			Dx::Attachables::Attachable::Reset();
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
+			//importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
+			//importedScene->Transform(
+			//	XMMatrixScaling(7, 7, 7)
+			//	* XMMatrixTranslation(-100, -80, 100));
+			//importedScene->RotationSpeedY(0.0f);
+			//mRootScene.AddScene(std::move(importedScene));
+
+			importedScene = SceneFactory::Create("Assets\\brick_wall\\brick_wall.obj");
 			importedScene->Transform(
-				XMMatrixScaling(7, 7, 7)
-				* XMMatrixTranslation(-100, -50, 0));
+				XMMatrixScaling(17,17, 17)
+				* XMMatrixTranslation(0, 0, 40));
+			importedScene->RotationSpeedX(0.02f);
 			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
-			importedScene->Transform(
-				XMMatrixScaling(10, 10, 10)
-				* XMMatrixTranslation(50, 0, 0));
-			importedScene->RotationSpeedY(-0.1f);
-			mRootScene.AddScene(std::move(importedScene));
+			//importedScene = SceneFactory::Create("Assets\\suzanne.obj");
+			//importedScene->Transform(
+			//	XMMatrixScaling(10, 10, 10)
+			//	* XMMatrixTranslation(50, 0, 0));
+			//importedScene->RotationSpeedY(-0.1f);
+			//mRootScene.AddScene(std::move(importedScene));
 
-			AddSuns();
+			//AddSuns();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
@@ -216,7 +226,7 @@ namespace Dx::Levels
 		PixelPerLevelConstants													mPixelPerLevelConstants;
 		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	mPixelPerLevelConstantsBuffer;
 
-		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, -150, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
+		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, 0, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
 		float																			mCameraMovementSpeed = 1;
 		float																			mMouseSensitivity = .0006f;
 	};

@@ -24,9 +24,9 @@ namespace Dx::Levels
 
 		Assimp::Importer importer;
 		const aiScene* sourceScene = importer.ReadFile(fileName,
-			aiProcess_CalcTangentSpace |
 			aiProcess_Triangulate |
 			aiProcess_JoinIdenticalVertices |
+			aiProcess_CalcTangentSpace |
 			aiProcess_SortByPType);
 
 		if (sourceScene != nullptr && sourceScene->HasMeshes())
@@ -72,7 +72,8 @@ namespace Dx::Levels
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
 			std::unique_ptr<Mesh> newMesh = CreateMeshColored(sourceMesh, sourceScene, baseName);
-			parentScene->AddDrawable(std::move(newMesh));
+			if (newMesh)
+				parentScene->AddDrawable(std::move(newMesh));
 		}
 	}
 
@@ -105,7 +106,19 @@ namespace Dx::Levels
 		{
 			constants.hasTextureMap = true;
 			vertexType = VertexType::TexturedWithNormal;
-			diffuseTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 0);
+			diffuseTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\brick_wall\\") + aiTextureFileName.C_Str()), 0);
+
+			if (material->GetTexture(aiTextureType_NORMALS, 0, &aiTextureFileName) == aiReturn_SUCCESS)
+			{
+				vertexType = VertexType::TexturedWithNormalTangent;
+
+				constants.hasNormalMap = true;
+				normalTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\brick_wall\\") + aiTextureFileName.C_Str()), 2);
+			}
+			else
+			{
+				return nullptr;  //exit without processing mesh
+			}
 		}
 		else
 		{
@@ -116,12 +129,6 @@ namespace Dx::Levels
 		{
 			constants.hasSpecularMap = true;
 			specularTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 1);
-		}
-
-		if (material->GetTexture(aiTextureType_NORMALS, 0, &aiTextureFileName) == aiReturn_SUCCESS)
-		{
-			constants.hasNormalMap = true;
-			normalTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 2);
 		}
 
 		// create a sampler if it has at least 1 texture
@@ -170,6 +177,31 @@ namespace Dx::Levels
 				}
 
 				vertexBuffer = VertexBuffer<VertexTexturedWithNormal>::Create(name, std::move(vertices));
+			}
+			else if (vertexType == VertexType::TexturedWithNormalTangent)
+			{
+				std::unique_ptr<std::vector<VertexTexturedWithNormalTangent>> vertices = std::make_unique<std::vector<VertexTexturedWithNormalTangent>>();
+				vertices->reserve(sourceMesh->mNumVertices);
+
+				for (unsigned int i = 0; i < sourceMesh->mNumVertices; i++)
+				{
+					aiVector3D& vertex = sourceMesh->mVertices[i];
+					aiVector3D& normal = sourceMesh->mNormals[i];
+					aiVector3D& tangent = sourceMesh->mTangents[i];
+					aiVector3D& bitangent = sourceMesh->mBitangents[i];
+					auto textureCoordinates = sourceMesh->mTextureCoords[0][i];
+
+					vertices->push_back(
+						{ 
+							DirectX::XMFLOAT3{ vertex.x, vertex.y, vertex.z }, 
+							XMFLOAT3{ normal.x, normal.y, normal.z }, 
+							XMFLOAT3{ tangent.x, tangent.y, tangent.z }, 
+							XMFLOAT3{ bitangent.x, bitangent.y, bitangent.z }, 
+							XMFLOAT2{ textureCoordinates.x, textureCoordinates.y} }
+					);
+				}
+
+				vertexBuffer = VertexBuffer<VertexTexturedWithNormalTangent>::Create(name, std::move(vertices));
 			}
 		}
 

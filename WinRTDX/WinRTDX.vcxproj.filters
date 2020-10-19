@@ -230,6 +230,30 @@
     <Image Include="Assets\nano_textured\leg_showroom_spec.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\nano_textured\arm_showroom_ddn.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\body_showroom_ddn.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\glass_ddn.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\hand_showroom_ddn.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\helmet_showroom_ddn.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\leg_showroom_ddn.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\brick_wall\brick_wall_diffuse.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\brick_wall\brick_wall_normal.dds">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -292,6 +316,9 @@
     </None>
     <None Include="9_Structures.hlsli">
       <Filter>Dx\Graphics\Shaders\9</Filter>
+    </None>
+    <None Include="Assets\brick_wall\brick_wall.mtl">
+      <Filter>Assets</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +406,12 @@
     <FxCompile Include="9_PixelTexturedWithNormal.hlsl">
       <Filter>Dx\Graphics\Shaders\9</Filter>
     </FxCompile>
+    <FxCompile Include="9_VertexTexturedWithNormalTangent.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
+    <FxCompile Include="9_PixelTexturedWithNormalTangent.hlsl">
+      <Filter>Dx\Graphics\Shaders\9</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinRTDX.rc" />
@@ -394,6 +427,9 @@
       <Filter>Assets</Filter>
     </Media>
     <Media Include="Assets\nano_textured\nanosuit.mtl">
+      <Filter>Assets</Filter>
+    </Media>
+    <Media Include="Assets\brick_wall\brick_wall.obj">
       <Filter>Assets</Filter>
     </Media>
   </ItemGroup>

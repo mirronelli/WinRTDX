@@ -3,7 +3,7 @@
 
 Texture2D inTextureDiffuse : register(t0);
 Texture2D inTextureSpecular : register(t1);
-Texture2D inNormalSpecular : register(t2);
+Texture2D inTextureNormal: register(t2);
 SamplerState inSampler;
 
 cbuffer light : register(b0)

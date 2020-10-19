@@ -76,7 +76,11 @@ namespace Dx::Drawables
 			UpdateConstants(mTransform);
 			AttachResources(false);
 			Graphics::Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			Graphics::Context->DrawIndexed(mIndexBuffer->Count(), 0, 0);
+			try
+			{
+				Graphics::Context->DrawIndexed(mIndexBuffer->Count(), 0, 0);
+			}
+			catch (...) {};
 		};
 
 		void DiffuseTexture(std::shared_ptr<Attachables::Texture> value) { mDiffuseTexture = value; }

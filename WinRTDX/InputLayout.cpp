@@ -51,11 +51,17 @@ namespace Dx::Attachables
 			ieds = &Dx::Drawables::IedsTexturedWithNormal;
 			break;
 
+		case VertexType::TexturedWithNormalTangent:
+			ieds = &Dx::Drawables::IedsTexturedWithNormalTangent;
+			break;
+
 		default:
-			assert(true);
+			assert(false); //IED for VertexType not defined
 			ieds = &Dx::Drawables::IedsSimple;
 			break;
 		}
+
+		assert(vertexShader != nullptr); // make sure vertexshader for this kind is loaded
 
 		Graphics::Device->CreateInputLayout(
 			ieds->data(),

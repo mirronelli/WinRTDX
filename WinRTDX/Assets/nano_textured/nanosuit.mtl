@@ -22,6 +22,7 @@ d 1.000000
 illum 2
 map_Kd body_dif.png
 map_Ks body_showroom_spec.png
+map_Kn body_showroom_ddn.png
 
 
 newmtl Glass
