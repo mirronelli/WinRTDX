@@ -19,17 +19,19 @@ namespace Dx::Levels
 			Dx::Drawables::Scene* parentScene, 
 			aiNode* node, 
 			const aiScene* sourceScene,
-			std::string baseName
+			std::string baseName,
+			std::string folderName
 		);
 		
 		static void SceneFactory::CopyMeshesToScene(
 			Dx::Drawables::Scene* parentScene, 
 			aiNode* node, 
 			const aiScene* sourceScene,
-			std::string baseName
+			std::string baseName,
+			std::string folderName
 		);
 
-		static std::unique_ptr<Dx::Drawables::Mesh> CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName);
+		static std::unique_ptr<Dx::Drawables::Mesh> CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName, std::string folderName);
 		static DirectX::XMMATRIX ConvertMatrix(aiMatrix4x4& source);
 		static inline std::map<std::string, std::shared_ptr<Dx::Drawables::Scene>> mScenes;
 	};

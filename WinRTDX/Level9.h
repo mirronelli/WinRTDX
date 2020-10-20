@@ -53,17 +53,17 @@ namespace Dx::Levels
 			Dx::Attachables::Attachable::Reset();
 			std::unique_ptr<Dx::Drawables::Scene> importedScene;
 
-			//importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
-			//importedScene->Transform(
-			//	XMMatrixScaling(7, 7, 7)
-			//	* XMMatrixTranslation(-100, -80, 100));
-			//importedScene->RotationSpeedY(0.0f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
+			importedScene->Transform(
+				XMMatrixScaling(2, 2, 2)
+				* XMMatrixTranslation(0, -40, 40));
+			importedScene->RotationSpeedY(0.01f);
+			mRootScene.AddScene(std::move(importedScene));
 
 			importedScene = SceneFactory::Create("Assets\\brick_wall\\brick_wall.obj");
 			importedScene->Transform(
 				XMMatrixScaling(17,17, 17)
-				* XMMatrixTranslation(0, 0, 40));
+				* XMMatrixTranslation(-40, 0, 40));
 			importedScene->RotationSpeedX(0.02f);
 			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
@@ -75,7 +75,7 @@ namespace Dx::Levels
 			//importedScene->RotationSpeedY(-0.1f);
 			//mRootScene.AddScene(std::move(importedScene));
 
-			//AddSuns();
+			AddSuns();
 
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
@@ -92,9 +92,6 @@ namespace Dx::Levels
 			mPixelPerLevelConstantsBuffer->Attach();
 			mPixelPerFrameConstantsBuffer->Attach();
 			mVertexPerFrameConstantsBuffer->Attach();
-
-
-//			mMouseInput->RelativeTrackingEnter();
 		}
 
 		void AddSuns()

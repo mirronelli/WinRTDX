@@ -8,6 +8,8 @@
 #include "PixelShader.h"
 #include <fmt/core.h>
 
+#include <winrt\Windows.Storage.h>
+
 //using Dx::Drawables::Mesh;
 using namespace Dx::Drawables;
 using namespace DirectX;
@@ -17,13 +19,17 @@ namespace Dx::Levels
 
 	std::unique_ptr<Scene> SceneFactory::Create(std::string fileName)
 	{
+		hstring hFileName = to_hstring(fileName);
+		Windows::Storage::StorageFile file = Windows::ApplicationModel::Package::Current().InstalledLocation().GetFileAsync(hFileName).get();
+		std::string folderName = to_string(file.GetParentAsync().get().Path()) + "\\";
+
 		if (mScenes[fileName] != nullptr)
 		{
 			return mScenes[fileName]->Clone();
 		}
 
 		Assimp::Importer importer;
-		const aiScene* sourceScene = importer.ReadFile(fileName,
+		const aiScene* sourceScene = importer.ReadFile(fileName.c_str(),
 			aiProcess_Triangulate |
 			aiProcess_JoinIdenticalVertices |
 			aiProcess_CalcTangentSpace |
@@ -32,7 +38,7 @@ namespace Dx::Levels
 		if (sourceScene != nullptr && sourceScene->HasMeshes())
 		{
 			std::shared_ptr<Scene> newScene = std::make_shared<Scene>(fileName);
-			SceneFactory::ProcessNode(newScene.get(), sourceScene->mRootNode, sourceScene, fileName);
+			SceneFactory::ProcessNode(newScene.get(), sourceScene->mRootNode, sourceScene, fileName, folderName);
 			mScenes[fileName] = newScene;
 			
 			return newScene->Clone();
@@ -43,12 +49,12 @@ namespace Dx::Levels
 		}
 	}
 
-	void SceneFactory::ProcessNode(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::string baseName)
+	void SceneFactory::ProcessNode(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::string baseName, std::string folderName)
 	{
 		// for children meshes, copy them to scene
 		if (node->mNumMeshes > 0)
 		{
-			CopyMeshesToScene(parentScene, node, sourceScene, baseName);
+			CopyMeshesToScene(parentScene, node, sourceScene, baseName, folderName);
 		}
 
 		// for children nodes, create a scene for each node and process it recursively
@@ -59,25 +65,25 @@ namespace Dx::Levels
 			std::unique_ptr<Scene> childScene = std::make_unique<Scene>(name);
 			
 			childScene->Transform(ConvertMatrix(childNode->mTransformation));
-			ProcessNode(childScene.get(), childNode, sourceScene, baseName);
+			ProcessNode(childScene.get(), childNode, sourceScene, baseName, folderName);
 			
 			parentScene->AddScene(std::move(childScene));
 		}
 	}
 
-	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::string baseName)
+	void SceneFactory::CopyMeshesToScene(Scene* parentScene, aiNode* node, const aiScene* sourceScene, std::string baseName, std::string folderName)
 	{
 		for (unsigned int meshInNodeIndex = 0; meshInNodeIndex < node->mNumMeshes; meshInNodeIndex++)
 		{
 			int meshInSceneIndex = node->mMeshes[meshInNodeIndex];
 			aiMesh* sourceMesh = sourceScene->mMeshes[meshInSceneIndex];
-			std::unique_ptr<Mesh> newMesh = CreateMeshColored(sourceMesh, sourceScene, baseName);
+			std::unique_ptr<Mesh> newMesh = CreateMeshColored(sourceMesh, sourceScene, baseName, folderName);
 			if (newMesh)
 				parentScene->AddDrawable(std::move(newMesh));
 		}
 	}
 
-	std::unique_ptr <Mesh> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName)
+	std::unique_ptr <Mesh> SceneFactory::CreateMeshColored(aiMesh* sourceMesh, const aiScene* sourceScene, std::string baseName, std::string folderName)
 	{
 		std::string name = baseName + ":" + std::string(sourceMesh->mName.C_Str());
 		aiMaterial* material = sourceScene->mMaterials[sourceMesh->mMaterialIndex];
@@ -106,18 +112,18 @@ namespace Dx::Levels
 		{
 			constants.hasTextureMap = true;
 			vertexType = VertexType::TexturedWithNormal;
-			diffuseTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\brick_wall\\") + aiTextureFileName.C_Str()), 0);
+			diffuseTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(folderName + aiTextureFileName.C_Str()), 0);
 
 			if (material->GetTexture(aiTextureType_NORMALS, 0, &aiTextureFileName) == aiReturn_SUCCESS)
 			{
 				vertexType = VertexType::TexturedWithNormalTangent;
 
 				constants.hasNormalMap = true;
-				normalTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\brick_wall\\") + aiTextureFileName.C_Str()), 2);
+				normalTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(folderName + aiTextureFileName.C_Str()), 2);
 			}
 			else
 			{
-				return nullptr;  //exit without processing mesh
+				//return nullptr;  //exit without processing mesh
 			}
 		}
 		else
@@ -128,12 +134,13 @@ namespace Dx::Levels
 		if (material->GetTexture(aiTextureType_SPECULAR, 0, &aiTextureFileName) == aiReturn_SUCCESS)
 		{
 			constants.hasSpecularMap = true;
-			specularTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(std::string("Assets\\nano_textured\\") + aiTextureFileName.C_Str()), 1);
+			specularTexture = Texture::Preload(aiTextureFileName.C_Str(), to_hstring(folderName + aiTextureFileName.C_Str()), 1);
 		}
 
 		// create a sampler if it has at least 1 texture
 		if (constants.hasTextureMap || constants.hasSpecularMap || constants.hasNormalMap)
-			sampler = Sampler::Create("wrappedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
+			//sampler = Sampler::Create("wrappedSampler", D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
+			sampler = Sampler::Create("wrappedSampler", D3D11_FILTER::D3D11_FILTER_ANISOTROPIC, D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP, 0);
 
 		aiColor3D aiDiffuseColor;
 		material->Get(AI_MATKEY_COLOR_DIFFUSE, aiDiffuseColor);
@@ -172,7 +179,10 @@ namespace Dx::Levels
 					auto textureCoordinates = sourceMesh->mTextureCoords[0][i];
 
 					vertices->push_back(
-						{ DirectX::XMFLOAT3{ vertex.x, vertex.y, vertex.z }, XMFLOAT3{ normal.x, normal.y, normal.z }, XMFLOAT2{ textureCoordinates.x, textureCoordinates.y} }
+						{ 
+							DirectX::XMFLOAT3{ vertex.x, vertex.y, vertex.z }, 
+							XMFLOAT3{ normal.x, normal.y, normal.z }, 
+							XMFLOAT2{ textureCoordinates.x, -textureCoordinates.y} }
 					);
 				}
 
@@ -197,7 +207,7 @@ namespace Dx::Levels
 							XMFLOAT3{ normal.x, normal.y, normal.z }, 
 							XMFLOAT3{ tangent.x, tangent.y, tangent.z }, 
 							XMFLOAT3{ bitangent.x, bitangent.y, bitangent.z }, 
-							XMFLOAT2{ textureCoordinates.x, textureCoordinates.y} }
+							XMFLOAT2{ textureCoordinates.x, -textureCoordinates.y} }
 					);
 				}
 

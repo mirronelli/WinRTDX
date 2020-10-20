@@ -178,20 +178,26 @@
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
     <Image Include="Assets\nano_textured\arm_dif.png" />
     <Image Include="Assets\nano_textured\arm_showroom_ddn.png" />
+    <Image Include="Assets\nano_textured\arm_showroom_ddn2.png" />
     <Image Include="Assets\nano_textured\arm_showroom_spec.png" />
     <Image Include="Assets\nano_textured\body_dif.png" />
     <Image Include="Assets\nano_textured\body_showroom_ddn.png" />
+    <Image Include="Assets\nano_textured\body_showroom_ddn2.png" />
     <Image Include="Assets\nano_textured\body_showroom_spec.png" />
     <Image Include="Assets\nano_textured\glass_ddn.png" />
+    <Image Include="Assets\nano_textured\glass_ddn2.png" />
     <Image Include="Assets\nano_textured\glass_dif.png" />
     <Image Include="Assets\nano_textured\hand_dif.png" />
     <Image Include="Assets\nano_textured\hand_showroom_ddn.png" />
+    <Image Include="Assets\nano_textured\hand_showroom_ddn2.png" />
     <Image Include="Assets\nano_textured\hand_showroom_spec.png" />
     <Image Include="Assets\nano_textured\helmet_diff.png" />
     <Image Include="Assets\nano_textured\helmet_showroom_ddn.png" />
+    <Image Include="Assets\nano_textured\helmet_showroom_ddn2.png" />
     <Image Include="Assets\nano_textured\helmet_showroom_spec.png" />
     <Image Include="Assets\nano_textured\leg_dif.png" />
     <Image Include="Assets\nano_textured\leg_showroom_ddn.png" />
+    <Image Include="Assets\nano_textured\leg_showroom_ddn2.png" />
     <Image Include="Assets\nano_textured\leg_showroom_spec.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
@@ -611,14 +617,6 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
       <DeploymentContent>true</DeploymentContent>
       <FileType>Document</FileType>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\nanosuit.obj">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
   </ItemGroup>
   <ItemGroup>

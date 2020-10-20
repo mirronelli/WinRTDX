@@ -33,16 +33,18 @@
     <ClCompile Include="ObjectInSpace.cpp">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFactory.cpp">
-      <Filter>Dx\Game\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="InputLayout.cpp">
       <Filter>Dx\Graphics\Attachables</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClCompile>
-    <ClCompile Include="Sampler.cpp" />
+    <ClCompile Include="Sampler.cpp">
+      <Filter>Dx\Graphics\Attachables</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFactory.cpp">
+      <Filter>Dx\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -149,9 +151,6 @@
     <ClInclude Include="ObjectInSpace.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFactory.h">
-      <Filter>Dx\Game\Levels</Filter>
-    </ClInclude>
     <ClInclude Include="SphereColoredWithNormal.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
@@ -164,7 +163,12 @@
     <ClInclude Include="Mesh.h">
       <Filter>Dx\Graphics\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="Sampler.h" />
+    <ClInclude Include="Sampler.h">
+      <Filter>Dx\Graphics\Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFactory.h">
+      <Filter>Dx\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -198,61 +202,79 @@
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\nano_textured\arm_dif.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\arm_showroom_spec.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\body_dif.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\body_showroom_spec.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\glass_dif.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\hand_dif.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\hand_showroom_spec.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\helmet_diff.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\helmet_showroom_spec.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\leg_dif.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\nano_textured\leg_showroom_spec.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\nano_textured\arm_showroom_ddn.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\arm_showroom_spec.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\body_dif.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\nano_textured\body_showroom_ddn.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\body_showroom_ddn2.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\body_showroom_spec.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\nano_textured\glass_ddn.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\glass_dif.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\hand_dif.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\nano_textured\hand_showroom_ddn.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\hand_showroom_spec.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\helmet_diff.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\nano_textured\helmet_showroom_ddn.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\helmet_showroom_spec.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\nano_textured\leg_showroom_ddn.png">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
     </Image>
-    <Image Include="Assets\brick_wall\brick_wall_diffuse.jpg">
-      <Filter>Assets</Filter>
+    <Image Include="Assets\nano_textured\leg_showroom_spec.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\arm_showroom_ddn2.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\glass_ddn2.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\hand_showroom_ddn2.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\helmet_showroom_ddn2.png">
+      <Filter>Assets\nano_textured</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\leg_showroom_ddn2.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
     <Image Include="Assets\brick_wall\brick_wall_normal.dds">
-      <Filter>Assets</Filter>
+      <Filter>Assets\brick_wall</Filter>
+    </Image>
+    <Image Include="Assets\brick_wall\brick_wall_diffuse.jpg">
+      <Filter>Assets\brick_wall</Filter>
+    </Image>
+    <Image Include="Assets\nano_textured\leg_dif.png">
+      <Filter>Assets\nano_textured</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +323,17 @@
     <Filter Include="Dx\Graphics\Shaders\9">
       <UniqueIdentifier>{dc0e5317-88cc-4a44-a547-cc4ba8877af0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\nano_textured">
+      <UniqueIdentifier>{94cac2f2-6dae-432b-a01a-b0a965ff8584}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
+    </Filter>
+    <Filter Include="Assets\brick_wall">
+      <UniqueIdentifier>{fbbff47e-0397-43d0-9f71-859150cccf05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\suzanne">
+      <UniqueIdentifier>{5907551f-3271-4d45-9f29-c58101dcb08a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -318,7 +351,7 @@
       <Filter>Dx\Graphics\Shaders\9</Filter>
     </None>
     <None Include="Assets\brick_wall\brick_wall.mtl">
-      <Filter>Assets</Filter>
+      <Filter>Assets\brick_wall</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -417,20 +450,17 @@
     <ResourceCompile Include="WinRTDX.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Assets\suzanne.obj">
-      <Filter>Assets</Filter>
-    </Media>
-    <Media Include="Assets\nanosuit.obj">
-      <Filter>Assets</Filter>
+    <Media Include="Assets\nano_textured\nanosuit.mtl">
+      <Filter>Assets\nano_textured</Filter>
     </Media>
     <Media Include="Assets\nano_textured\nanosuit.obj">
-      <Filter>Assets</Filter>
-    </Media>
-    <Media Include="Assets\nano_textured\nanosuit.mtl">
-      <Filter>Assets</Filter>
+      <Filter>Assets\nano_textured</Filter>
     </Media>
     <Media Include="Assets\brick_wall\brick_wall.obj">
-      <Filter>Assets</Filter>
+      <Filter>Assets\brick_wall</Filter>
+    </Media>
+    <Media Include="Assets\suzanne.obj">
+      <Filter>Assets\suzanne</Filter>
     </Media>
   </ItemGroup>
   <ItemGroup>
