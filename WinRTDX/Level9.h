@@ -11,6 +11,9 @@
 #include "SphereColoredWithNormal.h"
 #include "SphereColored.h"
 #include "SceneFactory.h"
+#include <imgui.h>
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
 
 using namespace Dx::Attachables;
 
@@ -68,12 +71,12 @@ namespace Dx::Levels
 			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			//importedScene = SceneFactory::Create("Assets\\suzanne.obj");
-			//importedScene->Transform(
-			//	XMMatrixScaling(10, 10, 10)
-			//	* XMMatrixTranslation(50, 0, 0));
-			//importedScene->RotationSpeedY(-0.1f);
-			//mRootScene.AddScene(std::move(importedScene));
+			importedScene = SceneFactory::Create("Assets\\suzanne.obj");
+			importedScene->Transform(
+				XMMatrixScaling(10, 10, 10)
+				* XMMatrixTranslation(50, 0, 0));
+			importedScene->RotationSpeedY(-0.1f);
+			mRootScene.AddScene(std::move(importedScene));
 
 			AddSuns();
 
@@ -162,6 +165,8 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
+			mRootScene.mScenes[0]->RotationSpeedY(floatValue);
+
 			mVertexPerFrameConstants.worldViewTransform =
 				mCamera.GetMatrix()
 				* DirectX::XMMatrixPerspectiveFovLH(1.2f, Graphics::Instance->Width() / Graphics::Instance->Height(), .1f, 1000.0f);
@@ -180,9 +185,40 @@ namespace Dx::Levels
 			Graphics::Instance->StartFrame(color);
 
 			mRootScene.Draw();
+			RenderGui();
+		}
+
+		void RenderGui()
+		{
+			ImGui_ImplDX11_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
+
+			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+			ImGui::SliderFloat("float", &floatValue, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::ColorEdit3("clear color", (float*)&colorValue); // Edit 3 floats representing a color
+
+			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+				counter++;
+			ImGui::SameLine();
+			ImGui::Text("counter = %d", counter);
+
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::InputText("Napis sem:", napisSem, sizeof(napisSem));
+			ImGui::End();
+			ImGui::Render();
+			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		}
 
 	private:
+		bool demoWindow;
+		bool demoWindow2;
+		float floatValue = 0.3f;
+		float colorValue[3]{ .5, .6, 8 };
+		int counter = 0;
+		char napisSem[255];
+
+
 		struct VertexPerFrameConstants
 		{
 			DirectX::XMMATRIX worldViewTransform;

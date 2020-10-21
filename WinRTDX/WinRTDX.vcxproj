@@ -125,6 +125,7 @@
     <ClInclude Include="CubeColored.h" />
     <ClInclude Include="CubeTextured.h" />
     <ClInclude Include="Dds.h" />
+    <ClInclude Include="gui.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Level5.h" />
     <ClInclude Include="Level6.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="gui.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="Level1.cpp" />

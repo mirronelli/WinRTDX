@@ -11,6 +11,7 @@
 #include "Level7.h"
 #include "Level8.h"
 #include "Level9.h"
+#include "gui.h"
 
 Game::Game(CoreWindow const& window) :
 	mWindow(window)
@@ -24,6 +25,7 @@ void Game::Init()
 	mKeyboardInput = std::make_shared<Dx::KeyboardInput>(mWindow);
 	mMouseInput = std::make_shared<Dx::MouseInput>(mWindow);
 	mTimer.SetTargetElapsedTicks(20'000'000);
+	Dx::Gui::Init(Dx::Graphics::Instance);
 }
 
 void Game::LoadLevel(byte name)

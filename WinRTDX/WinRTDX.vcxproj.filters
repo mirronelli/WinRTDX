@@ -45,6 +45,9 @@
     <ClCompile Include="SceneFactory.cpp">
       <Filter>Dx\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="gui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -168,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>Dx\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
+      <Filter>imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,6 +339,9 @@
     </Filter>
     <Filter Include="Assets\suzanne">
       <UniqueIdentifier>{5907551f-3271-4d45-9f29-c58101dcb08a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{e523c03b-58aa-4d1f-9add-aad14e2c1693}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
