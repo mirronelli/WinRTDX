@@ -48,7 +48,7 @@ namespace Dx::Levels
 
 		void Start()
 		{
-			mMouseInput->RelativeTrackingEnter();
+			//mMouseInput->RelativeTrackingEnter();
 		}
 
 		void SetupModel()
@@ -59,15 +59,27 @@ namespace Dx::Levels
 			importedScene = SceneFactory::Create("Assets\\nano_textured\\nanosuit.obj");
 			importedScene->Transform(
 				XMMatrixScaling(2, 2, 2)
-				* XMMatrixTranslation(0, -40, 40));
+				* XMMatrixTranslation(0, 0, 40));
+			importedScene->RotationSpeedY(0.01f);
+			mRootScene.AddScene(std::move(importedScene));
+
+			importedScene = SceneFactory::Create("Assets\\muro\\muro.obj");
+			importedScene->Transform(
+				XMMatrixScaling(18, 18, 18)
+				* XMMatrixTranslation(20, 0, 40));
 			importedScene->RotationSpeedY(0.01f);
 			mRootScene.AddScene(std::move(importedScene));
 
 			importedScene = SceneFactory::Create("Assets\\brick_wall\\brick_wall.obj");
 			importedScene->Transform(
-				XMMatrixScaling(17,17, 17)
-				* XMMatrixTranslation(-40, 0, 40));
-			importedScene->RotationSpeedX(0.02f);
+				XMMatrixScaling(80, 80, 80)
+				* XMMatrixTranslation(-20, 20, 120));
+			mRootScene.AddScene(std::move(importedScene));
+
+			importedScene = SceneFactory::Create("Assets\\goblin\\GoblinX.obj");
+			importedScene->Transform(
+				XMMatrixScaling(7,7, 7)
+				* XMMatrixTranslation(-30, 30, 40));
 			importedScene->RotationSpeedY(0.05f);
 			mRootScene.AddScene(std::move(importedScene));
 
@@ -78,8 +90,12 @@ namespace Dx::Levels
 			importedScene->RotationSpeedY(-0.1f);
 			mRootScene.AddScene(std::move(importedScene));
 
-			AddSuns();
-
+			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(40);
+			theSun->Scale(10);
+			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
+			theSun->Init();
+			mRootScene.AddDrawable(std::move(theSun));
+			
 			mPixelPerLevelConstants.lightPosition = { 0, 0, 0, 0 };
 			mPixelPerLevelConstants.lightColor = { 1.0f, 1.0f, 1.0, 0.0f };
 			mPixelPerLevelConstants.ambientLight = { 0.1f, 0.01f, 0.01f, 0.2f };
@@ -95,44 +111,8 @@ namespace Dx::Levels
 			mPixelPerLevelConstantsBuffer->Attach();
 			mPixelPerFrameConstantsBuffer->Attach();
 			mVertexPerFrameConstantsBuffer->Attach();
-		}
 
-		void AddSuns()
-		{
-			auto theSun = std::make_unique<Dx::Drawables::SphereColored>(40);
-
-			theSun->Scale(10);
-			theSun->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
-			theSun->Init();
-
-			mRootScene.AddDrawable(std::move(theSun));
-
-			//auto theSun2 = std::make_unique<Dx::Drawables::SphereColored>(40);
-
-			//theSun2->Scale(10);
-			//theSun2->ColorRanges(XMFLOAT3(0.8f, 0.4f, 0), XMFLOAT3(1, 0.7f, 0));
-			//theSun2->X(-120);
-			//theSun2->Init();
-
-			//mRootScene.AddDrawable(std::move(theSun2));
-
-			auto theSun3 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
-
-			theSun3->Scale(10);
-			theSun3->X(120);
-			theSun3->Color({ 1,0.5,0 });
-			theSun3->Init();
-
-			mRootScene.AddDrawable(std::move(theSun3));
-
-			auto theSun4 = std::make_unique<Dx::Drawables::SphereColoredWithNormal>(40);
-
-			theSun4->Scale(10);
-			theSun4->X(80);
-			theSun4->Color({ 1,0.5,0 });
-			theSun4->Init();
-
-			mRootScene.AddDrawable(std::move(theSun4));
+			mCamera = Camera(XMVectorSet(0, 30, -50, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
 		}
 
 		void ProcessInput()
@@ -165,7 +145,9 @@ namespace Dx::Levels
 		{
 			ProcessInput();
 
-			mRootScene.mScenes[0]->RotationSpeedY(floatValue);
+			mRootScene.mScenes[0]->RotationSpeedY(crytekRotatioSpeed);
+			mRootScene.mScenes[1]->RotationSpeedY(moroRotatioSpeed);
+			mRootScene.mScenes[3]->RotationSpeedY(goblinRotatioSpeed);
 
 			mVertexPerFrameConstants.worldViewTransform =
 				mCamera.GetMatrix()
@@ -194,29 +176,23 @@ namespace Dx::Levels
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 
-			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-			ImGui::SliderFloat("float", &floatValue, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::ColorEdit3("clear color", (float*)&colorValue); // Edit 3 floats representing a color
+			ImGui::SetNextWindowPos(ImVec2(0, 0));
+			ImGui::SetNextWindowSize(ImVec2(400, 0));
+			ImGui::Begin("Rotation");												  // Create a window called "Hello, world!" and append into it.
+			ImGui::SliderFloat("Moro", &moroRotatioSpeed, -2.0f, 2.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("Goblin", &goblinRotatioSpeed, -2.0f, 2.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("Crytek", &crytekRotatioSpeed, -2.0f, 2.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
-			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-				counter++;
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::InputText("Napis sem:", napisSem, sizeof(napisSem));
+			ImGui::Text("(%.0f FPS)", ImGui::GetIO().Framerate);
 			ImGui::End();
 			ImGui::Render();
 			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		}
 
 	private:
-		bool demoWindow;
-		bool demoWindow2;
-		float floatValue = 0.3f;
-		float colorValue[3]{ .5, .6, 8 };
-		int counter = 0;
-		char napisSem[255];
+		float goblinRotatioSpeed = 0;
+		float moroRotatioSpeed = 0;
+		float crytekRotatioSpeed = 0;
 
 
 		struct VertexPerFrameConstants
@@ -259,7 +235,7 @@ namespace Dx::Levels
 		PixelPerLevelConstants													mPixelPerLevelConstants;
 		std::shared_ptr<PSConstantBuffer<PixelPerLevelConstants>>	mPixelPerLevelConstantsBuffer;
 
-		Camera																		mCamera = Camera(DirectX::XMVectorSet(0, 0, 0, 0), XMVectorSet(0, 0, 1, 0), XMVectorSet(0, 1, 0, 0));
+		Camera																		mCamera{};
 		float																			mCameraMovementSpeed = 1;
 		float																			mMouseSensitivity = .0006f;
 	};

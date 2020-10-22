@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "imgui.h"
 
 namespace Dx
 {
@@ -29,15 +30,18 @@ namespace Dx
 	private:
 		void KeyUp(CoreWindow window, KeyEventArgs args)
 		{
-			mKeyStates[args.VirtualKey()] = false;
+			if (!mImguiIo.WantCaptureKeyboard)
+				mKeyStates[args.VirtualKey()] = false;
 		}
 
 		void KeyDown(CoreWindow window, KeyEventArgs args)
 		{
-			mKeyStates[args.VirtualKey()] = true;
+			if (!mImguiIo.WantCaptureKeyboard)
+				mKeyStates[args.VirtualKey()] = true;
 		}
 
 		CoreWindow												mWindow;
+		ImGuiIO& mImguiIo = ImGui::GetIO();
 		std::map<Windows::System::VirtualKey, bool>	mKeyStates;
 	};
 }

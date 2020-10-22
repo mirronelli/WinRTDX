@@ -11,6 +11,7 @@
 #include "Level7.h"
 #include "Level8.h"
 #include "Level9.h"
+#include "Level10.h"
 #include "gui.h"
 
 Game::Game(CoreWindow const& window) :
@@ -22,10 +23,10 @@ void Game::Init()
 {
 	Dx::Graphics::CreateInstance();
 	Dx::Graphics::Instance->SetWindow(mWindow);
+	Dx::Gui::Init(Dx::Graphics::Instance);
 	mKeyboardInput = std::make_shared<Dx::KeyboardInput>(mWindow);
 	mMouseInput = std::make_shared<Dx::MouseInput>(mWindow);
 	mTimer.SetTargetElapsedTicks(20'000'000);
-	Dx::Gui::Init(Dx::Graphics::Instance);
 }
 
 void Game::LoadLevel(byte name)
@@ -58,8 +59,11 @@ void Game::LoadLevel(byte name)
 	case 9:
 		mLevel = std::make_unique<Dx::Levels::Level9>(mKeyboardInput, mMouseInput);
 		break;
+	case 10:
+		mLevel = std::make_unique<Dx::Levels::Level10>(mKeyboardInput, mMouseInput);
+		break;
 	default:
-		mLevel = std::make_unique<Dx::Levels::Level9>(mKeyboardInput, mMouseInput);
+		mLevel = std::make_unique<Dx::Levels::Level1>(mKeyboardInput, mMouseInput);
 		break;
 	}
 

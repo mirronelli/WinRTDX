@@ -48,6 +48,9 @@
     <ClCompile Include="gui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Level10.cpp">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -175,6 +178,9 @@
     <ClInclude Include="gui.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Level10.h">
+      <Filter>Dx\Game\Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -282,6 +288,270 @@
     <Image Include="Assets\nano_textured\leg_dif.png">
       <Filter>Assets\nano_textured</Filter>
     </Image>
+    <Image Include="Assets\muro\Muro_body_dm.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_body_dm_clean.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_body_nm.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_body_sm.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_body_sm_clean.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_head_dm.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_head_nm.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\muro\Muro_head_sm.png">
+      <Filter>Assets\muro</Filter>
+    </Image>
+    <Image Include="Assets\goblin\Textures\GoblinEye.jpg">
+      <Filter>Assets\Goblin</Filter>
+    </Image>
+    <Image Include="Assets\goblin\Textures\MDif.tif">
+      <Filter>Assets\Goblin</Filter>
+    </Image>
+    <Image Include="Assets\goblin\Textures\MNorm.tif">
+      <Filter>Assets\Goblin</Filter>
+    </Image>
+    <Image Include="Assets\goblin\Textures\MSpec.tif">
+      <Filter>Assets\Goblin</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\background.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\background_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\background_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\backgroundBGR.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\gi_flag.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\chain_texture.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\chain_texture_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\chain_texture_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\chain_texture_mask.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\lion.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\lion_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\lion_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\lion2_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\lion2_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_arch_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_arch_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_arch_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_arch_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_arch_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_ceiling_a_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_ceiling_a_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_ceiling_a_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_a_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_a_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_a_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_a_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_b_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_b_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_b_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_b_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_c_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_c_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_c_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_column_c_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_curtain_blue_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_curtain_blue_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_curtain_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_curtain_green_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_details_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_details_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_details_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_fabric_blue_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_fabric_blue_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_fabric_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_fabric_green_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_fabric_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_flagpole_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_flagpole_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_flagpole_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_floor_a_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_floor_a_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_floor_a_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_roof_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_roof_diff_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_thorn_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_thorn_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_thorn_diff.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_thorn_mask.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\sponza_thorn_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_dif.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_hanging.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_hanging_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_plant.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_plant_mask.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_plant_NRM.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_plant_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_round.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_round_bump.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_round_ddn.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
+    <Image Include="Assets\Sponza\textures\vase_round_spec.png">
+      <Filter>Assets\sponza</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -343,6 +613,15 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{e523c03b-58aa-4d1f-9add-aad14e2c1693}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Goblin">
+      <UniqueIdentifier>{6d44fb3f-103e-40bb-ab6a-e8f9017163f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\muro">
+      <UniqueIdentifier>{f526198c-c525-491d-ac4e-4effccbe50c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\sponza">
+      <UniqueIdentifier>{7a6d27f4-3e9e-44bb-9cc6-d47a9a197fef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -361,6 +640,12 @@
     </None>
     <None Include="Assets\brick_wall\brick_wall.mtl">
       <Filter>Assets\brick_wall</Filter>
+    </None>
+    <None Include="Assets\muro\muro.mtl">
+      <Filter>Assets\muro</Filter>
+    </None>
+    <None Include="Assets\goblin\GoblinX.mtl">
+      <Filter>Assets\Goblin</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +755,18 @@
     </Media>
     <Media Include="Assets\suzanne.obj">
       <Filter>Assets\suzanne</Filter>
+    </Media>
+    <Media Include="Assets\muro\muro.obj">
+      <Filter>Assets\muro</Filter>
+    </Media>
+    <Media Include="Assets\goblin\GoblinX.obj">
+      <Filter>Assets\Goblin</Filter>
+    </Media>
+    <Media Include="Assets\Sponza\sponza.obj">
+      <Filter>Assets\sponza</Filter>
+    </Media>
+    <Media Include="Assets\Sponza\sponza.mtl">
+      <Filter>Assets\sponza</Filter>
     </Media>
   </ItemGroup>
   <ItemGroup>

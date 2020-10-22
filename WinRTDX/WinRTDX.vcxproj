@@ -127,6 +127,7 @@
     <ClInclude Include="Dds.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="Level10.h" />
     <ClInclude Include="Level5.h" />
     <ClInclude Include="Level6.h" />
     <ClInclude Include="Level7.h" />
@@ -173,10 +174,22 @@
   <ItemGroup>
     <Image Include="Assets\brick_wall\brick_wall_diffuse.jpg" />
     <Image Include="Assets\brick_wall\brick_wall_normal.dds" />
+    <Image Include="Assets\goblin\Textures\GoblinEye.jpg" />
+    <Image Include="Assets\goblin\Textures\MDif.tif" />
+    <Image Include="Assets\goblin\Textures\MNorm.tif" />
+    <Image Include="Assets\goblin\Textures\MSpec.tif" />
     <Image Include="Assets\karin.dds" />
     <Image Include="Assets\karin2.dds" />
     <Image Include="Assets\karin3.dds" />
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
+    <Image Include="Assets\muro\Muro_body_dm.png" />
+    <Image Include="Assets\muro\Muro_body_dm_clean.png" />
+    <Image Include="Assets\muro\Muro_body_nm.png" />
+    <Image Include="Assets\muro\Muro_body_sm.png" />
+    <Image Include="Assets\muro\Muro_body_sm_clean.png" />
+    <Image Include="Assets\muro\Muro_head_dm.png" />
+    <Image Include="Assets\muro\Muro_head_nm.png" />
+    <Image Include="Assets\muro\Muro_head_sm.png" />
     <Image Include="Assets\nano_textured\arm_dif.png" />
     <Image Include="Assets\nano_textured\arm_showroom_ddn.png" />
     <Image Include="Assets\nano_textured\arm_showroom_ddn2.png" />
@@ -201,6 +214,82 @@
     <Image Include="Assets\nano_textured\leg_showroom_ddn2.png" />
     <Image Include="Assets\nano_textured\leg_showroom_spec.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
+    <Image Include="Assets\Sponza\textures\background.png" />
+    <Image Include="Assets\Sponza\textures\backgroundBGR.png" />
+    <Image Include="Assets\Sponza\textures\background_bump.png" />
+    <Image Include="Assets\Sponza\textures\background_ddn.png" />
+    <Image Include="Assets\Sponza\textures\chain_texture.png" />
+    <Image Include="Assets\Sponza\textures\chain_texture_bump.png" />
+    <Image Include="Assets\Sponza\textures\chain_texture_ddn.png" />
+    <Image Include="Assets\Sponza\textures\chain_texture_mask.png" />
+    <Image Include="Assets\Sponza\textures\gi_flag.png" />
+    <Image Include="Assets\Sponza\textures\lion.png" />
+    <Image Include="Assets\Sponza\textures\lion2_bump.png" />
+    <Image Include="Assets\Sponza\textures\lion2_ddn.png" />
+    <Image Include="Assets\Sponza\textures\lion_bump.png" />
+    <Image Include="Assets\Sponza\textures\lion_ddn.png" />
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_bump.png" />
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_ddn.png" />
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_diff.png" />
+    <Image Include="Assets\Sponza\textures\spnza_bricks_a_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_arch_bump.png" />
+    <Image Include="Assets\Sponza\textures\sponza_arch_ddn.png" />
+    <Image Include="Assets\Sponza\textures\sponza_arch_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_arch_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_arch_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_ceiling_a_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_ceiling_a_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_ceiling_a_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_a_bump.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_a_ddn.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_a_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_a_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_b_bump.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_b_ddn.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_b_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_b_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_c_bump.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_c_ddn.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_c_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_column_c_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_curtain_blue_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_curtain_blue_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_curtain_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_curtain_green_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_details_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_details_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_details_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_fabric_blue_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_fabric_blue_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_fabric_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_fabric_green_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_fabric_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_flagpole_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_flagpole_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_flagpole_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_floor_a_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_floor_a_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_floor_a_spec.png" />
+    <Image Include="Assets\Sponza\textures\sponza_roof_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_roof_diff_NRM.png" />
+    <Image Include="Assets\Sponza\textures\sponza_thorn_bump.png" />
+    <Image Include="Assets\Sponza\textures\sponza_thorn_ddn.png" />
+    <Image Include="Assets\Sponza\textures\sponza_thorn_diff.png" />
+    <Image Include="Assets\Sponza\textures\sponza_thorn_mask.png" />
+    <Image Include="Assets\Sponza\textures\sponza_thorn_spec.png" />
+    <Image Include="Assets\Sponza\textures\vase_bump.png" />
+    <Image Include="Assets\Sponza\textures\vase_ddn.png" />
+    <Image Include="Assets\Sponza\textures\vase_dif.png" />
+    <Image Include="Assets\Sponza\textures\vase_hanging.png" />
+    <Image Include="Assets\Sponza\textures\vase_hanging_NRM.png" />
+    <Image Include="Assets\Sponza\textures\vase_plant.png" />
+    <Image Include="Assets\Sponza\textures\vase_plant_mask.png" />
+    <Image Include="Assets\Sponza\textures\vase_plant_NRM.png" />
+    <Image Include="Assets\Sponza\textures\vase_plant_spec.png" />
+    <Image Include="Assets\Sponza\textures\vase_round.png" />
+    <Image Include="Assets\Sponza\textures\vase_round_bump.png" />
+    <Image Include="Assets\Sponza\textures\vase_round_ddn.png" />
+    <Image Include="Assets\Sponza\textures\vase_round_spec.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
@@ -215,6 +304,7 @@
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="Level1.cpp" />
+    <ClCompile Include="Level10.cpp" />
     <ClCompile Include="Level2.cpp" />
     <ClCompile Include="Level3.cpp" />
     <ClCompile Include="Level4.cpp" />
@@ -246,6 +336,16 @@
     <None Include="Assets\brick_wall\brick_wall.mtl">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Assets\goblin\GoblinX.mtl">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Assets\muro\muro.mtl">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <Media Include="Assets\Sponza\sponza.mtl">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <FileType>Document</FileType>
+    </Media>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
     <None Include="8_Structures.hlsli">
@@ -636,6 +736,24 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <FileType>Document</FileType>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\muro\muro.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>Document</FileType>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\goblin\GoblinX.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>Document</FileType>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sponza\sponza.obj">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <FileType>Document</FileType>
     </Media>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
